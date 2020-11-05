@@ -36,7 +36,7 @@ public class ActivityLogin extends AppCompatActivity
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
         //Add Validation for Name
-        awesomeValidation.addValidation(this,R.id.et_name, RegexTemplate.NOT_EMPTY,R.string.invalid_name);
+        awesomeValidation.addValidation(this,R.id.et_name, RegexTemplate.NOT_EMPTY,R.string.invalid_name_or_email);
 
         //Add Email
         awesomeValidation.addValidation(this,R.id.et_email, Patterns.EMAIL_ADDRESS,R.string.invalid_email);
