@@ -18,7 +18,7 @@ public class ActivityLogin extends AppCompatActivity
 {
     Button bt_login;
     TextView tv_register;
-    EditText etName;
+    EditText etUsername;
 
     AwesomeValidation awesomeValidation;
     @Override
@@ -27,7 +27,7 @@ public class ActivityLogin extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        etName = findViewById(R.id.et_name);
+        etUsername = findViewById(R.id.et_username);
         bt_login = findViewById(R.id.bt_login);
         tv_register = findViewById(R.id.tv_register);
         tv_register.setOnClickListener(v -> openActivityRegister());
@@ -35,8 +35,8 @@ public class ActivityLogin extends AppCompatActivity
         //Initialize Validation Style
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
-        //Add Validation for Name
-        awesomeValidation.addValidation(this,R.id.et_name, RegexTemplate.NOT_EMPTY,R.string.invalid_name_or_email);
+        //Add Validation for Username
+        awesomeValidation.addValidation(this,R.id.et_username, RegexTemplate.NOT_EMPTY,R.string.invalid_name_or_email);
 
         //Add Email
         awesomeValidation.addValidation(this,R.id.et_email, Patterns.EMAIL_ADDRESS,R.string.invalid_email);

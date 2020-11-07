@@ -16,7 +16,7 @@ import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 public class ActivityRegister extends AppCompatActivity
 {
     //initialize Variable
-    EditText etName,etEmail,etPassword,etConfirmPassword;
+    EditText etUsername,etEmail,etPassword,etConfirmPassword;
     Button bt_submit;
 
     AwesomeValidation awesomeValidation;
@@ -27,7 +27,7 @@ public class ActivityRegister extends AppCompatActivity
         setContentView(R.layout.activity_register);
 
         //Assign Variable
-        etName = findViewById(R.id.et_name);
+        etUsername = findViewById(R.id.et_username);
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
         etConfirmPassword = findViewById(R.id.et_confirm_password);
@@ -36,8 +36,8 @@ public class ActivityRegister extends AppCompatActivity
         //Initialize Validation Style
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
-        //Add Validation for Name
-        awesomeValidation.addValidation(this,R.id.et_name, RegexTemplate.NOT_EMPTY,R.string.invalid_name);
+        //Add Validation for Username
+        awesomeValidation.addValidation(this,R.id.et_username, RegexTemplate.NOT_EMPTY,R.string.invalid_name);
 
         //Add Email
         awesomeValidation.addValidation(this,R.id.et_email, Patterns.EMAIL_ADDRESS,R.string.invalid_email);
