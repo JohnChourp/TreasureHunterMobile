@@ -42,7 +42,7 @@ public class ActivityLogin extends AppCompatActivity
         awesomeValidation.addValidation(this,R.id.et_email, Patterns.EMAIL_ADDRESS,R.string.invalid_email);
 
         //Add Password
-        awesomeValidation.addValidation(this,R.id.et_password,".{6,}",R.string.invalid_password);
+        awesomeValidation.addValidation(this,R.id.et_password,".{6,}",R.string.invalid_login_password);
 
         bt_login.setOnClickListener(v -> {
             //Check Validation
