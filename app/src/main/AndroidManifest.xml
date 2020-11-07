@@ -10,7 +10,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tresure_Hunter_Mobile">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ActivityMain" >
+        </activity>
+        <activity android:name=".ActivityLogin" />
+        <activity android:name=".ActivityRegister" />
+
+        <activity android:name=".ActivityStart">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
