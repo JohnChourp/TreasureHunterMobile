@@ -28,7 +28,7 @@ public class ActivityRegister extends AppCompatActivity
                     "(?=.*[a-zA-Z])" +      //any letter
                     //"(?=.*[@#$%^&+=])" +    //at least 1 special character
                     //"(?=\\S+$)" +           //no white spaces
-                    ".{6,}" +               //at least 6 characters
+                    ".{8,}" +               //at least 8 characters
                     "$");
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -53,7 +53,7 @@ public class ActivityRegister extends AppCompatActivity
         awesomeValidation.addValidation(this,R.id.et_email, Patterns.EMAIL_ADDRESS,R.string.invalid_email);
 
         //Add Password
-        awesomeValidation.addValidation(this,R.id.et_password,".{6,}",R.string.invalid_register_password);
+        awesomeValidation.addValidation(this,R.id.et_password,".{8,}",R.string.invalid_register_password);
 
         //Add Confirm Password
         awesomeValidation.addValidation(this,R.id.et_confirm_password,R.id.et_password,R.string.invalid_confirm_password);
