@@ -12,15 +12,26 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
-import com.basgeekball.awesomevalidation.utility.RegexTemplate;
+
+import java.util.regex.Pattern;
 
 public class ActivityLogin extends AppCompatActivity
 {
     Button bt_login;
     TextView tv_register;
-    EditText etUsername;
+    EditText etUsername,etPassword;
 
     AwesomeValidation awesomeValidation;
+    private static final Pattern PASSWORD_PATTERN =
+            Pattern.compile("^" +
+                    "(?=.*[0-9])" +         //at least 1 digit
+                    //"(?=.*[a-z])" +         //at least 1 lower case letter
+                    "(?=.*[A-Z])" +         //at least 1 upper case letter
+                    "(?=.*[a-zA-Z])" +      //any letter
+                    //"(?=.*[@#$%^&+=])" +    //at least 1 special character
+                    //"(?=\\S+$)" +           //no white spaces
+                    ".{6,}" +               //at least 6 characters
+                    "$");
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -28,6 +39,7 @@ public class ActivityLogin extends AppCompatActivity
         setContentView(R.layout.activity_login);
 
         etUsername = findViewById(R.id.et_username);
+        etPassword = findViewById(R.id.et_password);
         bt_login = findViewById(R.id.bt_login);
         tv_register = findViewById(R.id.tv_register);
         tv_register.setOnClickListener(v -> openActivityRegister());
@@ -36,7 +48,7 @@ public class ActivityLogin extends AppCompatActivity
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
 
         //Add Validation for Username
-        awesomeValidation.addValidation(this,R.id.et_username, RegexTemplate.NOT_EMPTY,R.string.invalid_name_or_email);
+        awesomeValidation.addValidation(this,R.id.et_username, ".{3,}",R.string.invalid_name_or_email);
 
         //Add Email
         awesomeValidation.addValidation(this,R.id.et_email, Patterns.EMAIL_ADDRESS,R.string.invalid_email);
@@ -46,7 +58,7 @@ public class ActivityLogin extends AppCompatActivity
 
         bt_login.setOnClickListener(v -> {
             //Check Validation
-            if(awesomeValidation.validate()){
+            if(awesomeValidation.validate() && validatePassword()){
                 //On Success
                 Toast.makeText(getApplicationContext(),"Login Successfully...",Toast.LENGTH_SHORT).show();
 
@@ -67,8 +79,22 @@ public class ActivityLogin extends AppCompatActivity
 
     private void openActivityRegister()
     {
-        Intent intent = new Intent(this,ActivityRegister.class);
+        Intent intent = new Intent(this, ActivityRegister.class);
         startActivity(intent);
+    }
+
+    private boolean validatePassword() {
+        String passwordInput = etPassword.getText().toString().trim();
+        if (passwordInput.isEmpty()) {
+            etPassword.setError("Field can't be empty");
+            return false;
+        } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
+            etPassword.setError("Please Enter Valid Password");
+            return false;
+        } else {
+            etPassword.setError(null);
+            return true;
+        }
     }
 
 }
