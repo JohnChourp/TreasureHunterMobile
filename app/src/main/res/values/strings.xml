@@ -9,9 +9,9 @@
     <string name="email">Email</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="submit">Submit</string>
-    <string name="invalid_username">Username must be more than 3 characters</string>
-    <string name="invalid_email">Please Enter Valid Email</string>
-    <string name="invalid_register_password">Password must be at least 8 characters long</string>
+    <string name="invalid_username">Username must be 3–99 characters long</string>
+    <string name="invalid_email">Enter Valid Email</string>
+    <string name="invalid_register_password">Password must be 8–99 characters long</string>
     <string name="invalid_confirm_password">Passwords do not match</string>
     <string name="todo">TODO</string>
     <string name="login_as_guest">Login as Guest</string>
