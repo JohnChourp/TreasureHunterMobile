@@ -1,18 +1,11 @@
 package org.codegrinders.tresure_hunter_mobile;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.basgeekball.awesomevalidation.AwesomeValidation;
-import com.basgeekball.awesomevalidation.ValidationStyle;
-
 import java.util.regex.Pattern;
 
 public class ActivityLogin extends AppCompatActivity
@@ -21,20 +14,11 @@ public class ActivityLogin extends AppCompatActivity
     TextView tv_register;
     EditText etUsername,etPassword;
 
-    AwesomeValidation awesomeValidation;
-    private static final Pattern PASSWORD_PATTERN =
-            Pattern.compile("^" +
-                    "(?=.*[0-9])" +         //at least 1 digit
-                    //"(?=.*[a-z])" +         //at least 1 lower case letter
-                    "(?=.*[A-Z])" +         //at least 1 upper case letter
-                    "(?=.*[a-zA-Z])" +      //any letter
-                    //"(?=.*[@#$%^&+=])" +    //at least 1 special character
-                    //"(?=\\S+$)" +           //no white spaces
-                    ".{8,}" +               //at least 8 characters
-                    "$");
+    private static final Pattern USERNAME_PATTERN = Pattern.compile("(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])(?=\\S+$).{3,99}$");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$%^&*+=])(?=\\S+$).{8,99}$");
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -42,33 +26,16 @@ public class ActivityLogin extends AppCompatActivity
         etPassword = findViewById(R.id.et_password);
         bt_login = findViewById(R.id.bt_login);
         tv_register = findViewById(R.id.tv_register);
+
         tv_register.setOnClickListener(v -> openActivityRegister());
-
-        //Initialize Validation Style
-        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
-
-        //Add Validation for Username
-        awesomeValidation.addValidation(this,R.id.et_username, ".{3,}",R.string.invalid_name_or_email);
-
-        //Add Email
-        awesomeValidation.addValidation(this,R.id.et_email, Patterns.EMAIL_ADDRESS,R.string.invalid_email);
-
-        //Add Password
-        awesomeValidation.addValidation(this,R.id.et_password,".{8,}",R.string.invalid_login_password);
-
         bt_login.setOnClickListener(v -> {
-            //Check Validation
-            if(awesomeValidation.validate() && validatePassword()){
-                //On Success
+            if(validate()){
                 Toast.makeText(getApplicationContext(),"Login Successfully...",Toast.LENGTH_SHORT).show();
-
                 openActivityMain();
-
             }else{
                 Toast.makeText(getApplicationContext(),"Login Failed...",Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     private void openActivityMain()
@@ -83,18 +50,19 @@ public class ActivityLogin extends AppCompatActivity
         startActivity(intent);
     }
 
-    private boolean validatePassword() {
-        String passwordInput = etPassword.getText().toString().trim();
-        if (passwordInput.isEmpty()) {
-            etPassword.setError("Field can't be empty");
+    private boolean validate() {
+        String usernameInput = etUsername.getText().toString();
+        String passwordInput = etPassword.getText().toString();
+
+        if (USERNAME_PATTERN.matcher(usernameInput).matches() || usernameInput.contains(" ")) {
+            etUsername.setError("Wrong Username or Email");
             return false;
-        } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches()) {
-            etPassword.setError("Please Enter Valid Password");
+        } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches() || passwordInput.contains(" ")) {
+            etPassword.setError("Wrong Password");
             return false;
-        } else {
+        }  else {
             etPassword.setError(null);
             return true;
         }
     }
-
 }
