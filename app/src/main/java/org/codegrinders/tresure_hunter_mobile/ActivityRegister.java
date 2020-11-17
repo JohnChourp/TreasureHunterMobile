@@ -81,14 +81,16 @@ public class ActivityRegister extends AppCompatActivity
         }
     }
 
-
-
     ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
             isBound = true;
+
+            if(!AudioData.playing) {
+                audioService.initAudioFile(AudioData.resource, AudioData.position, AudioData.volume, AudioData.looping, true);
+            }
         }
 
         @Override

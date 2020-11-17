@@ -80,6 +80,10 @@ public class ActivityLogin extends AppCompatActivity
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
             isBound = true;
+
+            if(!AudioData.playing) {
+                audioService.initAudioFile(AudioData.resource, AudioData.position, AudioData.volume, AudioData.looping, true);
+            }
         }
 
         @Override

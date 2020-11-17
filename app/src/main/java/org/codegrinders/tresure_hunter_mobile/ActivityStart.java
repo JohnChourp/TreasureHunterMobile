@@ -19,6 +19,8 @@ public class ActivityStart extends AppCompatActivity
 
     boolean firstInit=true;
 
+    AudioData data = new AudioData();
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -44,8 +46,13 @@ public class ActivityStart extends AppCompatActivity
             audioService = binder.getService();
             isBound = true;
             if(firstInit){
-                audioService.initAudioFile(R.raw.beep,true,true);
+                audioService.initAudioFile(R.raw.beep,0, 100,true,true);
+                data.init(R.raw.beep, 0,100,true, true);
                 firstInit=false;
+            }else{
+                if(!AudioData.playing) {
+                    audioService.initAudioFile(AudioData.resource, AudioData.position, AudioData.volume, AudioData.looping, true);
+                }
             }
         }
 

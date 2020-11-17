@@ -5,8 +5,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
-
-import java.util.Random;
+import android.widget.Toast;
 
 public class MediaService extends Service {
 
@@ -29,10 +28,14 @@ public class MediaService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        player.stop();
-
+        if (player.isPlaying()){
+            player.pause();
+            sendPos(player.getCurrentPosition());
+            player.release();
+        }
     }
 
+    //Παίζει να μη χρειάζεται.
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //TODO write your own code
@@ -44,20 +47,14 @@ public class MediaService extends Service {
         return mBinder;
     }
 
-    public void  initAudioFile(int resource, boolean looping, boolean playOnInit){
+    public void  initAudioFile(int resource, int position, int volume, boolean looping, boolean playOnInit){
         player = MediaPlayer.create(this, resource);
-        player.setLooping(true);
+        player.setLooping(looping);
+        player.seekTo(position);
+        volume(volume);
         if(playOnInit){
             player.start();
-        }
-    }
-
-    public void playStop(){
-        if(player.isPlaying()){
-            player.pause();
-        }else{
-            player.seekTo(0);
-            player.start();
+            AudioData.playing=true;
         }
     }
 
@@ -68,5 +65,12 @@ public class MediaService extends Service {
         }else{
             player.setVolume(0,0);
         }
+    }
+
+    public void sendPos(int pos){
+        AudioData.position=pos;
+        AudioData.playing=false;
+        Toast.makeText(this, "position: "+AudioData.position, Toast.LENGTH_LONG).show();
+
     }
 }
