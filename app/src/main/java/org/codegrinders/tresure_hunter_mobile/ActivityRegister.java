@@ -28,6 +28,9 @@ public class ActivityRegister extends AppCompatActivity
     boolean isBound =false;
     Intent intent;
 
+    int backgroundMusic;
+    int buttonSound;
+
     private static final Pattern USERNAME_PATTERN = Pattern.compile("(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])(?=\\S+$).{3,99}$");
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$%^&*+=])(?=\\S+$).{8,99}$");
 
@@ -46,6 +49,7 @@ public class ActivityRegister extends AppCompatActivity
         emailValidation.addValidation(this,R.id.et_email, Patterns.EMAIL_ADDRESS,R.string.invalid_email);
 
         bt_submit.setOnClickListener(v -> {
+            audioService.play(buttonSound,0);
             if(emailValidation.validate() && validate()){
                 Toast.makeText(getApplicationContext(),"Form Validate Successfully...",Toast.LENGTH_SHORT).show();
                 openActivityLogin();
@@ -88,9 +92,9 @@ public class ActivityRegister extends AppCompatActivity
             audioService = binder.getService();
             isBound = true;
 
-            if(!AudioData.playing) {
-                audioService.initAudioFile(AudioData.resource, AudioData.position, AudioData.volume, AudioData.looping, true);
-            }
+            backgroundMusic = Sound.searchByResid(R.raw.beep);
+            buttonSound = Sound.searchByResid(R.raw.pop);
+            audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
         }
 
         @Override

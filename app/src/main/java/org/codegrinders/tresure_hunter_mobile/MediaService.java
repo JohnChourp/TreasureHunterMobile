@@ -5,11 +5,8 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
-import android.widget.Toast;
 
 public class MediaService extends Service {
-
-    private MediaPlayer player;
 
     private final IBinder mBinder = new MediaBinder();
 
@@ -22,55 +19,78 @@ public class MediaService extends Service {
 
     @Override
     public void onCreate() {
-        //Toast.makeText(this, "Service was Created", Toast.LENGTH_LONG).show();
+        super.onCreate();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (player.isPlaying()){
-            player.pause();
-            sendPos(player.getCurrentPosition());
-            player.release();
+        int i;
+        for(i=0;i<Sound.entryCount;i++){
+            pause(i);
         }
     }
 
-    //Παίζει να μη χρειάζεται.
-    @Override
+    //Παίζει να μη χρειάζεται αλά το αφήνω σαν σχόλιο.
+    /*@Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //TODO write your own code
         return Service.START_NOT_STICKY;
-    }
+    }*/
 
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
     }
 
-    public void  initAudioFile(int resource, int position, int volume, boolean looping, boolean playOnInit){
-        player = MediaPlayer.create(this, resource);
-        player.setLooping(looping);
-        player.seekTo(position);
-        volume(volume);
-        if(playOnInit){
-            player.start();
-            AudioData.playing=true;
+    public void  init(int index, int vol, boolean looping){
+        AudioData data = Sound.get(index);
+        data.player = MediaPlayer.create(this, data.resource);
+        data.player.setLooping(looping);
+        data.looping = looping;
+        volume(index, vol);
+    }
+
+    public void play(int index, int pos){
+        AudioData data = Sound.get(index);
+
+        if(data.allowPlaying){
+            data.player.seekTo(pos);
+            data.player.start();
+        }
+        data.allowPlaying = (!data.looping && !data.type.equals("music"));
+    }
+
+    public  void  pause(int index){
+        AudioData data = Sound.get(index);
+
+        if(!data.allowPlaying) {
+            data.player.pause();
+            data.position = data.player.getCurrentPosition();
+            data.allowPlaying = true;
         }
     }
 
-    public void volume(int vol){
+    public  void  stop(int index){
+        AudioData data = Sound.get(index);
+
+        if(!data.allowPlaying) {
+            data.player.pause();
+            data.position = 0;
+            data.allowPlaying = true;
+        }
+    }
+
+    public void volume(int index, int vol){
+        AudioData data = Sound.get(index);
+
         if(vol>=0 && vol<=100){
             float fvol = (float)(vol*0.01);
-            player.setVolume(fvol,fvol);
+            data.player.setVolume(fvol,fvol);
         }else{
-            player.setVolume(0,0);
+            data.player.setVolume(0,0);
+            vol = 0;
         }
+        data.volume = vol;
     }
 
-    public void sendPos(int pos){
-        AudioData.position=pos;
-        AudioData.playing=false;
-        Toast.makeText(this, "position: "+AudioData.position, Toast.LENGTH_LONG).show();
-
-    }
 }

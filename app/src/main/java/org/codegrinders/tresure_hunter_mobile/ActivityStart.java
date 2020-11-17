@@ -19,7 +19,8 @@ public class ActivityStart extends AppCompatActivity
 
     boolean firstInit=true;
 
-    AudioData data = new AudioData();
+    int backgroundMusic;
+    int buttonSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,7 +30,10 @@ public class ActivityStart extends AppCompatActivity
 
         bt_play = findViewById(R.id.bt_play);
 
-        bt_play.setOnClickListener(v -> openActivityLogin());
+        bt_play.setOnClickListener(v -> {
+            audioService.play(buttonSound,0);
+            openActivityLogin();
+        });
     }
 
 
@@ -46,14 +50,15 @@ public class ActivityStart extends AppCompatActivity
             audioService = binder.getService();
             isBound = true;
             if(firstInit){
-                audioService.initAudioFile(R.raw.beep,0, 100,true,true);
-                data.init(R.raw.beep, 0,100,true, true);
-                firstInit=false;
-            }else{
-                if(!AudioData.playing) {
-                    audioService.initAudioFile(AudioData.resource, AudioData.position, AudioData.volume, AudioData.looping, true);
-                }
+                //Τα παρακάτω πρέπει να γίνουν μόνο εδώ και σε κανένα άλο activity.
+                backgroundMusic = Sound.add(R.raw.beep, 50,"music");//Πρώτα προσθέτουμε τους ήχους.
+                buttonSound = Sound.add(R.raw.pop, 100, "sound");
+                audioService.init(backgroundMusic, 50, true);//Μετά τους αρχικοποιούμε.
+                audioService.init(buttonSound, 100, false);
+                firstInit=false;//Τέλος setάρουμε το firstInit για να μήν προστεθούν και αρχικοποιηθούν ξανά.
             }
+                audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);//Αναπαραγωγή ήχου.
+                //audioService.stop(backgroundMusic); //Επαναφορά ήχου στην αρχή και παύση.
         }
 
         @Override

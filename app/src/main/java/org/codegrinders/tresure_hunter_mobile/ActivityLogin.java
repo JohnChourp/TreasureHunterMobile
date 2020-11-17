@@ -22,6 +22,9 @@ public class ActivityLogin extends AppCompatActivity
     boolean isBound =false;
     Intent intent;
 
+    int backgroundMusic;
+    int buttonSound;
+
     private static final Pattern USERNAME_PATTERN = Pattern.compile("(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])(?=\\S+$).{3,99}$");
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$%^&*+=])(?=\\S+$).{8,99}$");
 
@@ -37,6 +40,7 @@ public class ActivityLogin extends AppCompatActivity
 
         tv_register.setOnClickListener(v -> openActivityRegister());
         bt_login.setOnClickListener(v -> {
+            audioService.play(buttonSound,0);
             if(validate()){
                 Toast.makeText(getApplicationContext(),"Login Successfully...",Toast.LENGTH_SHORT).show();
                 openActivityMain();
@@ -81,9 +85,10 @@ public class ActivityLogin extends AppCompatActivity
             audioService = binder.getService();
             isBound = true;
 
-            if(!AudioData.playing) {
-                audioService.initAudioFile(AudioData.resource, AudioData.position, AudioData.volume, AudioData.looping, true);
-            }
+            backgroundMusic = Sound.searchByResid(R.raw.beep);
+            buttonSound = Sound.searchByResid(R.raw.pop);
+            audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
+            //audioService.stop(backgroundMusic);
         }
 
         @Override

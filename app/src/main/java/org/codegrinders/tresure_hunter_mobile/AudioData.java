@@ -1,21 +1,23 @@
 package org.codegrinders.tresure_hunter_mobile;
 
-public class AudioData {
-    //Μπακάλικη μέθοδος δυστυχώς δεν κυκλοφορει αρκετή πληροφορία online.
-    //Το intent.putExtra που δοκίμασα δεν δούλεψε.
-    //Αν είναι να μπουν κιάλοι ήχοι βγάζουμε τα static από δω και θα γίνει static λίστα σε καινουρια κλάση με AudioData και κάποιο id για να τα βρίσκουμε.
-    //Όταν οι τροχοί που έχεις δεν δουλεύουν τότε αναγκαστικά τους επανεφεύρεις.
+import android.media.MediaPlayer;
 
-    public static int resource;
-    public static int position;
-    public static int volume;
-    public static boolean looping;
-    public static boolean playing;
-    void init(int resource, int position, int volume, boolean looping, boolean playing){
+public class AudioData {
+
+    MediaPlayer player;
+    public int resource;
+    public int position;
+    public int volume;
+    public boolean looping;
+    public boolean allowPlaying;
+    public String type;
+
+    public AudioData(int resource, int volume, String type){
         this.resource = resource;
-        this.position = position;
         this.volume = volume;
-        this.looping = looping;
-        this.playing = playing;
+        this.type = type;
+        position = 0;
+        looping = false;
+        allowPlaying = true;
     }
 }
