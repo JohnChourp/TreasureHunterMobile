@@ -17,6 +17,8 @@ public class ActivityStart extends AppCompatActivity
     Intent intent;
     Button bt_play;
 
+    boolean firstInit=true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -41,8 +43,10 @@ public class ActivityStart extends AppCompatActivity
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
             isBound = true;
-
-            audioService.initAudioFile(R.raw.beep,true,true);
+            if(firstInit){
+                audioService.initAudioFile(R.raw.beep,true,true);
+                firstInit=false;
+            }
         }
 
         @Override

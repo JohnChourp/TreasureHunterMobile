@@ -1,7 +1,11 @@
 package org.codegrinders.tresure_hunter_mobile;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +23,10 @@ public class ActivityRegister extends AppCompatActivity
     EditText etUsername,etEmail,etPassword,etConfirmPassword;
     Button bt_submit;
     AwesomeValidation emailValidation;
+
+    MediaService audioService;
+    boolean isBound =false;
+    Intent intent;
 
     private static final Pattern USERNAME_PATTERN = Pattern.compile("(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])(?=\\S+$).{3,99}$");
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$%^&*+=])(?=\\S+$).{8,99}$");
@@ -70,6 +78,41 @@ public class ActivityRegister extends AppCompatActivity
         } else {
             etPassword.setError(null);
             return true;
+        }
+    }
+
+
+
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
+            audioService = binder.getService();
+            isBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            isBound = false;
+        }
+    };
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Bind to LocalService
+        intent = new Intent(this, MediaService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Unbind from the service
+        if (isBound) {
+            unbindService(serviceConnection);
+            isBound = false;
         }
     }
 }

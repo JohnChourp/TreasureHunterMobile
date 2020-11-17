@@ -12,10 +12,7 @@ public class MediaService extends Service {
 
     private MediaPlayer player;
 
-    // Binder given to clients
     private final IBinder mBinder = new MediaBinder();
-    // Random number generator
-    private final Random mGenerator = new Random();
 
     public class MediaBinder extends Binder {
         MediaService getService() {
@@ -32,15 +29,13 @@ public class MediaService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // Stopping the player when service is destroyed
         player.stop();
-        //Toast.makeText(this, "Service Stopped", Toast.LENGTH_LONG).show();
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //TODO write your own code
-        //Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
         return Service.START_NOT_STICKY;
     }
 
@@ -73,9 +68,5 @@ public class MediaService extends Service {
         }else{
             player.setVolume(0,0);
         }
-    }
-
-    public int getRandomNumber() {
-        return mGenerator.nextInt(100);
     }
 }
