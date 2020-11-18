@@ -52,7 +52,9 @@ public class MediaService extends Service {
 
     public void play(int index, int pos){
         AudioData data = Sound.get(index);
-
+        if(data.type.equals("sound")){
+            volume(index, Sound.soundVol); //ενημέρωση volume.
+        }
         if(data.allowPlaying){
             data.player.seekTo(pos);
             data.player.start();
@@ -88,9 +90,15 @@ public class MediaService extends Service {
             data.player.setVolume(fvol,fvol);
         }else{
             data.player.setVolume(0,0);
-            vol = 0;
         }
-        data.volume = vol;
     }
 
+    public void setAllmusicVol(int volume){
+        int i;
+        for (i=0;i<Sound.entryCount;i++){
+            if(Sound.get(i).type.equals("music")){
+                volume(i, volume);
+            }
+        }
+    }
 }

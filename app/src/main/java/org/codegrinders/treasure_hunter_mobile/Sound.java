@@ -13,8 +13,8 @@ public class Sound {
     static int entryCount = 0;
     static boolean firstInit = true;
 
-    public static int add(int resource, int volume, String type){
-        audioList.add(new AudioData(resource, volume, type));
+    public static int add(int resource, String type){
+        audioList.add(new AudioData(resource, type));
         entryCount++;
         return entryCount-1;
     }

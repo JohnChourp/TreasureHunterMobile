@@ -81,8 +81,9 @@ public class ActivitySettings extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 Sound.musicVol = progress;
-                displayMuteUnmute((progress==0) ,muteMusic);
-                setAllmusicVol(progress);
+                musicIsMuted = (progress==0);
+                displayMuteUnmute(musicIsMuted, muteMusic);
+                audioService.setAllmusicVol(progress); //δυναμική αλαγή volume όσο παίζει, ενώ οι ήχοι ενημερώνωνται στην play.
             }
 
             @Override
@@ -101,8 +102,8 @@ public class ActivitySettings extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 Sound.soundVol = progress;
-                displayMuteUnmute((progress==0) ,muteSounds);
-                setAllSoundsVol(progress);
+                soundsAreMuted = (progress==0);
+                displayMuteUnmute(soundsAreMuted ,muteSounds);
             }
 
             @Override
@@ -112,7 +113,7 @@ public class ActivitySettings extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                audioService.play(buttonSound, 0);
             }
         });
 
@@ -123,25 +124,6 @@ public class ActivitySettings extends AppCompatActivity {
             button.setImageResource(R.drawable.muted);
         }else{
             button.setImageResource(R.drawable.unmuted);
-        }
-    }
-
-    public void setAllmusicVol(int volume){
-        int i;
-        for (i=0;i<Sound.entryCount;i++){
-            if(Sound.get(i).type.equals("music")){
-                audioService.volume(i, volume);
-            }
-        }
-    }
-
-    public void setAllSoundsVol(int volume){
-        int i;
-        for (i=0;i<Sound.entryCount;i++){
-            if(Sound.get(i).type.equals("sound")){
-                //audioService.volume(i, volume);
-                Sound.get(i).volume=volume;
-            }
         }
     }
 
