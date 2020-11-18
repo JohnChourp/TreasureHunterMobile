@@ -1,17 +1,12 @@
 package org.codegrinders.treasure_hunter_mobile;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 
@@ -46,34 +41,23 @@ public class ActivitySettings extends AppCompatActivity {
         musicIsMuted = (Sound.musicVol==0);
         soundsAreMuted = (Sound.soundVol==0);
 
-        if(musicIsMuted){
-            muteMusic.setImageResource(R.drawable.muted);
-        }else{
-            muteMusic.setImageResource(R.drawable.unmuted);
-        }
-
-        if(soundsAreMuted){
-            muteSounds.setImageResource(R.drawable.muted);
-        }else{
-            muteSounds.setImageResource(R.drawable.unmuted);
-        }
+        displayMuteUnmute(musicIsMuted, muteMusic);
+        displayMuteUnmute(soundsAreMuted, muteSounds);
 
         musicVolSlider.setProgress(Sound.musicVol);
-        soundVolSlider.setProgress(Sound.soundVol);;
+        soundVolSlider.setProgress(Sound.soundVol);
 
 
 
         muteMusic.setOnClickListener(v -> {
             if(musicIsMuted){
                 muteMusic.setImageResource(R.drawable.unmuted);
-                musicIsMuted = false;
-                Sound.musicVol = 60;
                 musicVolSlider.setProgress(60);
+                musicIsMuted = false;
             }else{
                 muteMusic.setImageResource(R.drawable.muted);
-                musicIsMuted = true;
-                Sound.musicVol = 0;
                 musicVolSlider.setProgress(0);
+                musicIsMuted = true;
             }
         });
 
@@ -82,14 +66,12 @@ public class ActivitySettings extends AppCompatActivity {
         muteSounds.setOnClickListener(v -> {
             if(soundsAreMuted){
                 muteSounds.setImageResource(R.drawable.unmuted);
-                soundsAreMuted = false;
-                Sound.soundVol = 60;
                 soundVolSlider.setProgress(60);
+                soundsAreMuted = false;
             }else{
                 muteSounds.setImageResource(R.drawable.muted);
-                soundsAreMuted = true;
-                Sound.soundVol = 0;
                 soundVolSlider.setProgress(0);
+                soundsAreMuted = true;
             }
         });
 
@@ -99,11 +81,8 @@ public class ActivitySettings extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 Sound.musicVol = progress;
-                if(progress == 0){
-                    muteMusic.setImageResource(R.drawable.muted);
-                }else{
-                    muteMusic.setImageResource(R.drawable.unmuted);
-                }
+                displayMuteUnmute((progress==0) ,muteMusic);
+                setAllmusicVol(progress);
             }
 
             @Override
@@ -122,11 +101,8 @@ public class ActivitySettings extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 Sound.soundVol = progress;
-                if(progress == 0){
-                    muteSounds.setImageResource(R.drawable.muted);
-                }else{
-                    muteSounds.setImageResource(R.drawable.unmuted);
-                }
+                displayMuteUnmute((progress==0) ,muteSounds);
+                setAllSoundsVol(progress);
             }
 
             @Override
@@ -142,8 +118,32 @@ public class ActivitySettings extends AppCompatActivity {
 
     }
 
+    void displayMuteUnmute(boolean isMuted, ImageButton button){
+        if(isMuted){
+            button.setImageResource(R.drawable.muted);
+        }else{
+            button.setImageResource(R.drawable.unmuted);
+        }
+    }
 
+    public void setAllmusicVol(int volume){
+        int i;
+        for (i=0;i<Sound.entryCount;i++){
+            if(Sound.get(i).type.equals("music")){
+                audioService.volume(i, volume);
+            }
+        }
+    }
 
+    public void setAllSoundsVol(int volume){
+        int i;
+        for (i=0;i<Sound.entryCount;i++){
+            if(Sound.get(i).type.equals("sound")){
+                //audioService.volume(i, volume);
+                Sound.get(i).volume=volume;
+            }
+        }
+    }
 
     ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
