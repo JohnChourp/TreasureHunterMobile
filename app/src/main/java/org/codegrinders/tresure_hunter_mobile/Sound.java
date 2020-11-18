@@ -10,7 +10,8 @@ public class Sound {
     static ArrayList<AudioData> audioList = new ArrayList<>();
     static int musicVol = 50;
     static int soundVol = 100;
-    static int entryCount=0;
+    static int entryCount = 0;
+    static boolean firstInit = true;
 
     public static int add(int resource, int volume, String type){
         audioList.add(new AudioData(resource, volume, type));

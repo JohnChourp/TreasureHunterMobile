@@ -17,8 +17,6 @@ public class ActivityStart extends AppCompatActivity
     Intent intent;
     Button bt_play;
 
-    boolean firstInit=true;
-
     int backgroundMusic;
     int buttonSound;
 
@@ -49,13 +47,13 @@ public class ActivityStart extends AppCompatActivity
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
             isBound = true;
-            if(firstInit){
+            if(Sound.firstInit){
                 //Τα παρακάτω πρέπει να γίνουν μόνο εδώ και σε κανένα άλο activity.
                 backgroundMusic = Sound.add(R.raw.beep, 50,"music");//Πρώτα προσθέτουμε τους ήχους.
                 buttonSound = Sound.add(R.raw.pop, 100, "sound");
                 audioService.init(backgroundMusic, 50, true);//Μετά τους αρχικοποιούμε.
                 audioService.init(buttonSound, 100, false);
-                firstInit=false;//Τέλος setάρουμε το firstInit για να μήν προστεθούν και αρχικοποιηθούν ξανά.
+                Sound.firstInit =false;//Τέλος setάρουμε το firstInit σε false για να μήν προστεθούν και αρχικοποιηθούν ξανά.
             }
                 audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);//Αναπαραγωγή ήχου.
                 //audioService.stop(backgroundMusic); //Επαναφορά ήχου στην αρχή και παύση.
