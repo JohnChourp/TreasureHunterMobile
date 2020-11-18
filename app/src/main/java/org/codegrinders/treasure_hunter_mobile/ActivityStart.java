@@ -16,6 +16,7 @@ public class ActivityStart extends AppCompatActivity
     boolean isBound =false;
     Intent intent;
     Button bt_play;
+    Button bt_settings;
 
     int backgroundMusic;
     int buttonSound;
@@ -27,17 +28,30 @@ public class ActivityStart extends AppCompatActivity
         setContentView(R.layout.activity_start);
 
         bt_play = findViewById(R.id.bt_play);
+        bt_settings = findViewById(R.id.bt_settings);
 
         bt_play.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
             openActivityLogin();
         });
+
+        bt_settings.setOnClickListener(v -> {
+            audioService.play(buttonSound,0);
+            openActivitySettings();
+        });
+
     }
 
 
     private void openActivityLogin()
     {
         Intent intent = new Intent(this, ActivityLogin.class);
+        startActivity(intent);
+    }
+
+    private void openActivitySettings()
+    {
+        Intent intent = new Intent(this, ActivitySettings.class);
         startActivity(intent);
     }
 
