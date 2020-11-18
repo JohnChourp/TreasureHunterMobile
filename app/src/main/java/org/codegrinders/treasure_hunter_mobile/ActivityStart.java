@@ -1,4 +1,4 @@
-package org.codegrinders.tresure_hunter_mobile;
+package org.codegrinders.treasure_hunter_mobile;
 
 import android.content.ComponentName;
 import android.content.Context;

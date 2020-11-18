@@ -1,4 +1,4 @@
-package org.codegrinders.tresure_hunter_mobile;
+package org.codegrinders.treasure_hunter_mobile;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,8 @@ public class Sound {
         return audioList.get(index);
     }
 
-    //Αναζητά έναν ήχο στην λίστα σύμφωνα με το resid του πχ R.raw.beep και επιστρέφει την θέση του στην λίστα αν δεν βρεθεί επιστρέφεται η τελευταία θέση.
+    //Αναζητά έναν ήχο στην λίστα σύμφωνα με το resid του πχ R.raw.beep
+    // και επιστρέφει την θέση του στην λίστα αν δεν βρεθεί επιστρέφεται η τελευταία θέση.
     public static int searchByResid(int resid){
         int i;
         for(i=0;i<entryCount;i++){

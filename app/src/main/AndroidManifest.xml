@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.codegrinders.tresure_hunter_mobile">
+    package="org.codegrinders.treasure_hunter_mobile">
 
     <application
         android:allowBackup="true"
@@ -11,14 +11,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tresure_Hunter_Mobile">
         <service
-            android:name=".MediaService"
+            android:name="org.codegrinders.treasure_hunter_mobile.MediaService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="false" />
 
-        <activity android:name=".ActivityMain"></activity>
-        <activity android:name=".ActivityLogin" />
-        <activity android:name=".ActivityRegister" />
-        <activity android:name=".ActivityStart">
+        <activity android:name=".ActivityMain" />
+        <activity android:name="org.codegrinders.treasure_hunter_mobile.ActivityLogin" />
+        <activity android:name="org.codegrinders.treasure_hunter_mobile.ActivityRegister" />
+        <activity android:name="org.codegrinders.treasure_hunter_mobile.ActivityStart">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

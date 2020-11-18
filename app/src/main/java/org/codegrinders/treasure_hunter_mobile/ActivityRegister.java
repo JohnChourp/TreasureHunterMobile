@@ -1,22 +1,28 @@
-package org.codegrinders.tresure_hunter_mobile;
+package org.codegrinders.treasure_hunter_mobile;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
+
 import java.util.regex.Pattern;
 
-public class ActivityLogin extends AppCompatActivity
+public class ActivityRegister extends AppCompatActivity
 {
-    Button bt_login;
-    TextView tv_register;
-    EditText etUsername,etPassword;
+    EditText etUsername,etEmail,etPassword,etConfirmPassword;
+    Button bt_submit;
+    AwesomeValidation emailValidation;
 
     MediaService audioService;
     boolean isBound =false;
@@ -31,48 +37,49 @@ public class ActivityLogin extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
 
         etUsername = findViewById(R.id.et_username);
+        etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
-        bt_login = findViewById(R.id.bt_login);
-        tv_register = findViewById(R.id.tv_register);
+        etConfirmPassword = findViewById(R.id.et_confirm_password);
+        bt_submit = findViewById(R.id.bt_submit);
 
-        tv_register.setOnClickListener(v -> openActivityRegister());
-        bt_login.setOnClickListener(v -> {
+        emailValidation = new AwesomeValidation(ValidationStyle.BASIC);
+        emailValidation.addValidation(this,R.id.et_email, Patterns.EMAIL_ADDRESS,R.string.invalid_email);
+
+        bt_submit.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
-            if(validate()){
-                Toast.makeText(getApplicationContext(),"Login Successfully...",Toast.LENGTH_SHORT).show();
-                openActivityMain();
+            if(emailValidation.validate() && validate()){
+                Toast.makeText(getApplicationContext(),"Form Validate Successfully...",Toast.LENGTH_SHORT).show();
+                openActivityLogin();
             }else{
-                Toast.makeText(getApplicationContext(),"Login Failed...",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Validation Failed...",Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void openActivityMain()
+    private void openActivityLogin()
     {
-        Intent intent = new Intent(this, ActivityMain.class);
-        startActivity(intent);
-    }
-
-    private void openActivityRegister()
-    {
-        Intent intent = new Intent(this, ActivityRegister.class);
+        Intent intent = new Intent(this, ActivityLogin.class);
         startActivity(intent);
     }
 
     private boolean validate() {
         String usernameInput = etUsername.getText().toString();
         String passwordInput = etPassword.getText().toString();
+        String confirmPasswordInput = etConfirmPassword.getText().toString();
 
         if (USERNAME_PATTERN.matcher(usernameInput).matches() || usernameInput.contains(" ")) {
-            etUsername.setError("Wrong Username or Email");
+            etUsername.setError("Username must be 3–99 characters long without spaces");
             return false;
         } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches() || passwordInput.contains(" ")) {
-            etPassword.setError("Wrong Password");
+            etPassword.setError("Password must be 8–99 characters long and must have at least 1 digit, 1 upper case letter and 1 special character without spaces");
             return false;
-        }  else {
+        } else if (!confirmPasswordInput.equals(passwordInput)) {
+            etConfirmPassword.setError("Passwords do not match");
+            return false;
+        } else {
             etPassword.setError(null);
             return true;
         }
@@ -88,7 +95,6 @@ public class ActivityLogin extends AppCompatActivity
             backgroundMusic = Sound.searchByResid(R.raw.beep);
             buttonSound = Sound.searchByResid(R.raw.pop);
             audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
-            //audioService.stop(backgroundMusic);
         }
 
         @Override
@@ -115,5 +121,4 @@ public class ActivityLogin extends AppCompatActivity
             isBound = false;
         }
     }
-
 }

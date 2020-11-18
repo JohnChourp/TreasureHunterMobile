@@ -1,4 +1,4 @@
-package org.codegrinders.tresure_hunter_mobile;
+package org.codegrinders.treasure_hunter_mobile;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("org.codegrinders.tresure_hunter_mobile", appContext.getPackageName());
+        assertEquals("org.codegrinders.treasure_hunter_mobile", appContext.getPackageName());
     }
 }
