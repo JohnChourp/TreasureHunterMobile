@@ -88,7 +88,6 @@ public class ActivityLogin extends AppCompatActivity
             backgroundMusic = Sound.searchByResid(R.raw.beep);
             buttonSound = Sound.searchByResid(R.raw.pop);
             audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
-            //audioService.stop(backgroundMusic);
         }
 
         @Override

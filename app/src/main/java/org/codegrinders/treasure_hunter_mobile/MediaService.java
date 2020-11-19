@@ -55,6 +55,7 @@ public class MediaService extends Service {
         if(data.type.equals("sound")){
             volume(index, Sound.soundVol); //ενημέρωση volume.
         }
+
         if(data.allowPlaying){
             data.player.seekTo(pos);
             data.player.start();
@@ -90,6 +91,14 @@ public class MediaService extends Service {
             data.player.setVolume(fvol,fvol);
         }else{
             data.player.setVolume(0,0);
+            vol = 0;
+        }
+        if(vol != Sound.musicVol || vol != Sound.soundVol){
+            if(data.type.equals("music")){
+                Sound.musicVol = vol;
+            }else{
+                Sound.soundVol = vol;
+            }
         }
     }
 

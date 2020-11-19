@@ -37,7 +37,7 @@ public class ActivityMain extends AppCompatActivity
 
             backgroundMusic = Sound.searchByResid(R.raw.beep);
             buttonSound = Sound.searchByResid(R.raw.pop);
-            audioService.stop(backgroundMusic);
+            audioService.stop(backgroundMusic);//Επαναφορά ήχου στην αρχή και παύση.
         }
 
         @Override

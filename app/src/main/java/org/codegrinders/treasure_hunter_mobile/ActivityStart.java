@@ -65,12 +65,15 @@ public class ActivityStart extends AppCompatActivity
                 //Τα παρακάτω πρέπει να γίνουν μόνο εδώ και σε κανένα άλο activity.
                 backgroundMusic = Sound.add(R.raw.beep,"music");//Πρώτα προσθέτουμε τους ήχους.
                 buttonSound = Sound.add(R.raw.pop, "sound");
-                audioService.init(backgroundMusic, 60, true);//Μετά τους αρχικοποιούμε.
-                audioService.init(buttonSound, 100, false);
+                audioService.init(backgroundMusic, Sound.musicVol, true);//Μετά τους αρχικοποιούμε.
+                audioService.init(buttonSound, Sound.soundVol, false);
                 Sound.firstInit =false;//Τέλος setάρουμε το firstInit σε false για να μήν προστεθούν και αρχικοποιηθούν ξανά.
+            }else{
+                backgroundMusic = Sound.searchByResid(R.raw.beep);//αν έχουν ήδη προστεθεί οι ήχοι τότε απλά ψάξε τους.
+                buttonSound = Sound.searchByResid(R.raw.pop);
             }
                 audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);//Αναπαραγωγή ήχου.
-                //audioService.stop(backgroundMusic); //Επαναφορά ήχου στην αρχή και παύση.
+                audioService.volume(buttonSound, 100);
         }
 
         @Override
