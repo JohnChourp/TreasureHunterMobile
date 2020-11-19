@@ -35,7 +35,7 @@ public class ActivityMain extends AppCompatActivity
             audioService = binder.getService();
             isBound = true;
 
-            backgroundMusic = Sound.searchByResid(R.raw.beep);
+            backgroundMusic = Sound.searchByResid(R.raw.wanabe_epic_music);
             buttonSound = Sound.searchByResid(R.raw.pop);
             audioService.stop(backgroundMusic);//Επαναφορά ήχου στην αρχή και παύση.
         }

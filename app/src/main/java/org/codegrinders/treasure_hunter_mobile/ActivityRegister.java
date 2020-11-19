@@ -92,7 +92,7 @@ public class ActivityRegister extends AppCompatActivity
             audioService = binder.getService();
             isBound = true;
 
-            backgroundMusic = Sound.searchByResid(R.raw.beep);
+            backgroundMusic = Sound.searchByResid(R.raw.wanabe_epic_music);
             buttonSound = Sound.searchByResid(R.raw.pop);
             audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
         }

@@ -63,17 +63,16 @@ public class ActivityStart extends AppCompatActivity
             isBound = true;
             if(Sound.firstInit){
                 //Τα παρακάτω πρέπει να γίνουν μόνο εδώ και σε κανένα άλο activity.
-                backgroundMusic = Sound.add(R.raw.beep,"music");//Πρώτα προσθέτουμε τους ήχους.
+                backgroundMusic = Sound.add(R.raw.wanabe_epic_music,"music");//Πρώτα προσθέτουμε τους ήχους.
                 buttonSound = Sound.add(R.raw.pop, "sound");
                 audioService.init(backgroundMusic, Sound.musicVol, true);//Μετά τους αρχικοποιούμε.
                 audioService.init(buttonSound, Sound.soundVol, false);
                 Sound.firstInit =false;//Τέλος setάρουμε το firstInit σε false για να μήν προστεθούν και αρχικοποιηθούν ξανά.
             }else{
-                backgroundMusic = Sound.searchByResid(R.raw.beep);//αν έχουν ήδη προστεθεί οι ήχοι τότε απλά ψάξε τους.
+                backgroundMusic = Sound.searchByResid(R.raw.wanabe_epic_music);//αν έχουν ήδη προστεθεί οι ήχοι τότε απλά ψάξε τους.
                 buttonSound = Sound.searchByResid(R.raw.pop);
             }
                 audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);//Αναπαραγωγή ήχου.
-                audioService.volume(buttonSound, 100);
         }
 
         @Override
