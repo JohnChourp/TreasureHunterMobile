@@ -8,13 +8,13 @@ import java.util.ArrayList;
 
 public class Sound {
     static ArrayList<AudioData> audioList = new ArrayList<>();
-    static int musicVol = 50;
-    static int soundVol = 100;
+    static int musicVol = 60;
+    static int soundVol = 60;
     static int entryCount = 0;
     static boolean firstInit = true;
 
-    public static int add(int resource, int volume, String type){
-        audioList.add(new AudioData(resource, volume, type));
+    public static int add(int resource, String type){
+        audioList.add(new AudioData(resource, type));
         entryCount++;
         return entryCount-1;
     }

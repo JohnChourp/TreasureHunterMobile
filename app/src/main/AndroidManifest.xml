@@ -10,15 +10,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tresure_Hunter_Mobile">
+        <activity android:name=".ActivitySettings"></activity>
+
         <service
-            android:name="org.codegrinders.treasure_hunter_mobile.MediaService"
+            android:name=".MediaService"
             android:enabled="true"
             android:exported="false" />
 
         <activity android:name=".ActivityMain" />
-        <activity android:name="org.codegrinders.treasure_hunter_mobile.ActivityLogin" />
-        <activity android:name="org.codegrinders.treasure_hunter_mobile.ActivityRegister" />
-        <activity android:name="org.codegrinders.treasure_hunter_mobile.ActivityStart">
+        <activity android:name=".ActivityLogin" />
+        <activity android:name=".ActivityRegister" />
+        <activity android:name=".ActivityStart">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

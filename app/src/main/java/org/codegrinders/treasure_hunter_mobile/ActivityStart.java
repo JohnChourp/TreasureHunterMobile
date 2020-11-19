@@ -16,6 +16,7 @@ public class ActivityStart extends AppCompatActivity
     boolean isBound =false;
     Intent intent;
     Button bt_play;
+    Button bt_settings;
 
     int backgroundMusic;
     int buttonSound;
@@ -27,17 +28,30 @@ public class ActivityStart extends AppCompatActivity
         setContentView(R.layout.activity_start);
 
         bt_play = findViewById(R.id.bt_play);
+        bt_settings = findViewById(R.id.bt_settings);
 
         bt_play.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
             openActivityLogin();
         });
+
+        bt_settings.setOnClickListener(v -> {
+            audioService.play(buttonSound,0);
+            openActivitySettings();
+        });
+
     }
 
 
     private void openActivityLogin()
     {
         Intent intent = new Intent(this, ActivityLogin.class);
+        startActivity(intent);
+    }
+
+    private void openActivitySettings()
+    {
+        Intent intent = new Intent(this, ActivitySettings.class);
         startActivity(intent);
     }
 
@@ -49,14 +63,16 @@ public class ActivityStart extends AppCompatActivity
             isBound = true;
             if(Sound.firstInit){
                 //Τα παρακάτω πρέπει να γίνουν μόνο εδώ και σε κανένα άλο activity.
-                backgroundMusic = Sound.add(R.raw.beep, 50,"music");//Πρώτα προσθέτουμε τους ήχους.
-                buttonSound = Sound.add(R.raw.pop, 100, "sound");
-                audioService.init(backgroundMusic, 50, true);//Μετά τους αρχικοποιούμε.
-                audioService.init(buttonSound, 100, false);
+                backgroundMusic = Sound.add(R.raw.wanabe_epic_music,"music");//Πρώτα προσθέτουμε τους ήχους.
+                buttonSound = Sound.add(R.raw.pop, "sound");
+                audioService.init(backgroundMusic, Sound.musicVol, true);//Μετά τους αρχικοποιούμε.
+                audioService.init(buttonSound, Sound.soundVol, false);
                 Sound.firstInit =false;//Τέλος setάρουμε το firstInit σε false για να μήν προστεθούν και αρχικοποιηθούν ξανά.
+            }else{
+                backgroundMusic = Sound.searchByResid(R.raw.wanabe_epic_music);//αν έχουν ήδη προστεθεί οι ήχοι τότε απλά ψάξε τους.
+                buttonSound = Sound.searchByResid(R.raw.pop);
             }
                 audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);//Αναπαραγωγή ήχου.
-                //audioService.stop(backgroundMusic); //Επαναφορά ήχου στην αρχή και παύση.
         }
 
         @Override
