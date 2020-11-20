@@ -8,12 +8,14 @@ import android.widget.Button;
 
 public class ActivityPuzzles extends AppCompatActivity {
 
-    Button bt_puzzles;
+    Button bt_continue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzles);
+
+        bt_continue = findViewById(R.id.bt_continue);
     }
 
 

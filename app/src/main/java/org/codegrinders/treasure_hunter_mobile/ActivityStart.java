@@ -31,7 +31,7 @@ public class ActivityStart extends AppCompatActivity
         bt_play = findViewById(R.id.bt_play);
         bt_settings = findViewById(R.id.bt_settings);
 
-        bt_puzzles = findViewById(R.id.bt_puzzles);
+        bt_puzzles = findViewById(R.id.bt_continue);
 
         bt_puzzles.setOnClickListener(v -> openActivityPuzzles());
 
