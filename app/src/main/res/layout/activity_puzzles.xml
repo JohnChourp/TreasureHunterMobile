@@ -52,7 +52,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/plain_text_answer"
+        android:id="@+id/et_answer"
         android:layout_width="383dp"
         android:layout_height="59dp"
         android:layout_marginStart="16dp"
