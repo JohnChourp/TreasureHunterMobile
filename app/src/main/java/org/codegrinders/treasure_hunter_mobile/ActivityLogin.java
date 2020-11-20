@@ -17,11 +17,10 @@ public class ActivityLogin extends AppCompatActivity
     Button bt_login;
     TextView tv_register;
     EditText etUsername,etPassword;
-
     MediaService audioService;
-    boolean isBound =false;
-    Intent intent;
 
+    Intent intent;
+    boolean isBound =false;
     int backgroundMusic;
     int buttonSound;
 
@@ -114,5 +113,4 @@ public class ActivityLogin extends AppCompatActivity
             isBound = false;
         }
     }
-
 }

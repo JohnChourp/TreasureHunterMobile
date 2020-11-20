@@ -1,15 +1,13 @@
 package org.codegrinders.treasure_hunter_mobile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,8 +19,8 @@ public class ActivityPuzzles extends AppCompatActivity {
     Button bt_continue;
     TextView tv_question;
     EditText et_answer;
-
-    String answer;
+    List<Puzzles> puzzles;
+    int questionNumber = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +30,6 @@ public class ActivityPuzzles extends AppCompatActivity {
         bt_continue = findViewById(R.id.bt_continue);
         tv_question = findViewById(R.id.tv_question);
         et_answer = findViewById(R.id.et_answer);
-
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8080/")
@@ -50,9 +47,8 @@ public class ActivityPuzzles extends AppCompatActivity {
                     tv_question.setText("code: " + response.code());
                     return;
                 }
-                List<Puzzles> puzzles = response.body();
-                answer = puzzles.get(0).getAnswer();
-                tv_question.setText(puzzles.get(0).getQuestion());
+                puzzles = response.body();
+                tv_question.setText(puzzles.get(questionNumber).getQuestion());
             }
 
             @Override
@@ -60,17 +56,30 @@ public class ActivityPuzzles extends AppCompatActivity {
                 tv_question.setText(t.getMessage());
             }
         });
-
         bt_continue.setOnClickListener(v -> {
-            //Toast.makeText(this, "res= "+answer, Toast.LENGTH_LONG).show();
-            if(et_answer.getText().toString().equals(answer)){
+
+            if(et_answer.getText().toString().equals(puzzles.get(questionNumber).getAnswer()))
+            {
                 Toast.makeText(this, "!!! CORRECT !!!", Toast.LENGTH_LONG).show();
-            }else{
+                questionNumber +=1;
+
+                if(questionNumber < puzzles.size()){
+                    tv_question.setText(puzzles.get(questionNumber).getQuestion());
+                }else{
+                    questionNumber = 0;
+                    openActivityStart();
+                }
+            }
+            else{
                 Toast.makeText(this, "WRONG ANSWER :(", Toast.LENGTH_LONG).show();
             }
         });
 
     }
-
+    private void openActivityStart()
+    {
+        Intent intent = new Intent(this, ActivityStart.class);
+        startActivity(intent);
+    }
 
 }

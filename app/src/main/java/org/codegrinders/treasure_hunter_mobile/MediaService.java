@@ -31,12 +31,6 @@ public class MediaService extends Service {
         }
     }
 
-    //Παίζει να μη χρειάζεται αλά το αφήνω σαν σχόλιο.
-    /*@Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return Service.START_NOT_STICKY;
-    }*/
-
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
@@ -53,7 +47,7 @@ public class MediaService extends Service {
     public void play(int index, int pos){
         AudioData data = Sound.get(index);
         if(data.type.equals("sound")){
-            volume(index, Sound.soundVol); //ενημέρωση volume.
+            volume(index, Sound.soundVol);
         }
 
         if(data.allowPlaying){
@@ -104,6 +98,7 @@ public class MediaService extends Service {
 
     public void setAllmusicVol(int volume){
         int i;
+
         for (i=0;i<Sound.entryCount;i++){
             if(Sound.get(i).type.equals("music")){
                 volume(i, volume);

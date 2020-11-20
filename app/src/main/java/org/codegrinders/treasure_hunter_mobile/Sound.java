@@ -2,8 +2,6 @@ package org.codegrinders.treasure_hunter_mobile;
 
 import java.util.ArrayList;
 
-
-
 public class Sound {
     static ArrayList<AudioData> audioList = new ArrayList<>();
     static int musicVol = 60;

@@ -13,9 +13,9 @@ public class ActivityMain extends AppCompatActivity
 {
 
     MediaService audioService;
-    boolean isBound =false;
     Intent intent;
 
+    boolean isBound =false;
     int backgroundMusic;
     int buttonSound;
 
@@ -26,8 +26,6 @@ public class ActivityMain extends AppCompatActivity
         setContentView(R.layout.activity_main);
     }
 
-
-
     ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -37,7 +35,7 @@ public class ActivityMain extends AppCompatActivity
 
             backgroundMusic = Sound.searchByResid(R.raw.wanabe_epic_music);
             buttonSound = Sound.searchByResid(R.raw.pop);
-            audioService.stop(backgroundMusic);//Επαναφορά ήχου στην αρχή και παύση.
+            audioService.stop(backgroundMusic);
         }
 
         @Override
@@ -49,7 +47,6 @@ public class ActivityMain extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        // Bind to LocalService
         intent = new Intent(this, MediaService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
@@ -57,7 +54,7 @@ public class ActivityMain extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-        // Unbind from the service
+
         if (isBound) {
             unbindService(serviceConnection);
             isBound = false;

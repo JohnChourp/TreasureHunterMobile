@@ -30,11 +30,8 @@ public class ActivityStart extends AppCompatActivity
 
         bt_play = findViewById(R.id.bt_play);
         bt_settings = findViewById(R.id.bt_settings);
-
         bt_puzzles = findViewById(R.id.bt_continue);
-
         bt_puzzles.setOnClickListener(v -> openActivityPuzzles());
-
 
         bt_play.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
@@ -67,6 +64,7 @@ public class ActivityStart extends AppCompatActivity
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
             isBound = true;
+
             if(Sound.firstInit){
 
                 backgroundMusic = Sound.add(R.raw.wanabe_epic_music,"music");
@@ -91,7 +89,6 @@ public class ActivityStart extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-
         intent = new Intent(this, MediaService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
