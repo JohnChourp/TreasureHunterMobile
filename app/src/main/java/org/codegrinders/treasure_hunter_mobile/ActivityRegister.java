@@ -23,11 +23,10 @@ public class ActivityRegister extends AppCompatActivity
     EditText etUsername,etEmail,etPassword,etConfirmPassword;
     Button bt_submit;
     AwesomeValidation emailValidation;
-
     MediaService audioService;
-    boolean isBound =false;
-    Intent intent;
 
+    Intent intent;
+    boolean isBound =false;
     int backgroundMusic;
     int buttonSound;
 
@@ -107,7 +106,6 @@ public class ActivityRegister extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        // Bind to LocalService
         intent = new Intent(this, MediaService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
@@ -115,7 +113,7 @@ public class ActivityRegister extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-        // Unbind from the service
+
         if (isBound) {
             unbindService(serviceConnection);
             isBound = false;

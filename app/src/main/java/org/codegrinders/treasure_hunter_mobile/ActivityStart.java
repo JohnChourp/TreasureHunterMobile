@@ -13,13 +13,14 @@ import androidx.appcompat.app.AppCompatActivity;
 public class ActivityStart extends AppCompatActivity
 {
     MediaService audioService;
-    boolean isBound =false;
     Intent intent;
     Button bt_play;
     Button bt_settings;
+    Button bt_puzzles;
 
     int backgroundMusic;
     int buttonSound;
+    boolean isBound =false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,6 +30,8 @@ public class ActivityStart extends AppCompatActivity
 
         bt_play = findViewById(R.id.bt_play);
         bt_settings = findViewById(R.id.bt_settings);
+        bt_puzzles = findViewById(R.id.bt_continue);
+        bt_puzzles.setOnClickListener(v -> openActivityPuzzles());
 
         bt_play.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
@@ -61,18 +64,19 @@ public class ActivityStart extends AppCompatActivity
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
             isBound = true;
+
             if(Sound.firstInit){
-                //Τα παρακάτω πρέπει να γίνουν μόνο εδώ και σε κανένα άλο activity.
-                backgroundMusic = Sound.add(R.raw.wanabe_epic_music,"music");//Πρώτα προσθέτουμε τους ήχους.
+
+                backgroundMusic = Sound.add(R.raw.wanabe_epic_music,"music");
                 buttonSound = Sound.add(R.raw.pop, "sound");
-                audioService.init(backgroundMusic, Sound.musicVol, true);//Μετά τους αρχικοποιούμε.
+                audioService.init(backgroundMusic, Sound.musicVol, true);
                 audioService.init(buttonSound, Sound.soundVol, false);
-                Sound.firstInit =false;//Τέλος setάρουμε το firstInit σε false για να μήν προστεθούν και αρχικοποιηθούν ξανά.
+                Sound.firstInit =false;
             }else{
-                backgroundMusic = Sound.searchByResid(R.raw.wanabe_epic_music);//αν έχουν ήδη προστεθεί οι ήχοι τότε απλά ψάξε τους.
+                backgroundMusic = Sound.searchByResid(R.raw.wanabe_epic_music);
                 buttonSound = Sound.searchByResid(R.raw.pop);
             }
-                audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);//Αναπαραγωγή ήχου.
+                audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
         }
 
         @Override
@@ -85,7 +89,6 @@ public class ActivityStart extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        // Bind to LocalService
         intent = new Intent(this, MediaService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
@@ -93,11 +96,16 @@ public class ActivityStart extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-        // Unbind from the service
+
         if (isBound) {
             unbindService(serviceConnection);
             isBound = false;
         }
     }
 
+    private void openActivityPuzzles()
+    {
+        Intent intent = new Intent(this, ActivityPuzzles.class);
+        startActivity(intent);
+    }
 }

@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.codegrinders.treasure_hunter_mobile">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:usesCleartextTraffic="true"
+
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Tresure_Hunter_Mobile">
-        <activity android:name=".ActivitySettings"></activity>
+        <activity android:name=".ActivityPuzzles" />
+        <activity android:name=".ActivitySettings" />
 
         <service
             android:name=".MediaService"

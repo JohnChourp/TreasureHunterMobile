@@ -47,8 +47,6 @@ public class ActivitySettings extends AppCompatActivity {
         musicVolSlider.setProgress(Sound.musicVol);
         soundVolSlider.setProgress(Sound.soundVol);
 
-
-
         muteMusic.setOnClickListener(v -> {
             if(musicIsMuted){
                 muteMusic.setImageResource(R.drawable.unmuted);
@@ -60,8 +58,6 @@ public class ActivitySettings extends AppCompatActivity {
                 musicIsMuted = true;
             }
         });
-
-
 
         muteSounds.setOnClickListener(v -> {
             if(soundsAreMuted){
@@ -75,15 +71,13 @@ public class ActivitySettings extends AppCompatActivity {
             }
         });
 
-
-
         musicVolSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 Sound.musicVol = progress;
                 musicIsMuted = (progress==0);
                 displayMuteUnmute(musicIsMuted, muteMusic);
-                audioService.setAllmusicVol(progress); //δυναμική αλαγή volume όσο παίζει, ενώ οι ήχοι ενημερώνωνται στην play.
+                audioService.setAllmusicVol(progress);
             }
 
             @Override
@@ -148,7 +142,6 @@ public class ActivitySettings extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Bind to LocalService
         intent = new Intent(this, MediaService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
@@ -156,7 +149,7 @@ public class ActivitySettings extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        // Unbind from the service
+
         if (isBound) {
             unbindService(serviceConnection);
             isBound = false;
