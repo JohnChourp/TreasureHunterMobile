@@ -31,11 +31,7 @@ public class ActivityPuzzles extends AppCompatActivity {
         tv_question = findViewById(R.id.tv_question);
         et_answer = findViewById(R.id.et_answer);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        APIService apiService = retrofit.create(APIService.class);
+        APIService apiService = RetroInstance.get();
 
         Call<List<Users>> callUsers = apiService.getUsers();
         Call<List<Puzzles>> callPuzzles = apiService.getPuzzles();
@@ -61,6 +57,7 @@ public class ActivityPuzzles extends AppCompatActivity {
             if(et_answer.getText().toString().equals(puzzles.get(questionNumber).getAnswer()))
             {
                 Toast.makeText(this, "!!! CORRECT !!!", Toast.LENGTH_LONG).show();
+                et_answer.setText("");
                 questionNumber +=1;
 
                 if(questionNumber < puzzles.size()){
