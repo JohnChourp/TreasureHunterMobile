@@ -73,6 +73,7 @@ public class ActivityPuzzles extends AppCompatActivity {
     }
     private void openActivityStart()
     {
+
         Intent intent = new Intent(this, ActivityStart.class);
         startActivity(intent);
     }
