@@ -24,6 +24,7 @@
 
         <activity android:name=".ActivityMain" />
         <activity android:name=".ActivityLogin" />
+        <activity android:name=".ActivityLeaderBoard" />
         <activity android:name=".ActivityRegister" />
         <activity android:name=".ActivityStart">
             <intent-filter>
