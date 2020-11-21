@@ -14,6 +14,7 @@ import retrofit2.Response;
 
 public class ActivityPuzzles extends AppCompatActivity {
 
+    Button bt_leaderboard;
     Button bt_continue;
     TextView tv_question;
     EditText et_answer;
@@ -25,9 +26,11 @@ public class ActivityPuzzles extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzles);
 
+        bt_leaderboard = findViewById(R.id.bt_leaderboard);
         bt_continue = findViewById(R.id.bt_continue);
         tv_question = findViewById(R.id.tv_question);
         et_answer = findViewById(R.id.et_answer);
+        bt_leaderboard.setOnClickListener(v -> openActivityLeaderboard());
 
         APIService apiService = RetroInstance.get();
 
@@ -71,6 +74,12 @@ public class ActivityPuzzles extends AppCompatActivity {
         });
 
     }
+
+    private void openActivityLeaderboard() {
+        Intent intent = new Intent(this, ActivityLeaderBoard.class);
+        startActivity(intent);
+    }
+
     private void openActivityStart()
     {
 
