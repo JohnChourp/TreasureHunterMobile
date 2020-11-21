@@ -26,4 +26,5 @@
     <string name="puzzles">puzzles</string>
     <string name="bt_continue">continue</string>
     <string name="answer">Answer</string>
+    <string name="leaderboard">LEADERBOARD</string>
 </resources>
