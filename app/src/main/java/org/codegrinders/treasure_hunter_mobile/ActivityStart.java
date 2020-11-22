@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -45,6 +46,7 @@ public class ActivityStart extends AppCompatActivity
             openActivitySettings();
         });
 
+
     }
 
 
@@ -78,12 +80,13 @@ public class ActivityStart extends AppCompatActivity
             audioService = binder.getService();
             isBound = true;
 
-            if(Sound.firstInit){
+            Settings.init(getApplicationContext());
 
+            if(Sound.firstInit){
                 backgroundMusic = Sound.add(R.raw.wanabe_epic_music,"music");
                 buttonSound = Sound.add(R.raw.pop, "sound");
-                audioService.init(backgroundMusic, Sound.musicVol, true);
-                audioService.init(buttonSound, Sound.soundVol, false);
+                audioService.init(backgroundMusic, Settings.musicVol, true);
+                audioService.init(buttonSound, Settings.soundVol, false);
                 Sound.firstInit =false;
             }else{
                 backgroundMusic = Sound.searchByResid(R.raw.wanabe_epic_music);
