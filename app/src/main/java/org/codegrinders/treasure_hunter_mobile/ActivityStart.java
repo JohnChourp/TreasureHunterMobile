@@ -33,14 +33,13 @@ public class ActivityStart extends AppCompatActivity
         bt_settings = findViewById(R.id.bt_settings);
         bt_puzzles = findViewById(R.id.bt_continue);
         bt_leaderboard = findViewById(R.id.bt_leaderboard);
+
         bt_puzzles.setOnClickListener(v -> openActivityPuzzles());
         bt_leaderboard.setOnClickListener(v -> openActivityLeaderboard());
-
         bt_play.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
             openActivityLogin();
         });
-
         bt_settings.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
             openActivitySettings();
@@ -48,15 +47,21 @@ public class ActivityStart extends AppCompatActivity
 
     }
 
+
+    private void openActivityLogin()
+    {
+        Intent intent = new Intent(this, ActivityLogin.class);
+        startActivity(intent);
+    }
+
     private void openActivityLeaderboard() {
         Intent intent = new Intent(this, ActivityLeaderBoard.class);
         startActivity(intent);
     }
 
-
-    private void openActivityLogin()
+    private void openActivityPuzzles()
     {
-        Intent intent = new Intent(this, ActivityLogin.class);
+        Intent intent = new Intent(this, ActivityPuzzles.class);
         startActivity(intent);
     }
 
@@ -111,9 +116,4 @@ public class ActivityStart extends AppCompatActivity
         }
     }
 
-    private void openActivityPuzzles()
-    {
-        Intent intent = new Intent(this, ActivityPuzzles.class);
-        startActivity(intent);
-    }
 }

@@ -27,4 +27,7 @@
     <string name="bt_continue">continue</string>
     <string name="answer">Answer</string>
     <string name="leaderboard">LEADERBOARD</string>
+    <string name="tv_points">tv_points</string>
+    <string name="tv_username">tv_username</string>
+    <string name="puzzleLeaderBoard">LEADERBOARD</string>
 </resources>
