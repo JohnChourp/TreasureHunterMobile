@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Tresure_Hunter_Mobile">
+        android:theme="@style/Theme.Treasure_Hunter_Mobile">
         <activity android:name=".ActivityPuzzles" />
         <activity android:name=".ActivitySettings" />
 

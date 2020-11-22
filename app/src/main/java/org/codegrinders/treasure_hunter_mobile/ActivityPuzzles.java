@@ -39,9 +39,24 @@ public class ActivityPuzzles extends AppCompatActivity {
         APIService apiService = RetroInstance.get();
 
         Call<List<Users>> callUsers = apiService.getUsers();
+
+        callUsers.enqueue(new Callback<List<Users>>() {
+            @Override
+            public void onResponse(Call<List<Users>> call, Response<List<Users>> response) {
+                List<Users> usernameList = response.body();
+                assert usernameList != null;
+                tv_username.setText(usernameList.get(0).getUsername());
+                tv_points.setText(String.valueOf(usernameList.get(0).getPoints()));
+            }
+
+            @Override
+            public void onFailure(Call<List<Users>> call, Throwable t) {
+
+            }
+        });
+
+
         Call<List<Puzzles>> callPuzzles = apiService.getPuzzles();
-
-
 
         callPuzzles.enqueue(new Callback<List<Puzzles>>() {
             @Override
@@ -76,21 +91,6 @@ public class ActivityPuzzles extends AppCompatActivity {
             }
             else{
                 Toast.makeText(this, "WRONG ANSWER :(", Toast.LENGTH_LONG).show();
-            }
-        });
-
-        callUsers.enqueue(new Callback<List<Users>>() {
-            @Override
-            public void onResponse(Call<List<Users>> call, Response<List<Users>> response) {
-                List<Users> usernameList = response.body();
-                assert usernameList != null;
-                tv_username.setText(usernameList.get(0).getUsername());
-                tv_points.setText(usernameList.get(0).getPoints());
-            }
-
-            @Override
-            public void onFailure(Call<List<Users>> call, Throwable t) {
-
             }
         });
 
