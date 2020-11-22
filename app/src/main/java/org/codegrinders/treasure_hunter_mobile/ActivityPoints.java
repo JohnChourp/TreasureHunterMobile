@@ -24,6 +24,9 @@ public class ActivityPoints extends AppCompatActivity {
         tv_username = findViewById(R.id.tv_username);
         tv_points = findViewById(R.id.tv_points);
 
+        tv_username.setText("Null");
+        tv_points.setText("100");
+
         APIService apiService = RetroInstance.get();
         Call<List<Users>> callUsers = apiService.getUsers();
 
@@ -40,27 +43,5 @@ public class ActivityPoints extends AppCompatActivity {
 
             }
         });
-
-
-
-
-//        Call<userPoints> usersCall = apiService.getUserPoints();
-//
-//        usersCall.enqueue(new Callback<userPoints>() {
-//            @Override
-//            public void onResponse(Call<userPoints> call, Response<userPoints> response) {
-//                String username = response.body().getUsername();
-//                int points = response.body().getPoints();
-//                tv_username.setText(username);
-//                tv_points.setText(points);
-//            }
-//
-//            @Override
-//            public void onFailure(Call<userPoints> call, Throwable t) {
-//                tv_username.setText("Null");
-//                tv_points.setText("1000");
-//
-//            }
-//        });
     }
 }

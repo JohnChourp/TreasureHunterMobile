@@ -17,6 +17,8 @@ public class ActivityPuzzles extends AppCompatActivity {
     Button bt_leaderboard;
     Button bt_continue;
     TextView tv_question;
+    TextView tv_username;
+    TextView tv_points;
     EditText et_answer;
     List<Puzzles> puzzles;
     int questionNumber = 0;
@@ -29,6 +31,8 @@ public class ActivityPuzzles extends AppCompatActivity {
         bt_leaderboard = findViewById(R.id.bt_leaderboard);
         bt_continue = findViewById(R.id.bt_continue);
         tv_question = findViewById(R.id.tv_question);
+        tv_username = findViewById(R.id.tv_username);
+        tv_points = findViewById(R.id.tv_points);
         et_answer = findViewById(R.id.et_answer);
         bt_leaderboard.setOnClickListener(v -> openActivityLeaderboard());
 
@@ -36,6 +40,8 @@ public class ActivityPuzzles extends AppCompatActivity {
 
         Call<List<Users>> callUsers = apiService.getUsers();
         Call<List<Puzzles>> callPuzzles = apiService.getPuzzles();
+
+
 
         callPuzzles.enqueue(new Callback<List<Puzzles>>() {
             @Override
@@ -70,6 +76,21 @@ public class ActivityPuzzles extends AppCompatActivity {
             }
             else{
                 Toast.makeText(this, "WRONG ANSWER :(", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        callUsers.enqueue(new Callback<List<Users>>() {
+            @Override
+            public void onResponse(Call<List<Users>> call, Response<List<Users>> response) {
+                List<Users> usernameList = response.body();
+                assert usernameList != null;
+                tv_username.setText(usernameList.get(0).getUsername());
+                tv_points.setText(usernameList.get(0).getPoints());
+            }
+
+            @Override
+            public void onFailure(Call<List<Users>> call, Throwable t) {
+
             }
         });
 
