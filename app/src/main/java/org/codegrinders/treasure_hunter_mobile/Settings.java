@@ -11,14 +11,14 @@ import java.io.OutputStreamWriter;
 
 public class Settings {
     static String data = "";
-    static int musicVol = 60;
-    static int soundVol = 60;
+    static int musicVol;
+    static int soundVol;
 
 static void init(Context context){
     //read file
     try {
 
-        InputStream inputStream = context.openFileInput("test2.txt");
+        InputStream inputStream = context.openFileInput("settings.conf");
 
         if ( inputStream != null ) {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -63,7 +63,7 @@ static void init(Context context){
 
     public static void writeToFile(String data, Context context) {
         try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("test2.txt", Context.MODE_PRIVATE));
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("settings.conf", Context.MODE_PRIVATE));
             outputStreamWriter.write(data);
             outputStreamWriter.close();
         }
