@@ -77,8 +77,8 @@ public class ActivityStart extends AppCompatActivity
 
                 backgroundMusic = Sound.add(R.raw.wanabe_epic_music,"music");
                 buttonSound = Sound.add(R.raw.pop, "sound");
-                audioService.init(backgroundMusic, Sound.musicVol, true);
-                audioService.init(buttonSound, Sound.soundVol, false);
+                audioService.init(backgroundMusic, Settings.musicVol, true);
+                audioService.init(buttonSound, Settings.soundVol, false);
                 Sound.firstInit =false;
             }else{
                 backgroundMusic = Sound.searchByResid(R.raw.wanabe_epic_music);
