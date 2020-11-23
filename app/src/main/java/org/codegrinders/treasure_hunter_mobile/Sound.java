@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 public class Sound {
     static ArrayList<AudioData> audioList = new ArrayList<>();
-    static int musicVol = 60;
-    static int soundVol = 60;
     static int entryCount = 0;
     static boolean firstInit = true;
 

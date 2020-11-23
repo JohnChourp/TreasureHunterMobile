@@ -47,7 +47,7 @@ public class MediaService extends Service {
     public void play(int index, int pos){
         AudioData data = Sound.get(index);
         if(data.type.equals("sound")){
-            volume(index, Sound.soundVol);
+            volume(index, Settings.soundVol);
         }
 
         if(data.allowPlaying){
@@ -87,11 +87,11 @@ public class MediaService extends Service {
             data.player.setVolume(0,0);
             vol = 0;
         }
-        if(vol != Sound.musicVol || vol != Sound.soundVol){
+        if(vol != Settings.musicVol || vol != Settings.soundVol){
             if(data.type.equals("music")){
-                Sound.musicVol = vol;
+                Settings.musicVol = vol;
             }else{
-                Sound.soundVol = vol;
+                Settings.soundVol = vol;
             }
         }
     }

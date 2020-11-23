@@ -29,4 +29,8 @@
     <string name="title_activity_maps">Map</string>
     <string name="bt_map" />
     <string name="map">MAP</string>
+    <string name="leaderboard">LEADERBOARD</string>
+    <string name="tv_points">tv_points</string>
+    <string name="tv_username">tv_username</string>
+    <string name="puzzleLeaderBoard">LEADERBOARD</string>
 </resources>

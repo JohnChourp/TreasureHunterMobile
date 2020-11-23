@@ -38,14 +38,14 @@ public class ActivitySettings extends AppCompatActivity {
         muteMusic = findViewById(R.id.bt_muteMusic);
         muteSounds = findViewById(R.id.bt_muteSounds);
 
-        musicIsMuted = (Sound.musicVol==0);
-        soundsAreMuted = (Sound.soundVol==0);
+        musicIsMuted = (Settings.musicVol==0);
+        soundsAreMuted = (Settings.soundVol==0);
 
         displayMuteUnmute(musicIsMuted, muteMusic);
         displayMuteUnmute(soundsAreMuted, muteSounds);
 
-        musicVolSlider.setProgress(Sound.musicVol);
-        soundVolSlider.setProgress(Sound.soundVol);
+        musicVolSlider.setProgress(Settings.musicVol);
+        soundVolSlider.setProgress(Settings.soundVol);
 
         muteMusic.setOnClickListener(v -> {
             if(musicIsMuted){
@@ -57,6 +57,8 @@ public class ActivitySettings extends AppCompatActivity {
                 musicVolSlider.setProgress(0);
                 musicIsMuted = true;
             }
+            Settings.setElement("musicVol",String.valueOf(Settings.musicVol));
+            Settings.writeToFile(Settings.data, getApplicationContext());
         });
 
         muteSounds.setOnClickListener(v -> {
@@ -69,12 +71,14 @@ public class ActivitySettings extends AppCompatActivity {
                 soundVolSlider.setProgress(0);
                 soundsAreMuted = true;
             }
+            Settings.setElement("soundVol",String.valueOf(Settings.soundVol));
+            Settings.writeToFile(Settings.data, getApplicationContext());
         });
 
         musicVolSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Sound.musicVol = progress;
+                Settings.musicVol = progress;
                 musicIsMuted = (progress==0);
                 displayMuteUnmute(musicIsMuted, muteMusic);
                 audioService.setAllmusicVol(progress);
@@ -87,7 +91,8 @@ public class ActivitySettings extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                Settings.setElement("musicVol",String.valueOf(Settings.musicVol));
+                Settings.writeToFile(Settings.data, getApplicationContext());
             }
         });
 
@@ -95,7 +100,7 @@ public class ActivitySettings extends AppCompatActivity {
         soundVolSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Sound.soundVol = progress;
+                Settings.soundVol = progress;
                 soundsAreMuted = (progress==0);
                 displayMuteUnmute(soundsAreMuted ,muteSounds);
             }
@@ -108,6 +113,8 @@ public class ActivitySettings extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 audioService.play(buttonSound, 0);
+                Settings.setElement("soundVol",String.valueOf(Settings.soundVol));
+                Settings.writeToFile(Settings.data, getApplicationContext());
             }
         });
 

@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +19,7 @@ public class ActivityStart extends AppCompatActivity
     Button bt_map;
     Button bt_settings;
     Button bt_puzzles;
+    Button bt_leaderboard;
 
     int backgroundMusic;
     int buttonSound;
@@ -34,6 +36,8 @@ public class ActivityStart extends AppCompatActivity
         bt_map = findViewById(R.id.bt_map);
         bt_settings = findViewById(R.id.bt_settings);
 
+        bt_puzzles.setOnClickListener(v -> openActivityPuzzles());
+        bt_leaderboard.setOnClickListener(v -> openActivityLeaderboard());
         bt_play.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
             openActivityLogin();
@@ -48,6 +52,7 @@ public class ActivityStart extends AppCompatActivity
             openActivitySettings();
         });
 
+
     }
 
 
@@ -56,6 +61,11 @@ public class ActivityStart extends AppCompatActivity
     private void openActivityLogin()
     {
         Intent intent = new Intent(this, ActivityLogin.class);
+        startActivity(intent);
+    }
+
+    private void openActivityLeaderboard() {
+        Intent intent = new Intent(this, ActivityLeaderBoard.class);
         startActivity(intent);
     }
 
@@ -81,12 +91,13 @@ public class ActivityStart extends AppCompatActivity
             audioService = binder.getService();
             isBound = true;
 
-            if(Sound.firstInit){
+            Settings.init(getApplicationContext());
 
+            if(Sound.firstInit){
                 backgroundMusic = Sound.add(R.raw.wanabe_epic_music,"music");
                 buttonSound = Sound.add(R.raw.pop, "sound");
-                audioService.init(backgroundMusic, Sound.musicVol, true);
-                audioService.init(buttonSound, Sound.soundVol, false);
+                audioService.init(backgroundMusic, Settings.musicVol, true);
+                audioService.init(buttonSound, Settings.soundVol, false);
                 Sound.firstInit =false;
             }else{
                 backgroundMusic = Sound.searchByResid(R.raw.wanabe_epic_music);
@@ -118,6 +129,5 @@ public class ActivityStart extends AppCompatActivity
             isBound = false;
         }
     }
-
 
 }
