@@ -1,6 +1,6 @@
 package org.codegrinders.treasure_hunter_mobile;
 
-public class Puzzles {
+public class Puzzle {
     private String id;
     private String question;
     private String answer;

@@ -23,11 +23,11 @@ public class ActivityLeaderBoard extends AppCompatActivity {
 
         APIService apiService = RetroInstance.get();
 
-        Call<List<Users>> callUsers = apiService.getUsers();
-        callUsers.enqueue(new Callback<List<Users>>() {
+        Call<List<User>> callUsers = apiService.getUsers();
+        callUsers.enqueue(new Callback<List<User>>() {
             @Override
-            public void onResponse(Call<List<Users>> call, Response<List<Users>> response) {
-                List<Users> pointsList = response.body();
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                List<User> pointsList = response.body();
                 String[] leaderBoard = new String[pointsList.size()];
                 for(int i=0; i<pointsList.size();i++){
                     leaderBoard[i] = pointsList.get(i).getUsername()
@@ -38,7 +38,7 @@ public class ActivityLeaderBoard extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Users>> call, Throwable t) {
+            public void onFailure(Call<List<User>> call, Throwable t) {
 
             }
         });

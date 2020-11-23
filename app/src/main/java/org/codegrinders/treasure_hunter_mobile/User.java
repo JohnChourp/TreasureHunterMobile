@@ -1,6 +1,6 @@
 package org.codegrinders.treasure_hunter_mobile;
 
-public class Users {
+public class User {
 
     private String id;
     private String email;

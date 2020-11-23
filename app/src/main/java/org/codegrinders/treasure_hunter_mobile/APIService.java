@@ -6,8 +6,8 @@ import retrofit2.http.GET;
 
 public interface APIService {
     @GET("user/all")
-    Call<List<Users>> getUsers();
+    Call<List<User>> getUsers();
 
     @GET("puzzle/all")
-    Call<List<Puzzles>> getPuzzles();
+    Call<List<Puzzle>> getPuzzles();
 }

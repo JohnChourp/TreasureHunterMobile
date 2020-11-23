@@ -7,7 +7,6 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,31 +31,26 @@ public class ActivityStart extends AppCompatActivity
         setContentView(R.layout.activity_start);
 
         bt_play = findViewById(R.id.bt_play);
-        bt_puzzles = findViewById(R.id.bt_continue);
+        bt_puzzles = findViewById(R.id.bt_puzzles);
         bt_map = findViewById(R.id.bt_map);
+        bt_leaderboard = findViewById(R.id.bt_leaderboard);
         bt_settings = findViewById(R.id.bt_settings);
 
-        bt_puzzles.setOnClickListener(v -> openActivityPuzzles());
-        bt_leaderboard.setOnClickListener(v -> openActivityLeaderboard());
+
         bt_play.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
             openActivityLogin();
         });
-
         bt_puzzles.setOnClickListener(v -> openActivityPuzzles());
-
         bt_map.setOnClickListener(v -> openActivityMap());
+        bt_leaderboard.setOnClickListener(v -> openActivityLeaderboard());
 
         bt_settings.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
             openActivitySettings();
         });
 
-
     }
-
-
-
 
     private void openActivityLogin()
     {
@@ -64,18 +58,19 @@ public class ActivityStart extends AppCompatActivity
         startActivity(intent);
     }
 
-    private void openActivityLeaderboard() {
-        Intent intent = new Intent(this, ActivityLeaderBoard.class);
+    private void openActivityPuzzles()
+    {
+        Intent intent = new Intent(this, ActivityPuzzle.class);
         startActivity(intent);
     }
 
-    private void openActivityPuzzles()
-    {
-        Intent intent = new Intent(this, ActivityPuzzles.class);
-        startActivity(intent);
-    }
     private void openActivityMap() {
         Intent intent = new Intent(this, ActivityMap.class);
+        startActivity(intent);
+    }
+
+    private void openActivityLeaderboard() {
+        Intent intent = new Intent(this, ActivityLeaderBoard.class);
         startActivity(intent);
     }
     private void openActivitySettings()

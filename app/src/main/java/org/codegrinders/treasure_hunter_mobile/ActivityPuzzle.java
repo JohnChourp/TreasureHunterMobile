@@ -12,7 +12,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ActivityPuzzles extends AppCompatActivity {
+public class ActivityPuzzle extends AppCompatActivity {
 
     Button bt_leaderboard;
     Button bt_continue;
@@ -20,16 +20,16 @@ public class ActivityPuzzles extends AppCompatActivity {
     TextView tv_username;
     TextView tv_points;
     EditText et_answer;
-    List<Puzzles> puzzles;
+    List<Puzzle> puzzles;
     int questionNumber = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_puzzles);
+        setContentView(R.layout.activity_puzzle);
 
         bt_leaderboard = findViewById(R.id.bt_leaderboard);
-        bt_continue = findViewById(R.id.bt_continue);
+        bt_continue = findViewById(R.id.bt_puzzles);
         tv_question = findViewById(R.id.tv_question);
         tv_username = findViewById(R.id.tv_username);
         tv_points = findViewById(R.id.tv_points);
@@ -38,29 +38,29 @@ public class ActivityPuzzles extends AppCompatActivity {
 
         APIService apiService = RetroInstance.get();
 
-        Call<List<Users>> callUsers = apiService.getUsers();
+        Call<List<User>> callUsers = apiService.getUsers();
 
-        callUsers.enqueue(new Callback<List<Users>>() {
+        callUsers.enqueue(new Callback<List<User>>() {
             @Override
-            public void onResponse(Call<List<Users>> call, Response<List<Users>> response) {
-                List<Users> usernameList = response.body();
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                List<User> usernameList = response.body();
                 assert usernameList != null;
                 tv_username.setText(usernameList.get(0).getUsername());
                 tv_points.setText(String.valueOf(usernameList.get(0).getPoints()));
             }
 
             @Override
-            public void onFailure(Call<List<Users>> call, Throwable t) {
+            public void onFailure(Call<List<User>> call, Throwable t) {
 
             }
         });
 
 
-        Call<List<Puzzles>> callPuzzles = apiService.getPuzzles();
+        Call<List<Puzzle>> callPuzzles = apiService.getPuzzles();
 
-        callPuzzles.enqueue(new Callback<List<Puzzles>>() {
+        callPuzzles.enqueue(new Callback<List<Puzzle>>() {
             @Override
-            public void onResponse(Call<List<Puzzles>> call, Response<List<Puzzles>> response) {
+            public void onResponse(Call<List<Puzzle>> call, Response<List<Puzzle>> response) {
                 if (!response.isSuccessful()) {
                     tv_question.setText("code: " + response.code());
                     return;
@@ -70,7 +70,7 @@ public class ActivityPuzzles extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Puzzles>> call, Throwable t) {
+            public void onFailure(Call<List<Puzzle>> call, Throwable t) {
                 tv_question.setText(t.getMessage());
             }
         });
