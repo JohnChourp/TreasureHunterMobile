@@ -30,4 +30,6 @@
     <string name="tv_points">tv_points</string>
     <string name="tv_username">tv_username</string>
     <string name="puzzleLeaderBoard">LEADERBOARD</string>
+    <string name="delete_your_account">Delete your account</string>
+    <string name="delete_account">Delete Account</string>
 </resources>

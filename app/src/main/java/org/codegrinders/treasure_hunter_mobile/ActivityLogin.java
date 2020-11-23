@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 public class ActivityLogin extends AppCompatActivity
 {
     Button bt_login;
-    TextView tv_register;
+    TextView tv_register,deleteAccount;
     EditText etUsername,etPassword;
     MediaService audioService;
 
@@ -36,8 +36,10 @@ public class ActivityLogin extends AppCompatActivity
         etPassword = findViewById(R.id.et_password);
         bt_login = findViewById(R.id.bt_login);
         tv_register = findViewById(R.id.tv_register);
+        deleteAccount = findViewById(R.id.deleteAccount);
 
         tv_register.setOnClickListener(v -> openActivityRegister());
+        deleteAccount.setOnClickListener(v -> openActivityRegister());
         bt_login.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
             if(validate()){
