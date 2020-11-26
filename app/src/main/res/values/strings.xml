@@ -33,4 +33,7 @@
     <string name="tv_points">tv_points</string>
     <string name="tv_username">tv_username</string>
     <string name="puzzleLeaderBoard">LEADERBOARD</string>
+    <string name="location_permission_denied" />
+    <string name="permission_required_toast" />
+    <string name="permission_rationale_location" />
 </resources>
