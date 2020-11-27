@@ -20,8 +20,6 @@ public class ActivityPuzzle extends AppCompatActivity {
     TextView tv_username;
     TextView tv_points;
     EditText et_answer;
-    List<Puzzle> puzzles;
-    int questionNumber = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +37,15 @@ public class ActivityPuzzle extends AppCompatActivity {
         APIService apiService = RetroInstance.get();
 
         Call<List<User>> callUsers = apiService.getUsers();
+        Call<List<Puzzle>> callPuzzles = apiService.getPuzzles();
 
         callUsers.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if (!response.isSuccessful()) {
+                    tv_question.setText("code: " + response.code());
+                    return;
+                }
                 List<User> usernameList = response.body();
                 assert usernameList != null;
                 tv_username.setText(usernameList.get(0).getUsername());
@@ -51,12 +54,9 @@ public class ActivityPuzzle extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-
+                tv_question.setText(t.getMessage());
             }
         });
-
-
-        Call<List<Puzzle>> callPuzzles = apiService.getPuzzles();
 
         callPuzzles.enqueue(new Callback<List<Puzzle>>() {
             @Override
@@ -65,8 +65,8 @@ public class ActivityPuzzle extends AppCompatActivity {
                     tv_question.setText("code: " + response.code());
                     return;
                 }
-                puzzles = response.body();
-                tv_question.setText(puzzles.get(questionNumber).getQuestion());
+                RetroInstance.puzzles = response.body();
+                tv_question.setText(RetroInstance.puzzles.get(RetroInstance.questionNumber).getQuestion());
             }
 
             @Override
@@ -76,22 +76,18 @@ public class ActivityPuzzle extends AppCompatActivity {
         });
         bt_continue.setOnClickListener(v -> {
 
-            if(et_answer.getText().toString().equals(puzzles.get(questionNumber).getAnswer()))
-            {
-                Toast.makeText(this, "!!! CORRECT !!!", Toast.LENGTH_LONG).show();
-                et_answer.setText("");
-                questionNumber +=1;
-
-                if(questionNumber < puzzles.size()){
-                    tv_question.setText(puzzles.get(questionNumber).getQuestion());
+                if(RetroInstance.isCorrect(et_answer.getText().toString())){
+                    Toast.makeText(this, "CORRECT", Toast.LENGTH_LONG).show();
+                    if(RetroInstance.questionNumber < RetroInstance.puzzles.size()){
+                        tv_question.setText(RetroInstance.getQuestion());
+                        et_answer.setText("");
+                    }else{
+                        RetroInstance.questionNumber = 0;
+                        openActivityStart();
+                    }
                 }else{
-                    questionNumber = 0;
-                    openActivityStart();
+                    Toast.makeText(this, "WRONG", Toast.LENGTH_LONG).show();
                 }
-            }
-            else{
-                Toast.makeText(this, "WRONG ANSWER :(", Toast.LENGTH_LONG).show();
-            }
         });
 
     }
