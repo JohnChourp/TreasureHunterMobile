@@ -7,10 +7,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import java.util.List;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ActivityPuzzle extends AppCompatActivity {
 
@@ -20,6 +16,8 @@ public class ActivityPuzzle extends AppCompatActivity {
     TextView tv_username;
     TextView tv_points;
     EditText et_answer;
+
+    RetroInstance retroInstance = new RetroInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,62 +32,44 @@ public class ActivityPuzzle extends AppCompatActivity {
         et_answer = findViewById(R.id.et_answer);
         bt_leaderboard.setOnClickListener(v -> openActivityLeaderboard());
 
-        APIService apiService = RetroInstance.get();
+        retroInstance.initializeAPIService();
 
-        Call<List<User>> callUsers = apiService.getUsers();
-        Call<List<Puzzle>> callPuzzles = apiService.getPuzzles();
-
-        callUsers.enqueue(new Callback<List<User>>() {
+        retroInstance.setCallListener(new RetroCallBack() {
             @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                if (!response.isSuccessful()) {
-                    tv_question.setText("code: " + response.code());
-                    return;
-                }
-                List<User> usernameList = response.body();
-                assert usernameList != null;
-                tv_username.setText(usernameList.get(0).getUsername());
-                tv_points.setText(String.valueOf(usernameList.get(0).getPoints()));
+            public void onCallUsersFinished() {
+                tv_username.setText(retroInstance.users.get(0).getUsername());
+                tv_points.setText(String.valueOf(retroInstance.users.get(0).getPoints()));
             }
 
             @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-                tv_question.setText(t.getMessage());
+            public void onCallPuzzlesFinished() {
+                tv_question.setText(retroInstance.getQuestion());
+            }
+
+            @Override
+            public void onCallFailed(String errorMessage) {
+                tv_question.setText(errorMessage);
             }
         });
 
-        callPuzzles.enqueue(new Callback<List<Puzzle>>() {
-            @Override
-            public void onResponse(Call<List<Puzzle>> call, Response<List<Puzzle>> response) {
-                if (!response.isSuccessful()) {
-                    tv_question.setText("code: " + response.code());
-                    return;
-                }
-                RetroInstance.puzzles = response.body();
-                tv_question.setText(RetroInstance.puzzles.get(RetroInstance.questionNumber).getQuestion());
-            }
+        retroInstance.puzzlesGetRequest();
+        retroInstance.usersGetRequest();
 
-            @Override
-            public void onFailure(Call<List<Puzzle>> call, Throwable t) {
-                tv_question.setText(t.getMessage());
-            }
-        });
         bt_continue.setOnClickListener(v -> {
 
-                if(RetroInstance.isCorrect(et_answer.getText().toString())){
+                if(retroInstance.isCorrect(et_answer.getText().toString())){
                     Toast.makeText(this, "CORRECT", Toast.LENGTH_LONG).show();
-                    if(RetroInstance.questionNumber < RetroInstance.puzzles.size()){
-                        tv_question.setText(RetroInstance.getQuestion());
+                    if(retroInstance.questionNumber < retroInstance.puzzles.size()){
+                        tv_question.setText(retroInstance.getQuestion());
                         et_answer.setText("");
                     }else{
-                        RetroInstance.questionNumber = 0;
+                        retroInstance.questionNumber = 0;
                         openActivityStart();
                     }
                 }else{
                     Toast.makeText(this, "WRONG", Toast.LENGTH_LONG).show();
                 }
         });
-
     }
 
     private void openActivityLeaderboard() {
@@ -99,9 +79,7 @@ public class ActivityPuzzle extends AppCompatActivity {
 
     private void openActivityStart()
     {
-
         Intent intent = new Intent(this, ActivityStart.class);
         startActivity(intent);
     }
-
 }
