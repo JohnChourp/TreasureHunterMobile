@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class ActivityPuzzle extends AppCompatActivity {
 
-    Button bt_leaderboard;
+    Button bt_leaderBoard;
     Button bt_continue;
     TextView tv_question;
     TextView tv_username;
@@ -24,13 +24,13 @@ public class ActivityPuzzle extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
 
-        bt_leaderboard = findViewById(R.id.bt_leaderboard);
+        bt_leaderBoard = findViewById(R.id.bt_leaderboard);
         bt_continue = findViewById(R.id.bt_continue);
         tv_question = findViewById(R.id.tv_question);
         tv_username = findViewById(R.id.tv_username);
         tv_points = findViewById(R.id.tv_points);
         et_answer = findViewById(R.id.et_answer);
-        bt_leaderboard.setOnClickListener(v -> openActivityLeaderboard());
+        bt_leaderBoard.setOnClickListener(v -> openActivityLeaderboard());
 
         retroInstance.initializeAPIService();
 
