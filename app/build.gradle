@@ -39,15 +39,16 @@ dependencies {
 
     //Maps
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
+    implementation 'com.google.android.libraries.maps:maps:3.1.0-beta'
+    implementation 'org.jetbrains:annotations:15.0'
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'org.jetbrains:annotations:15.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.basgeekball:awesome-validation:4.2'
-    implementation 'com.google.android.libraries.maps:maps:3.1.0-beta'
     implementation 'com.android.support:multidex:1.0.3'
 
     // Required -- JUnit 4 framework
