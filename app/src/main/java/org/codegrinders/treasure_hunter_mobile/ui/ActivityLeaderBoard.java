@@ -1,11 +1,11 @@
-package org.codegrinders.treasure_hunter_mobile;
+package org.codegrinders.treasure_hunter_mobile.ui;
 
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
-
+import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
 import org.codegrinders.treasure_hunter_mobile.tables.User;

@@ -1,4 +1,4 @@
-package org.codegrinders.treasure_hunter_mobile;
+package org.codegrinders.treasure_hunter_mobile.ui;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,7 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.widget.Toast;
-
+import org.codegrinders.treasure_hunter_mobile.PermissionUtils;
+import org.codegrinders.treasure_hunter_mobile.R;
 
 public class ActivityMap extends AppCompatActivity implements
         OnMyLocationButtonClickListener,

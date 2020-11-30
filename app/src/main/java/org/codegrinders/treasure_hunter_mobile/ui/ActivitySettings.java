@@ -1,4 +1,4 @@
-package org.codegrinders.treasure_hunter_mobile;
+package org.codegrinders.treasure_hunter_mobile.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.ComponentName;
@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
-
+import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
 import org.codegrinders.treasure_hunter_mobile.settings.Settings;
 import org.codegrinders.treasure_hunter_mobile.settings.Sound;
