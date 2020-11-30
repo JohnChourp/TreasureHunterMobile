@@ -36,4 +36,6 @@
     <string name="location_permission_denied" />
     <string name="permission_required_toast" />
     <string name="permission_rationale_location" />
+    <string name="music">Music</string>
+    <string name="sounds">Sounds</string>
 </resources>

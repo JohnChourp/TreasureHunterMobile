@@ -6,25 +6,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ActivityLogin"
-    android:background="@drawable/treasure_color"
     >
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="270dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="184dp"
-        app:cardBackgroundColor="@color/white"
+        android:layout_marginStart="68dp"
+        android:layout_marginBottom="208dp"
         app:cardCornerRadius="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/bt_login"
             android:layout_width="270dp"
             android:layout_height="50dp"
-            android:background="@drawable/gradient"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
             android:text="@string/login"
             android:textSize="15sp" />
     </androidx.cardview.widget.CardView>
@@ -33,12 +32,14 @@
         android:id="@+id/imageView4"
         android:layout_width="600dp"
         android:layout_height="760dp"
+        android:contentDescription="@string/todo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/background_login"
-        android:contentDescription="@string/todo" />
+        app:layout_constraintVertical_bias="0.517"
+        app:srcCompat="@drawable/background_login" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -49,8 +50,7 @@
         android:contentDescription="@string/todo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/profile"
-        android:layout_marginLeft="120dp" />
+        app:srcCompat="@drawable/profile" />
 
     <TextView
         android:id="@+id/tv_register"
@@ -68,8 +68,7 @@
         android:id="@+id/et_username"
         android:layout_width="320dp"
         android:layout_height="46dp"
-        android:layout_marginStart="45dp"
-        android:layout_marginEnd="45dp"
+        android:layout_marginStart="44dp"
         android:layout_marginBottom="376dp"
         android:autofillHints="no"
         android:background="@android:color/white"
@@ -78,16 +77,13 @@
         android:inputType="textPersonName"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:drawableLeft="@drawable/ic_action_username" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/et_password"
         android:layout_width="320dp"
         android:layout_height="46dp"
-        android:layout_marginStart="45dp"
-        android:layout_marginEnd="45dp"
+        android:layout_marginStart="44dp"
         android:layout_marginBottom="292dp"
         android:autofillHints="no"
         android:background="@android:color/white"
@@ -96,8 +92,6 @@
         android:inputType="textPassword"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:drawableLeft="@drawable/ic_action_lock" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

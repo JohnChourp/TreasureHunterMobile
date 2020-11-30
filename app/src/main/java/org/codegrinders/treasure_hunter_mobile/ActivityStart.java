@@ -33,7 +33,7 @@ public class ActivityStart extends AppCompatActivity
         bt_play = findViewById(R.id.bt_play);
         bt_puzzles = findViewById(R.id.bt_continue);
         bt_map = findViewById(R.id.bt_map);
-        bt_leaderboard = findViewById(R.id.bt_leaderboard);
+        bt_leaderboard = findViewById(R.id.bt_leaderBoard);
         bt_settings = findViewById(R.id.bt_settings);
 
 

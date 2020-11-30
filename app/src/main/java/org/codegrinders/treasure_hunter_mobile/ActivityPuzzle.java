@@ -24,7 +24,7 @@ public class ActivityPuzzle extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
 
-        bt_leaderBoard = findViewById(R.id.bt_leaderboard);
+        bt_leaderBoard = findViewById(R.id.bt_leaderBoard);
         bt_continue = findViewById(R.id.bt_continue);
         tv_question = findViewById(R.id.tv_question);
         tv_username = findViewById(R.id.tv_username);
