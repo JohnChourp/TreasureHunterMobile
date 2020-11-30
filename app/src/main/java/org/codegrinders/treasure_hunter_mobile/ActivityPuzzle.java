@@ -8,6 +8,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
+import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
+
 public class ActivityPuzzle extends AppCompatActivity {
 
     Button bt_leaderBoard;
@@ -36,8 +39,8 @@ public class ActivityPuzzle extends AppCompatActivity {
         retroInstance.setCallListener(new RetroCallBack() {
             @Override
             public void onCallUsersFinished() {
-                tv_username.setText(retroInstance.users.get(0).getUsername());
-                tv_points.setText(String.valueOf(retroInstance.users.get(0).getPoints()));
+                tv_username.setText(retroInstance.getUsers().get(0).getUsername());
+                tv_points.setText(String.valueOf(retroInstance.getUsers().get(0).getPoints()));
             }
 
             @Override
@@ -57,11 +60,11 @@ public class ActivityPuzzle extends AppCompatActivity {
 
                 if(retroInstance.isCorrect(et_answer.getText().toString())){
                     Toast.makeText(this, "CORRECT", Toast.LENGTH_LONG).show();
-                    if(retroInstance.questionNumber < retroInstance.puzzles.size()){
+                    if(retroInstance.getQuestionNumber() < retroInstance.getPuzzles().size()){
                         tv_question.setText(retroInstance.getQuestion());
                         et_answer.setText("");
                     }else{
-                        retroInstance.questionNumber = 0;
+                        retroInstance.setQuestionNumber(0);
                         openActivityStart();
                     }
                 }else{

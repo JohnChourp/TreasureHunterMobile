@@ -1,9 +1,8 @@
-package org.codegrinders.treasure_hunter_mobile;
+package org.codegrinders.treasure_hunter_mobile.retrofit;
 
 import org.codegrinders.treasure_hunter_mobile.tables.Puzzle;
 import org.codegrinders.treasure_hunter_mobile.tables.User;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -12,16 +11,16 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetroInstance {
-    int questionNumber = 0;
-    List<Puzzle> puzzles;
-    List<User> users;
+    private int questionNumber = 0;
+    private List<Puzzle> puzzles;
+    private List<User> users;
 
     private RetroCallBack callBack;
     APIService apiService;
     Call<List<User>> callUsers;
     Call<List<Puzzle>> callPuzzles;
 
-    APIService initializeAPIService(){
+    public APIService initializeAPIService(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -30,7 +29,7 @@ public class RetroInstance {
         return retrofit.create(APIService.class);
     }
 
-    String getQuestion(){
+    public String getQuestion(){
         String ret = "";
 
         if (questionNumber < puzzles.size()) {
@@ -39,7 +38,7 @@ public class RetroInstance {
         return ret;
     }
 
-    boolean isCorrect(String input){
+    public boolean isCorrect(String input){
         boolean correct = false;
 
         if (questionNumber < puzzles.size()){
@@ -51,7 +50,7 @@ public class RetroInstance {
         return correct;
     }
 
-    void usersGetRequest(){
+    public void usersGetRequest(){
         callUsers = apiService.getUsers();
 
         callUsers.enqueue(new Callback<List<User>>() {
@@ -72,7 +71,7 @@ public class RetroInstance {
         });
     }
 
-    void puzzlesGetRequest(){
+    public void puzzlesGetRequest(){
         apiService = initializeAPIService();
         callPuzzles = apiService.getPuzzles();
 
@@ -94,7 +93,31 @@ public class RetroInstance {
         });
     }
 
-    void setCallListener(RetroCallBack callBack){
+    public void setCallListener(RetroCallBack callBack){
         this.callBack = callBack;
+    }
+
+    public int getQuestionNumber() {
+        return questionNumber;
+    }
+
+    public void setQuestionNumber(int questionNumber) {
+        this.questionNumber = questionNumber;
+    }
+
+    public List<Puzzle> getPuzzles() {
+        return puzzles;
+    }
+
+    public void setPuzzles(List<Puzzle> puzzles) {
+        this.puzzles = puzzles;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }
