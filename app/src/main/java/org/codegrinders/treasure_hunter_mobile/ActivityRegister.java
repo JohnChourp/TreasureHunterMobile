@@ -13,6 +13,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+
+import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
+import org.codegrinders.treasure_hunter_mobile.settings.Sound;
+
 import java.util.regex.Pattern;
 
 public class ActivityRegister extends AppCompatActivity
@@ -87,8 +91,8 @@ public class ActivityRegister extends AppCompatActivity
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
             isBound = true;
-            backgroundMusic = Sound.searchByResid(R.raw.wanabe_epic_music);
-            buttonSound = Sound.searchByResid(R.raw.pop);
+            backgroundMusic = Sound.searchByResId(R.raw.wanabe_epic_music);
+            buttonSound = Sound.searchByResId(R.raw.pop);
             audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
         }
 

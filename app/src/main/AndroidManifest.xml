@@ -30,7 +30,7 @@
         <activity android:name=".ActivitySettings" />
 
         <service
-            android:name=".MediaService"
+            android:name=".settings.MediaService"
             android:enabled="true"
             android:exported="false" />
 

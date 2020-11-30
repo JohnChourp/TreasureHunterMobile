@@ -1,10 +1,10 @@
-package org.codegrinders.treasure_hunter_mobile;
+package org.codegrinders.treasure_hunter_mobile.settings;
 
 import android.media.MediaPlayer;
 
 public class AudioData {
 
-    MediaPlayer player;
+    public MediaPlayer player;
     public int resource;
     public int position;
     public boolean looping;

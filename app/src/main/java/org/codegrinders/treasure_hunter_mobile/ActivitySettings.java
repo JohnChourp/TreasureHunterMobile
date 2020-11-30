@@ -10,6 +10,10 @@ import android.os.IBinder;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 
+import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
+import org.codegrinders.treasure_hunter_mobile.settings.Settings;
+import org.codegrinders.treasure_hunter_mobile.settings.Sound;
+
 public class ActivitySettings extends AppCompatActivity {
 
     MediaService audioService;
@@ -134,8 +138,8 @@ public class ActivitySettings extends AppCompatActivity {
             audioService = binder.getService();
             isBound = true;
 
-            backgroundMusic = Sound.searchByResid(R.raw.wanabe_epic_music);
-            buttonSound = Sound.searchByResid(R.raw.pop);
+            backgroundMusic = Sound.searchByResId(R.raw.wanabe_epic_music);
+            buttonSound = Sound.searchByResId(R.raw.pop);
             audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
         }
 

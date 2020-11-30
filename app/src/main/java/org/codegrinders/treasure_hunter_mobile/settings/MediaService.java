@@ -1,4 +1,4 @@
-package org.codegrinders.treasure_hunter_mobile;
+package org.codegrinders.treasure_hunter_mobile.settings;
 
 import android.app.Service;
 import android.content.Intent;
@@ -11,7 +11,7 @@ public class MediaService extends Service {
     private final IBinder mBinder = new MediaBinder();
 
     public class MediaBinder extends Binder {
-        MediaService getService() {
+        public MediaService getService() {
             return MediaService.this;
         }
     }
@@ -25,7 +25,7 @@ public class MediaService extends Service {
     public void onDestroy() {
         super.onDestroy();
         int i;
-        for(i=0;i<Sound.entryCount;i++){
+        for(i=0; i< Sound.entryCount; i++){
             pause(i);
         }
     }

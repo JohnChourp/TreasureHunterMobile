@@ -9,6 +9,10 @@ import android.os.IBinder;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
+import org.codegrinders.treasure_hunter_mobile.settings.Settings;
+import org.codegrinders.treasure_hunter_mobile.settings.Sound;
+
 public class ActivityStart extends AppCompatActivity
 {
     MediaService audioService;
@@ -92,8 +96,8 @@ public class ActivityStart extends AppCompatActivity
                 audioService.init(buttonSound, Settings.soundVol, false);
                 Sound.firstInit =false;
             }else{
-                backgroundMusic = Sound.searchByResid(R.raw.wanabe_epic_music);
-                buttonSound = Sound.searchByResid(R.raw.pop);
+                backgroundMusic = Sound.searchByResId(R.raw.wanabe_epic_music);
+                buttonSound = Sound.searchByResId(R.raw.pop);
             }
             audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
         }
