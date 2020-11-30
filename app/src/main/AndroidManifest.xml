@@ -34,7 +34,6 @@
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".ActivityMain" />
         <activity android:name=".ActivityLogin" />
         <activity android:name=".ActivityLeaderBoard" />
         <activity android:name=".ActivityRegister" />

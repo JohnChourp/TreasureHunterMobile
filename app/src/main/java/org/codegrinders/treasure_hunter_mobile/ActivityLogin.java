@@ -44,16 +44,16 @@ public class ActivityLogin extends AppCompatActivity
 
             if(validate()){
                 Toast.makeText(getApplicationContext(),"Login Successfully...",Toast.LENGTH_SHORT).show();
-                openActivityMain();
+                openActivityStart();
             }else{
                 Toast.makeText(getApplicationContext(),"Login Failed...",Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void openActivityMain()
+    private void openActivityStart()
     {
-        Intent intent = new Intent(this, ActivityMain.class);
+        Intent intent = new Intent(this, ActivityStart.class);
         startActivity(intent);
     }
 
