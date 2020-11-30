@@ -1,5 +1,7 @@
 package org.codegrinders.treasure_hunter_mobile;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -52,7 +54,7 @@ public class RetroInstance {
 
         callUsers.enqueue(new Callback<List<User>>() {
             @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+            public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
                 if (!response.isSuccessful()) {
                     callBack.onCallFailed("code: " + response.code());
                     return;
@@ -62,7 +64,7 @@ public class RetroInstance {
             }
 
             @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
+            public void onFailure(@NotNull Call<List<User>> call, @NotNull Throwable t) {
                 callBack.onCallFailed(t.getMessage());
             }
         });
@@ -74,7 +76,7 @@ public class RetroInstance {
 
         callPuzzles.enqueue(new Callback<List<Puzzle>>() {
             @Override
-            public void onResponse(Call<List<Puzzle>> call, Response<List<Puzzle>> response) {
+            public void onResponse(@NotNull Call<List<Puzzle>> call, @NotNull Response<List<Puzzle>> response) {
                 if (!response.isSuccessful()) {
                     callBack.onCallFailed("code: " + response.code());
                     return;
@@ -84,7 +86,7 @@ public class RetroInstance {
             }
 
             @Override
-            public void onFailure(Call<List<Puzzle>> call, Throwable t) {
+            public void onFailure(@NotNull Call<List<Puzzle>> call, @NotNull Throwable t) {
                 callBack.onCallFailed(t.getMessage());
             }
         });
