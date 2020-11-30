@@ -7,7 +7,6 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.Button;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ActivityStart extends AppCompatActivity
@@ -18,7 +17,7 @@ public class ActivityStart extends AppCompatActivity
     Button bt_map;
     Button bt_settings;
     Button bt_puzzles;
-    Button bt_leaderboard;
+    Button bt_leaderBoard;
 
     int backgroundMusic;
     int buttonSound;
@@ -33,9 +32,8 @@ public class ActivityStart extends AppCompatActivity
         bt_play = findViewById(R.id.bt_play);
         bt_puzzles = findViewById(R.id.bt_continue);
         bt_map = findViewById(R.id.bt_map);
-        bt_leaderboard = findViewById(R.id.bt_leaderBoard);
+        bt_leaderBoard = findViewById(R.id.bt_leaderBoard);
         bt_settings = findViewById(R.id.bt_settings);
-
 
         bt_play.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
@@ -43,7 +41,7 @@ public class ActivityStart extends AppCompatActivity
         });
         bt_puzzles.setOnClickListener(v -> openActivityPuzzles());
         bt_map.setOnClickListener(v -> openActivityMap());
-        bt_leaderboard.setOnClickListener(v -> openActivityLeaderboard());
+        bt_leaderBoard.setOnClickListener(v -> openActivityLeaderboard());
 
         bt_settings.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
@@ -85,7 +83,6 @@ public class ActivityStart extends AppCompatActivity
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
             isBound = true;
-
             Settings.init(getApplicationContext());
 
             if(Sound.firstInit){
@@ -98,7 +95,7 @@ public class ActivityStart extends AppCompatActivity
                 backgroundMusic = Sound.searchByResid(R.raw.wanabe_epic_music);
                 buttonSound = Sound.searchByResid(R.raw.pop);
             }
-                audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
+            audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
         }
 
         @Override
@@ -118,7 +115,6 @@ public class ActivityStart extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-
         if (isBound) {
             unbindService(serviceConnection);
             isBound = false;

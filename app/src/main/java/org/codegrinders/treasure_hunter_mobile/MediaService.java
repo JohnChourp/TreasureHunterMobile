@@ -16,7 +16,6 @@ public class MediaService extends Service {
         }
     }
 
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -46,6 +45,7 @@ public class MediaService extends Service {
 
     public void play(int index, int pos){
         AudioData data = Sound.get(index);
+
         if(data.type.equals("sound")){
             volume(index, Settings.soundVol);
         }
@@ -81,8 +81,8 @@ public class MediaService extends Service {
         AudioData data = Sound.get(index);
 
         if(vol>=0 && vol<=100){
-            float fvol = (float)(vol*0.01);
-            data.player.setVolume(fvol,fvol);
+            float fVol = (float)(vol*0.01);
+            data.player.setVolume(fVol,fVol);
         }else{
             data.player.setVolume(0,0);
             vol = 0;
@@ -96,7 +96,7 @@ public class MediaService extends Service {
         }
     }
 
-    public void setAllmusicVol(int volume){
+    public void setAllMusicVol(int volume){
         int i;
 
         for (i=0;i<Sound.entryCount;i++){

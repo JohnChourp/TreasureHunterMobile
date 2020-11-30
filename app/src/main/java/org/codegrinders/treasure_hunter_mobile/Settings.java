@@ -15,7 +15,6 @@ public class Settings {
     static int soundVol;
 
 static void init(Context context){
-    //read file
     try {
 
         InputStream inputStream = context.openFileInput("settings.conf");
@@ -23,10 +22,8 @@ static void init(Context context){
         if ( inputStream != null ) {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(bufferedReader.readLine());
             inputStream.close();
-            data = stringBuilder.toString();
+            data = bufferedReader.readLine();
         }
     }
     catch (FileNotFoundException e) {
@@ -35,15 +32,15 @@ static void init(Context context){
     } catch (IOException e) {
         Log.e("activity", "Can not read file: " + e.toString());
     }
-
     musicVol = Integer.parseInt(getElement("musicVol","60"));
     soundVol = Integer.parseInt(getElement("soundVol","60"));
     writeToFile(data, context);
-}
+    }
 
     static int searchElement(String fileString, String element) {
         int lastElementPos = 0;
         int pos = -1;
+
         if (!fileString.equals("") || !element.equals("")) {
             for (int i = 0; i < fileString.length(); i++) {
                 if (fileString.charAt(i) == ':') {
@@ -60,7 +57,6 @@ static void init(Context context){
         return pos;
     }
 
-
     public static void writeToFile(String data, Context context) {
         try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("settings.conf", Context.MODE_PRIVATE));
@@ -72,21 +68,19 @@ static void init(Context context){
         }
     }
 
-
     static void setElement(String element, String value) {
         int startPos = searchElement(data, element);
+
         if (startPos != -1) {
             int currentPos = startPos;
             while (data.charAt(currentPos) != ';') {
                 currentPos++;
             }
-            data = data.substring(0, startPos) + value + data.substring(currentPos, data.length());
+            data = data.substring(0, startPos) + value + data.substring(currentPos);
         }else {
             data = data + element + ":" + value + ";";
         }
     }
-
-
 
     static String getElement(String element) {
         String value = "";
@@ -98,13 +92,11 @@ static void init(Context context){
             }
             value = data.substring(startPos, currentPos);
         }
-
         return value;
     }
 
-
     static String getElement(String element, String valueIfNotExist){
-        String value = "";
+        String value;
         int startPos = searchElement(data, element);
         if(startPos != -1){
             int currentPos = startPos;
@@ -116,7 +108,6 @@ static void init(Context context){
             data = data + element + ":" + valueIfNotExist + ";";
             value = valueIfNotExist;
         }
-
         return value;
     }
 }

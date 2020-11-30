@@ -81,7 +81,7 @@ public class ActivitySettings extends AppCompatActivity {
                 Settings.musicVol = progress;
                 musicIsMuted = (progress==0);
                 displayMuteUnmute(musicIsMuted, muteMusic);
-                audioService.setAllmusicVol(progress);
+                audioService.setAllMusicVol(progress);
             }
 
             @Override
@@ -95,7 +95,6 @@ public class ActivitySettings extends AppCompatActivity {
                 Settings.writeToFile(Settings.data, getApplicationContext());
             }
         });
-
 
         soundVolSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -156,7 +155,6 @@ public class ActivitySettings extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
         if (isBound) {
             unbindService(serviceConnection);
             isBound = false;

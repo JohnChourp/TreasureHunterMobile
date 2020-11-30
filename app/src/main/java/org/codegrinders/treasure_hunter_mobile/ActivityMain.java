@@ -1,7 +1,6 @@
 package org.codegrinders.treasure_hunter_mobile;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -54,7 +53,6 @@ public class ActivityMain extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-
         if (isBound) {
             unbindService(serviceConnection);
             isBound = false;

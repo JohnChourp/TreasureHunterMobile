@@ -1,7 +1,6 @@
 package org.codegrinders.treasure_hunter_mobile;
 
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -18,10 +17,6 @@ public class RetroInstance {
     Call<List<User>> callUsers;
     Call<List<Puzzle>> callPuzzles;
 
-    void setCallListener(RetroCallBack callBack){
-        this.callBack = callBack;
-    }
-
     APIService initializeAPIService(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8080/")
@@ -33,6 +28,7 @@ public class RetroInstance {
 
     String getQuestion(){
         String ret = "";
+
         if (questionNumber < puzzles.size()) {
             ret =  puzzles.get(questionNumber).getQuestion();
         }
@@ -41,6 +37,7 @@ public class RetroInstance {
 
     boolean isCorrect(String input){
         boolean correct = false;
+
         if (questionNumber < puzzles.size()){
             if(puzzles.get(questionNumber).getAnswer().equals(input)){
                 correct = true;
@@ -74,6 +71,7 @@ public class RetroInstance {
     void puzzlesGetRequest(){
         apiService = initializeAPIService();
         callPuzzles = apiService.getPuzzles();
+
         callPuzzles.enqueue(new Callback<List<Puzzle>>() {
             @Override
             public void onResponse(Call<List<Puzzle>> call, Response<List<Puzzle>> response) {
@@ -90,5 +88,9 @@ public class RetroInstance {
                 callBack.onCallFailed(t.getMessage());
             }
         });
+    }
+
+    void setCallListener(RetroCallBack callBack){
+        this.callBack = callBack;
     }
 }

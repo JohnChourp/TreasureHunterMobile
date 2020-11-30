@@ -1,4 +1,5 @@
 package org.codegrinders.treasure_hunter_mobile;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -40,6 +41,7 @@ public class ActivityLogin extends AppCompatActivity
         tv_register.setOnClickListener(v -> openActivityRegister());
         bt_login.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
+
             if(validate()){
                 Toast.makeText(getApplicationContext(),"Login Successfully...",Toast.LENGTH_SHORT).show();
                 openActivityMain();
@@ -83,7 +85,6 @@ public class ActivityLogin extends AppCompatActivity
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
             isBound = true;
-
             backgroundMusic = Sound.searchByResid(R.raw.wanabe_epic_music);
             buttonSound = Sound.searchByResid(R.raw.pop);
             audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
@@ -99,7 +100,6 @@ public class ActivityLogin extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-        // Bind to LocalService
         intent = new Intent(this, MediaService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
@@ -107,7 +107,6 @@ public class ActivityLogin extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-        // Unbind from the service
         if (isBound) {
             unbindService(serviceConnection);
             isBound = false;

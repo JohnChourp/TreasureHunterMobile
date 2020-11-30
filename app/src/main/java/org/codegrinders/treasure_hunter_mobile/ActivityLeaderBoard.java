@@ -4,12 +4,11 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import java.util.List;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ActivityLeaderBoard extends AppCompatActivity {
 
-    ListView listView;
+    private ListView listView;
     RetroInstance retroInstance = new RetroInstance();
 
     @Override
@@ -18,7 +17,6 @@ public class ActivityLeaderBoard extends AppCompatActivity {
         setContentView(R.layout.activity_leaderboard);
 
         listView = findViewById(R.id.listView);
-
         retroInstance.initializeAPIService();
 
         retroInstance.setCallListener(new RetroCallBack() {

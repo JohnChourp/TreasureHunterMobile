@@ -30,8 +30,7 @@ public class ActivityPuzzle extends AppCompatActivity {
         tv_username = findViewById(R.id.tv_username);
         tv_points = findViewById(R.id.tv_points);
         et_answer = findViewById(R.id.et_answer);
-        bt_leaderBoard.setOnClickListener(v -> openActivityLeaderboard());
-
+        bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
         retroInstance.initializeAPIService();
 
         retroInstance.setCallListener(new RetroCallBack() {
@@ -51,7 +50,6 @@ public class ActivityPuzzle extends AppCompatActivity {
                 tv_question.setText(errorMessage);
             }
         });
-
         retroInstance.puzzlesGetRequest();
         retroInstance.usersGetRequest();
 
@@ -72,7 +70,7 @@ public class ActivityPuzzle extends AppCompatActivity {
         });
     }
 
-    private void openActivityLeaderboard() {
+    private void openActivityLeaderBoard() {
         Intent intent = new Intent(this, ActivityLeaderBoard.class);
         startActivity(intent);
     }
