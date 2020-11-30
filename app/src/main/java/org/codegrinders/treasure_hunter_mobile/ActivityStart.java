@@ -41,7 +41,7 @@ public class ActivityStart extends AppCompatActivity
         });
         bt_puzzles.setOnClickListener(v -> openActivityPuzzles());
         bt_map.setOnClickListener(v -> openActivityMap());
-        bt_leaderBoard.setOnClickListener(v -> openActivityLeaderboard());
+        bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
 
         bt_settings.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
@@ -67,7 +67,7 @@ public class ActivityStart extends AppCompatActivity
         startActivity(intent);
     }
 
-    private void openActivityLeaderboard() {
+    private void openActivityLeaderBoard() {
         Intent intent = new Intent(this, ActivityLeaderBoard.class);
         startActivity(intent);
     }

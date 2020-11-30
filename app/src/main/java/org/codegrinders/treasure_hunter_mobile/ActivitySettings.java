@@ -41,8 +41,8 @@ public class ActivitySettings extends AppCompatActivity {
         musicIsMuted = (Settings.musicVol==0);
         soundsAreMuted = (Settings.soundVol==0);
 
-        displayMuteUnmute(musicIsMuted, muteMusic);
-        displayMuteUnmute(soundsAreMuted, muteSounds);
+        displayMuteUnMute(musicIsMuted, muteMusic);
+        displayMuteUnMute(soundsAreMuted, muteSounds);
 
         musicVolSlider.setProgress(Settings.musicVol);
         soundVolSlider.setProgress(Settings.soundVol);
@@ -80,7 +80,7 @@ public class ActivitySettings extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 Settings.musicVol = progress;
                 musicIsMuted = (progress==0);
-                displayMuteUnmute(musicIsMuted, muteMusic);
+                displayMuteUnMute(musicIsMuted, muteMusic);
                 audioService.setAllMusicVol(progress);
             }
 
@@ -101,7 +101,7 @@ public class ActivitySettings extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 Settings.soundVol = progress;
                 soundsAreMuted = (progress==0);
-                displayMuteUnmute(soundsAreMuted ,muteSounds);
+                displayMuteUnMute(soundsAreMuted ,muteSounds);
             }
 
             @Override
@@ -119,7 +119,7 @@ public class ActivitySettings extends AppCompatActivity {
 
     }
 
-    void displayMuteUnmute(boolean isMuted, ImageButton button){
+    void displayMuteUnMute(boolean isMuted, ImageButton button){
         if(isMuted){
             button.setImageResource(R.drawable.muted);
         }else{
