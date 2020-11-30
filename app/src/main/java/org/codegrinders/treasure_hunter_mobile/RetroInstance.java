@@ -1,5 +1,7 @@
 package org.codegrinders.treasure_hunter_mobile;
 
+import org.codegrinders.treasure_hunter_mobile.tables.Puzzle;
+import org.codegrinders.treasure_hunter_mobile.tables.User;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

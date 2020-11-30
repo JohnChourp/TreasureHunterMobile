@@ -6,6 +6,8 @@ import android.widget.ListView;
 import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.codegrinders.treasure_hunter_mobile.tables.User;
+
 public class ActivityLeaderBoard extends AppCompatActivity {
 
     private ListView listView;
