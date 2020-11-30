@@ -1,11 +1,11 @@
-package org.codegrinders.treasure_hunter_mobile;
+package org.codegrinders.treasure_hunter_mobile.settings;
 
 import java.util.ArrayList;
 
 public class Sound {
     static ArrayList<AudioData> audioList = new ArrayList<>();
     static int entryCount = 0;
-    static boolean firstInit = true;
+    public static boolean firstInit = true;
 
     public static int add(int resource, String type){
         audioList.add(new AudioData(resource, type));
@@ -17,10 +17,10 @@ public class Sound {
         return audioList.get(index);
     }
 
-    public static int searchByResid(int resid){
+    public static int searchByResId(int resId){
         int i;
         for(i=0;i<entryCount;i++){
-            if(get(i).resource == resid){
+            if(get(i).resource == resId){
                 break;
             }
         }

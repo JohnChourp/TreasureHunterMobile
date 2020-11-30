@@ -1,4 +1,4 @@
-package org.codegrinders.treasure_hunter_mobile;
+package org.codegrinders.treasure_hunter_mobile.retrofit;
 
 public interface RetroCallBack {
     void onCallUsersFinished();

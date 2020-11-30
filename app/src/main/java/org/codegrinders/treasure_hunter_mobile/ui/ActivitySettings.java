@@ -1,4 +1,4 @@
-package org.codegrinders.treasure_hunter_mobile;
+package org.codegrinders.treasure_hunter_mobile.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.ComponentName;
@@ -9,6 +9,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
+import org.codegrinders.treasure_hunter_mobile.R;
+import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
+import org.codegrinders.treasure_hunter_mobile.settings.Settings;
+import org.codegrinders.treasure_hunter_mobile.settings.Sound;
 
 public class ActivitySettings extends AppCompatActivity {
 
@@ -41,8 +45,8 @@ public class ActivitySettings extends AppCompatActivity {
         musicIsMuted = (Settings.musicVol==0);
         soundsAreMuted = (Settings.soundVol==0);
 
-        displayMuteUnmute(musicIsMuted, muteMusic);
-        displayMuteUnmute(soundsAreMuted, muteSounds);
+        displayMuteUnMute(musicIsMuted, muteMusic);
+        displayMuteUnMute(soundsAreMuted, muteSounds);
 
         musicVolSlider.setProgress(Settings.musicVol);
         soundVolSlider.setProgress(Settings.soundVol);
@@ -80,8 +84,8 @@ public class ActivitySettings extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 Settings.musicVol = progress;
                 musicIsMuted = (progress==0);
-                displayMuteUnmute(musicIsMuted, muteMusic);
-                audioService.setAllmusicVol(progress);
+                displayMuteUnMute(musicIsMuted, muteMusic);
+                audioService.setAllMusicVol(progress);
             }
 
             @Override
@@ -96,13 +100,12 @@ public class ActivitySettings extends AppCompatActivity {
             }
         });
 
-
         soundVolSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 Settings.soundVol = progress;
                 soundsAreMuted = (progress==0);
-                displayMuteUnmute(soundsAreMuted ,muteSounds);
+                displayMuteUnMute(soundsAreMuted ,muteSounds);
             }
 
             @Override
@@ -120,7 +123,7 @@ public class ActivitySettings extends AppCompatActivity {
 
     }
 
-    void displayMuteUnmute(boolean isMuted, ImageButton button){
+    void displayMuteUnMute(boolean isMuted, ImageButton button){
         if(isMuted){
             button.setImageResource(R.drawable.muted);
         }else{
@@ -135,8 +138,8 @@ public class ActivitySettings extends AppCompatActivity {
             audioService = binder.getService();
             isBound = true;
 
-            backgroundMusic = Sound.searchByResid(R.raw.wanabe_epic_music);
-            buttonSound = Sound.searchByResid(R.raw.pop);
+            backgroundMusic = Sound.searchByResId(R.raw.wanabe_epic_music);
+            buttonSound = Sound.searchByResId(R.raw.pop);
             audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
         }
 
@@ -156,7 +159,6 @@ public class ActivitySettings extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
         if (isBound) {
             unbindService(serviceConnection);
             isBound = false;

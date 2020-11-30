@@ -1,15 +1,18 @@
-package org.codegrinders.treasure_hunter_mobile;
+package org.codegrinders.treasure_hunter_mobile.ui;
 
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import java.util.List;
-
 import androidx.appcompat.app.AppCompatActivity;
+import org.codegrinders.treasure_hunter_mobile.R;
+import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
+import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
+import org.codegrinders.treasure_hunter_mobile.tables.User;
 
 public class ActivityLeaderBoard extends AppCompatActivity {
 
-    ListView listView;
+    private ListView listView;
     RetroInstance retroInstance = new RetroInstance();
 
     @Override
@@ -18,7 +21,6 @@ public class ActivityLeaderBoard extends AppCompatActivity {
         setContentView(R.layout.activity_leaderboard);
 
         listView = findViewById(R.id.listView);
-
         retroInstance.initializeAPIService();
 
         retroInstance.setCallListener(new RetroCallBack() {
@@ -40,7 +42,7 @@ public class ActivityLeaderBoard extends AppCompatActivity {
     }
 
     void getLeaderBoard(){
-        List<User> pointsList = retroInstance.users;
+        List<User> pointsList = retroInstance.getUsers();
         String[] leaderBoard = new String[pointsList.size()];
         for(int i=0; i<pointsList.size();i++){
             leaderBoard[i] = pointsList.get(i).getUsername()

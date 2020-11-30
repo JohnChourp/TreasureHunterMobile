@@ -1,4 +1,4 @@
-package org.codegrinders.treasure_hunter_mobile;
+package org.codegrinders.treasure_hunter_mobile.ui;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -7,8 +7,11 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.Button;
-
 import androidx.appcompat.app.AppCompatActivity;
+import org.codegrinders.treasure_hunter_mobile.R;
+import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
+import org.codegrinders.treasure_hunter_mobile.settings.Settings;
+import org.codegrinders.treasure_hunter_mobile.settings.Sound;
 
 public class ActivityStart extends AppCompatActivity
 {
@@ -18,7 +21,7 @@ public class ActivityStart extends AppCompatActivity
     Button bt_map;
     Button bt_settings;
     Button bt_puzzles;
-    Button bt_leaderboard;
+    Button bt_leaderBoard;
 
     int backgroundMusic;
     int buttonSound;
@@ -33,9 +36,8 @@ public class ActivityStart extends AppCompatActivity
         bt_play = findViewById(R.id.bt_play);
         bt_puzzles = findViewById(R.id.bt_continue);
         bt_map = findViewById(R.id.bt_map);
-        bt_leaderboard = findViewById(R.id.bt_leaderboard);
+        bt_leaderBoard = findViewById(R.id.bt_leaderBoard);
         bt_settings = findViewById(R.id.bt_settings);
-
 
         bt_play.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
@@ -43,7 +45,7 @@ public class ActivityStart extends AppCompatActivity
         });
         bt_puzzles.setOnClickListener(v -> openActivityPuzzles());
         bt_map.setOnClickListener(v -> openActivityMap());
-        bt_leaderboard.setOnClickListener(v -> openActivityLeaderboard());
+        bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
 
         bt_settings.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
@@ -69,7 +71,7 @@ public class ActivityStart extends AppCompatActivity
         startActivity(intent);
     }
 
-    private void openActivityLeaderboard() {
+    private void openActivityLeaderBoard() {
         Intent intent = new Intent(this, ActivityLeaderBoard.class);
         startActivity(intent);
     }
@@ -85,7 +87,6 @@ public class ActivityStart extends AppCompatActivity
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
             isBound = true;
-
             Settings.init(getApplicationContext());
 
             if(Sound.firstInit){
@@ -95,10 +96,10 @@ public class ActivityStart extends AppCompatActivity
                 audioService.init(buttonSound, Settings.soundVol, false);
                 Sound.firstInit =false;
             }else{
-                backgroundMusic = Sound.searchByResid(R.raw.wanabe_epic_music);
-                buttonSound = Sound.searchByResid(R.raw.pop);
+                backgroundMusic = Sound.searchByResId(R.raw.wanabe_epic_music);
+                buttonSound = Sound.searchByResId(R.raw.pop);
             }
-                audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
+            audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
         }
 
         @Override
@@ -118,7 +119,6 @@ public class ActivityStart extends AppCompatActivity
     @Override
     protected void onStop() {
         super.onStop();
-
         if (isBound) {
             unbindService(serviceConnection);
             isBound = false;

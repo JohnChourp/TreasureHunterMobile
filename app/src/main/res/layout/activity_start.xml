@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ActivityStart"
-    android:background="@drawable/treasure_color">
+    tools:context=".ui.ActivityStart">
 
     <ImageView
         android:id="@+id/imageViewBackground"
@@ -25,9 +24,9 @@
         android:id="@+id/treasureMap"
         android:layout_width="343dp"
         android:layout_height="280dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:contentDescription="@string/todo"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/treasure_icon" />
@@ -36,11 +35,10 @@
         android:id="@+id/cardViewPlay"
         android:layout_width="270dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="350dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginBottom="340dp"
         app:cardCornerRadius="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.517"
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
@@ -57,11 +55,10 @@
         android:id="@+id/cardViewPuzzle"
         android:layout_width="270dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="280dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginBottom="276dp"
         app:cardCornerRadius="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.517"
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
@@ -78,11 +75,10 @@
         android:id="@+id/cardViewMap"
         android:layout_width="270dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="210dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginBottom="208dp"
         app:cardCornerRadius="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.517"
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
@@ -99,11 +95,10 @@
         android:id="@+id/cardViewSettings"
         android:layout_width="270dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginBottom="96dp"
         app:cardCornerRadius="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.517"
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
@@ -117,18 +112,17 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewLeaderboard"
+        android:id="@+id/cardViewLeaderBoard"
         android:layout_width="270dp"
         android:layout_height="50dp"
         android:layout_marginStart="68dp"
-        android:layout_marginLeft="68dp"
         android:layout_marginBottom="30dp"
         app:cardCornerRadius="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/bt_leaderboard"
+            android:id="@+id/bt_leaderBoard"
             android:layout_width="270dp"
             android:layout_height="50dp"
             android:insetTop="0dp"

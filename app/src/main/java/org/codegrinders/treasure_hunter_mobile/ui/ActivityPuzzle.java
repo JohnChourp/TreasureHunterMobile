@@ -1,4 +1,4 @@
-package org.codegrinders.treasure_hunter_mobile;
+package org.codegrinders.treasure_hunter_mobile.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import org.codegrinders.treasure_hunter_mobile.R;
+import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
+import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
 
 public class ActivityPuzzle extends AppCompatActivity {
 
@@ -24,21 +27,20 @@ public class ActivityPuzzle extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
 
-        bt_leaderBoard = findViewById(R.id.bt_leaderboard);
+        bt_leaderBoard = findViewById(R.id.bt_leaderBoard);
         bt_continue = findViewById(R.id.bt_continue);
         tv_question = findViewById(R.id.tv_question);
         tv_username = findViewById(R.id.tv_username);
         tv_points = findViewById(R.id.tv_points);
         et_answer = findViewById(R.id.et_answer);
-        bt_leaderBoard.setOnClickListener(v -> openActivityLeaderboard());
-
+        bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
         retroInstance.initializeAPIService();
 
         retroInstance.setCallListener(new RetroCallBack() {
             @Override
             public void onCallUsersFinished() {
-                tv_username.setText(retroInstance.users.get(0).getUsername());
-                tv_points.setText(String.valueOf(retroInstance.users.get(0).getPoints()));
+                tv_username.setText(retroInstance.getUsers().get(0).getUsername());
+                tv_points.setText(String.valueOf(retroInstance.getUsers().get(0).getPoints()));
             }
 
             @Override
@@ -51,7 +53,6 @@ public class ActivityPuzzle extends AppCompatActivity {
                 tv_question.setText(errorMessage);
             }
         });
-
         retroInstance.puzzlesGetRequest();
         retroInstance.usersGetRequest();
 
@@ -59,11 +60,11 @@ public class ActivityPuzzle extends AppCompatActivity {
 
                 if(retroInstance.isCorrect(et_answer.getText().toString())){
                     Toast.makeText(this, "CORRECT", Toast.LENGTH_LONG).show();
-                    if(retroInstance.questionNumber < retroInstance.puzzles.size()){
+                    if(retroInstance.getQuestionNumber() < retroInstance.getPuzzles().size()){
                         tv_question.setText(retroInstance.getQuestion());
                         et_answer.setText("");
                     }else{
-                        retroInstance.questionNumber = 0;
+                        retroInstance.setQuestionNumber(0);
                         openActivityStart();
                     }
                 }else{
@@ -72,7 +73,7 @@ public class ActivityPuzzle extends AppCompatActivity {
         });
     }
 
-    private void openActivityLeaderboard() {
+    private void openActivityLeaderBoard() {
         Intent intent = new Intent(this, ActivityLeaderBoard.class);
         startActivity(intent);
     }

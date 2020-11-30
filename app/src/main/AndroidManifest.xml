@@ -23,22 +23,21 @@
             android:value="AIzaSyDPv2Q6EMY_q5sVjdEmXWSGqOpgyJI2JoQ" />
 
         <activity
-            android:name=".ActivityMap"
+            android:name=".ui.ActivityMap"
             android:label="@string/title_activity_maps" />
 
-        <activity android:name=".ActivityPuzzle" />
-        <activity android:name=".ActivitySettings" />
+        <activity android:name=".ui.ActivityPuzzle" />
+        <activity android:name=".ui.ActivitySettings" />
 
         <service
-            android:name=".MediaService"
+            android:name=".settings.MediaService"
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".ActivityMain" />
-        <activity android:name=".ActivityLogin" />
-        <activity android:name=".ActivityLeaderBoard" />
-        <activity android:name=".ActivityRegister" />
-        <activity android:name=".ActivityStart">
+        <activity android:name=".ui.ActivityLogin" />
+        <activity android:name=".ui.ActivityLeaderBoard" />
+        <activity android:name=".ui.ActivityRegister" />
+        <activity android:name=".ui.ActivityStart">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

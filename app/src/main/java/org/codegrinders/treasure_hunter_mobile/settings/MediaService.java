@@ -1,4 +1,4 @@
-package org.codegrinders.treasure_hunter_mobile;
+package org.codegrinders.treasure_hunter_mobile.settings;
 
 import android.app.Service;
 import android.content.Intent;
@@ -11,11 +11,10 @@ public class MediaService extends Service {
     private final IBinder mBinder = new MediaBinder();
 
     public class MediaBinder extends Binder {
-        MediaService getService() {
+        public MediaService getService() {
             return MediaService.this;
         }
     }
-
 
     @Override
     public void onCreate() {
@@ -26,7 +25,7 @@ public class MediaService extends Service {
     public void onDestroy() {
         super.onDestroy();
         int i;
-        for(i=0;i<Sound.entryCount;i++){
+        for(i=0; i< Sound.entryCount; i++){
             pause(i);
         }
     }
@@ -46,6 +45,7 @@ public class MediaService extends Service {
 
     public void play(int index, int pos){
         AudioData data = Sound.get(index);
+
         if(data.type.equals("sound")){
             volume(index, Settings.soundVol);
         }
@@ -81,8 +81,8 @@ public class MediaService extends Service {
         AudioData data = Sound.get(index);
 
         if(vol>=0 && vol<=100){
-            float fvol = (float)(vol*0.01);
-            data.player.setVolume(fvol,fvol);
+            float fVol = (float)(vol*0.01);
+            data.player.setVolume(fVol,fVol);
         }else{
             data.player.setVolume(0,0);
             vol = 0;
@@ -96,7 +96,7 @@ public class MediaService extends Service {
         }
     }
 
-    public void setAllmusicVol(int volume){
+    public void setAllMusicVol(int volume){
         int i;
 
         for (i=0;i<Sound.entryCount;i++){
