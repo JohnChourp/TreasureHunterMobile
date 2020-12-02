@@ -4,7 +4,9 @@ import org.codegrinders.treasure_hunter_mobile.tables.Puzzle;
 import org.codegrinders.treasure_hunter_mobile.tables.User;
 import java.util.List;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 public interface APIService {
     @GET("user/")
@@ -12,4 +14,7 @@ public interface APIService {
 
     @GET("puzzle/")
     Call<List<Puzzle>> getPuzzles();
+
+    @POST("user/add")
+    Call<User> registerUser(@Body User userRegister);
 }

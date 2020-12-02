@@ -1,7 +1,13 @@
 package org.codegrinders.treasure_hunter_mobile.retrofit;
 
+
+import android.content.Intent;
+import android.widget.Toast;
+
 import org.codegrinders.treasure_hunter_mobile.tables.Puzzle;
 import org.codegrinders.treasure_hunter_mobile.tables.User;
+import org.codegrinders.treasure_hunter_mobile.ui.ActivityRegister;
+import org.codegrinders.treasure_hunter_mobile.ui.ActivityStart;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import retrofit2.Call;
@@ -19,6 +25,8 @@ public class RetroInstance {
     APIService apiService;
     Call<List<User>> callUsers;
     Call<List<Puzzle>> callPuzzles;
+    Call<User> userCall;
+    private  ActivityRegister activityRegister;
 
     public APIService initializeAPIService(){
         Retrofit retrofit = new Retrofit.Builder()
@@ -48,6 +56,34 @@ public class RetroInstance {
             }
         }
         return correct;
+    }
+
+    public void createPostRequest(User user){
+        userCall=apiService.registerUser(user);
+
+        userCall.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()){
+                    String message="Successfully Registered";
+
+                }else{
+                    String message="Erron on response DES TO sto ActivityRegister";
+                    Toast.makeText(activityRegister, message, Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+                String message=t.getLocalizedMessage();
+              //  Toast.makeText(ActivityRegister.this, message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activityRegister, message, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
     }
 
     public void usersGetRequest(){

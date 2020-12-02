@@ -14,10 +14,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import org.codegrinders.treasure_hunter_mobile.R;
+import org.codegrinders.treasure_hunter_mobile.retrofit.APIService;
+import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
 import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
 import org.codegrinders.treasure_hunter_mobile.settings.Sound;
+import org.codegrinders.treasure_hunter_mobile.tables.User;
 
 import java.util.regex.Pattern;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivityRegister extends AppCompatActivity
 {
@@ -25,6 +32,9 @@ public class ActivityRegister extends AppCompatActivity
     Button bt_submit;
     AwesomeValidation emailValidation;
     MediaService audioService;
+    RetroInstance retroInstance;
+
+
 
     Intent intent;
     boolean isBound =false;
@@ -45,6 +55,7 @@ public class ActivityRegister extends AppCompatActivity
         etConfirmPassword = findViewById(R.id.et_confirm_password);
         bt_submit = findViewById(R.id.bt_submit);
 
+
         emailValidation = new AwesomeValidation(ValidationStyle.BASIC);
         emailValidation.addValidation(this,R.id.et_email, Patterns.EMAIL_ADDRESS,R.string.invalid_email);
 
@@ -52,12 +63,31 @@ public class ActivityRegister extends AppCompatActivity
             audioService.play(buttonSound,0);
             if(emailValidation.validate() && validate()){
                 Toast.makeText(getApplicationContext(),"Form Validate Successfully...",Toast.LENGTH_SHORT).show();
+                String username=etUsername.getText().toString(); //TODO place these in validate method
+                String email=etEmail.getText().toString();
+                String password=etPassword.getText().toString();
+               // String cPass=etConfirmPassword.getText().toString();
+                createUser(username,email,password);
                 openActivityLogin();
             }else{
                 Toast.makeText(getApplicationContext(),"Validation Failed...",Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+    public void createUser(String username,String email,String password){
+        User user=new User();
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(password);
+
+
+       retroInstance.initializeAPIService().registerUser(user);
+        retroInstance.createPostRequest(user);
+
+
+    }
+
 
     private void openActivityLogin()
     {
@@ -69,6 +99,7 @@ public class ActivityRegister extends AppCompatActivity
         String usernameInput = etUsername.getText().toString();
         String passwordInput = etPassword.getText().toString();
         String confirmPasswordInput = etConfirmPassword.getText().toString();
+     //   String email=etEmail.getText().toString();
 
         if (USERNAME_PATTERN.matcher(usernameInput).matches() || usernameInput.contains(" ")) {
             etUsername.setError("Username must be 3–99 characters long without spaces");
@@ -81,6 +112,7 @@ public class ActivityRegister extends AppCompatActivity
             return false;
         } else {
             etPassword.setError(null);
+           // createUser(usernameInput,email,passwordInput,confirmPasswordInput);
             return true;
         }
     }
