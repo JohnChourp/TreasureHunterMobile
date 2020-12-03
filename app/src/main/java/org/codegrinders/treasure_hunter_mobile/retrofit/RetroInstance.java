@@ -15,7 +15,7 @@ public class RetroInstance {
     private List<Puzzle> puzzles;
     private List<User> users;
 
-    private RetroCallBack callBack;
+    RetroCallBack callBack;
     APIService apiService;
     Call<List<User>> callUsers;
     Call<List<Puzzle>> callPuzzles;
