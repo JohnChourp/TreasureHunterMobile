@@ -15,9 +15,12 @@ import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
 import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.retrofit.APIService;
+import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
 import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
 import org.codegrinders.treasure_hunter_mobile.settings.Sound;
+import org.codegrinders.treasure_hunter_mobile.tables.RegisterRequest;
+import org.codegrinders.treasure_hunter_mobile.tables.RegisterResponse;
 import org.codegrinders.treasure_hunter_mobile.tables.User;
 
 import java.util.regex.Pattern;
@@ -56,6 +59,8 @@ public class ActivityRegister extends AppCompatActivity
         bt_submit = findViewById(R.id.bt_submit);
 
 
+
+
         emailValidation = new AwesomeValidation(ValidationStyle.BASIC);
         emailValidation.addValidation(this,R.id.et_email, Patterns.EMAIL_ADDRESS,R.string.invalid_email);
 
@@ -63,11 +68,18 @@ public class ActivityRegister extends AppCompatActivity
             audioService.play(buttonSound,0);
             if(emailValidation.validate() && validate()){
                 Toast.makeText(getApplicationContext(),"Form Validate Successfully...",Toast.LENGTH_SHORT).show();
-                String username=etUsername.getText().toString(); //TODO place these in validate method
-                String email=etEmail.getText().toString();
-                String password=etPassword.getText().toString();
-               // String cPass=etConfirmPassword.getText().toString();
-                createUser(username,email,password);
+//                String username=etUsername.getText().toString(); //TODO place these in validate method
+//                String email=etEmail.getText().toString();
+//                String password=etPassword.getText().toString();
+//               // String cPass=etConfirmPassword.getText().toString();
+//                createUser(username,email,password);
+                RegisterRequest registerRequest=new RegisterRequest();
+                registerRequest.setEmail(etEmail.getText().toString());
+                registerRequest.setUsername(etUsername.getText().toString());
+                registerRequest.setPassword(etPassword.getText().toString());
+                registerRequest.setPoints(0);
+                registerRequest.setId("12as");
+                registerUser(registerRequest);
                 openActivityLogin();
             }else{
                 Toast.makeText(getApplicationContext(),"Validation Failed...",Toast.LENGTH_SHORT).show();
@@ -75,17 +87,40 @@ public class ActivityRegister extends AppCompatActivity
         });
     }
 
-    public void createUser(String username,String email,String password){
-        User user=new User();
-        user.setUsername(username);
-        user.setEmail(email);
-        user.setPassword(password);
+ /*   public void createUser(String username,String email,String password){
+        RegisterRequest registerRequest=new RegisterRequest();
+        registerRequest.setUsername(username);
+        registerRequest.setEmail(email);
+        registerRequest.setPassword(password);
 
 
-       retroInstance.initializeAPIService().registerUser(user);
-        retroInstance.createPostRequest(user);
+       // retroInstance.createPostRequest(registerRequest);
 
 
+    } */
+
+    public void registerUser(RegisterRequest registerRequest){
+        Call<RegisterResponse>registerResponseCall=retroInstance.initializeAPIService().registerUser(registerRequest);
+        registerResponseCall.enqueue(new Callback<RegisterResponse>() {
+            @Override
+            public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
+                if (response.isSuccessful()){
+                    String message="Successfully Registered";
+
+                }else{
+                    String message="Erron on response DES TO sto ActivityRegister";
+                    Toast.makeText(ActivityRegister.this, message, Toast.LENGTH_SHORT).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RegisterResponse> call, Throwable t) {
+
+                String message=t.getLocalizedMessage();
+                Toast.makeText(ActivityRegister.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 
