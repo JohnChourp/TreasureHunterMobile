@@ -4,17 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class RegisterRequest {
 
-    @SerializedName("id")
-
-    private String id;
-    @SerializedName("username")
+    private String id="as12";
     private String username;
-    @SerializedName("email")
     private String email;
-    @SerializedName("password")
     private String password;
-    @SerializedName("points")
-    private int points;
+    private int points=0;
 
     public void setId(String id) {this.id = id;}
 

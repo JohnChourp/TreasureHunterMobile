@@ -10,6 +10,9 @@ import org.codegrinders.treasure_hunter_mobile.tables.User;
 import org.codegrinders.treasure_hunter_mobile.ui.ActivityRegister;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,16 +25,23 @@ public class RetroInstance {
     private List<User> users;
 
     private RetroCallBack callBack;
-    APIService apiService;
+    static APIService apiService;
     Call<List<User>> callUsers;
     Call<List<Puzzle>> callPuzzles;
     Call<RegisterResponse> userCall;
     private  ActivityRegister activityRegister;
 
-    public APIService initializeAPIService(){
+
+
+    public static APIService initializeAPIService(){
+        HttpLoggingInterceptor httpLoggingInterceptor=new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient okHttpClient=new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
                 .build();
         apiService = retrofit.create(APIService.class);
         return retrofit.create(APIService.class);

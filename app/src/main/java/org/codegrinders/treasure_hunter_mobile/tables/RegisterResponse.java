@@ -4,15 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class RegisterResponse {
 
-    @SerializedName("id")
     private String id;
-    @SerializedName("email")
     private String email;
-    @SerializedName("username")
     private String username;
-    @SerializedName("password")
     private String password;
-    @SerializedName("points")
     private int points;
 
     public String getId() {return id;}
