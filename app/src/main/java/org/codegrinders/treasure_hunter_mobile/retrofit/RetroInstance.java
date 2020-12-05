@@ -120,4 +120,13 @@ public class RetroInstance {
     public void setUsers(List<User> users) {
         this.users = users;
     }
+
+    public void setCallUsers(Call<List<User>> callUsers) {
+        this.callUsers = callUsers;
+    }
+
+    public void setCallPuzzles(Call<List<Puzzle>> callPuzzles) {
+
+        this.callPuzzles = callPuzzles;
+    }
 }

@@ -4,54 +4,37 @@ import org.codegrinders.treasure_hunter_mobile.tables.Puzzle;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.mockwebserver.MockWebServer;
+
 import static org.junit.Assert.*;
 
 public class RetroInstanceTest {
-boolean wasInCallPuzzles = false;
-boolean wasInCallUsers = false;
+    //Given_When_Then
+    @Mock
+    RetroInstance mockedInstance = mock(RetroInstance.class);
 
     @Mock
-    RetroInstance mockedInstance = new RetroInstance();
+    MockWebServer mockWebServer = new MockWebServer();
+
 
     @Test
-    public void initializeAPIService() {
+    public void whenQuestionNumberWithInLimitThenGetDataSuccessfully(){
+        when(mockedInstance.getQuestion()).thenReturn("question1");
+        String result = mockedInstance.getQuestion();
+        assertEquals("question1", result);
     }
 
     @Test
-    public void getQuestion() {
-        mockedInstance.setPuzzles(new ArrayList<>());
-
-        mockedInstance.getPuzzles().add(new Puzzle());
-        mockedInstance.getPuzzles().get(0).setQuestion("question1");
-
-        mockedInstance.getPuzzles().add(new Puzzle());
-        mockedInstance.getPuzzles().get(1).setQuestion("question2");
-
-        assertEquals("question1", mockedInstance.getQuestion());
-        mockedInstance.setQuestionNumber(1);
-        assertEquals("question2", mockedInstance.getQuestion());
-        //and so on and so forth
-    }
-
-    @Test
-    public void isCorrect() {
-        mockedInstance.setPuzzles(new ArrayList<>());
-
-        mockedInstance.getPuzzles().add(new Puzzle());
-        mockedInstance.getPuzzles().get(0).setAnswer("answer1");
-
-        mockedInstance.getPuzzles().add(new Puzzle());
-        mockedInstance.getPuzzles().get(1).setAnswer("answer2");
-
-        assertFalse(mockedInstance.isCorrect("answ"));
-        assertTrue(mockedInstance.isCorrect("answer1"));
-        //will get the next element automatically
-        assertFalse(mockedInstance.isCorrect("answ"));
-        assertTrue(mockedInstance.isCorrect("answer2"));
+    public void whenAnswerIsCorrectThenReturnTrue() {
+        when(mockedInstance.isCorrect("10")).thenReturn(true);
+        boolean correct = mockedInstance.isCorrect("10");
+        assertTrue(correct);
     }
 
     @Test
@@ -62,30 +45,4 @@ boolean wasInCallUsers = false;
     public void puzzlesGetRequest() {
     }
 
-    @Test
-    public void setCallListener() {
-        RetroInstance retroInstance = new RetroInstance();
-
-        retroInstance.setCallListener(new RetroCallBack() {
-            @Override
-            public void onCallUsersFinished() {
-                wasInCallUsers = true;
-            }
-
-            @Override
-            public void onCallPuzzlesFinished() {
-                wasInCallPuzzles = true;
-            }
-
-            @Override
-            public void onCallFailed(String errorMessage) {
-                assertEquals("error example", errorMessage);
-            }
-        });
-        retroInstance.callBack.onCallPuzzlesFinished();
-        assertTrue(wasInCallPuzzles);
-        retroInstance.callBack.onCallUsersFinished();
-        assertTrue(wasInCallUsers);
-        retroInstance.callBack.onCallFailed("error example");
-    }
 }
