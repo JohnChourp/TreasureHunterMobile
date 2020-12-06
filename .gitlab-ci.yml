@@ -12,6 +12,7 @@ before_script:
   - git config --global user.email 'fchamalidis@yahoo.com'
   - git config --global user.name 'FanisCham'
   - git update-index --chmod=+x gradlew
+  - git commit
 
 stages:
   - build
