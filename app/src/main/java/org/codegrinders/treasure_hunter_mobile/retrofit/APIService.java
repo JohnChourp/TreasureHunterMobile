@@ -5,18 +5,20 @@ import org.codegrinders.treasure_hunter_mobile.tables.RegisterRequest;
 import org.codegrinders.treasure_hunter_mobile.tables.RegisterResponse;
 import org.codegrinders.treasure_hunter_mobile.tables.User;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface APIService {
-    @GET("user/")
+    @GET("/user/")
     Call<List<User>> getUsers();
 
-    @GET("puzzle/")
+    @GET("/puzzle/")
     Call<List<Puzzle>> getPuzzles();
 
-    @POST("user/add")
+    @POST("/user/")
     Call<RegisterResponse> registerUser(@Body RegisterRequest registerRequest);
 }

@@ -1,14 +1,9 @@
 package org.codegrinders.treasure_hunter_mobile.retrofit;
 
-
-import android.widget.Toast;
-
 import org.codegrinders.treasure_hunter_mobile.tables.Puzzle;
-import org.codegrinders.treasure_hunter_mobile.tables.RegisterRequest;
-import org.codegrinders.treasure_hunter_mobile.tables.RegisterResponse;
 import org.codegrinders.treasure_hunter_mobile.tables.User;
-import org.codegrinders.treasure_hunter_mobile.ui.ActivityRegister;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -28,15 +23,14 @@ public class RetroInstance {
     static APIService apiService;
     Call<List<User>> callUsers;
     Call<List<Puzzle>> callPuzzles;
-    Call<RegisterResponse> userCall;
-    private  ActivityRegister activityRegister;
 
 
-
-    public static APIService initializeAPIService(){
-        HttpLoggingInterceptor httpLoggingInterceptor=new HttpLoggingInterceptor();
+    public static APIService initializeAPIService() {
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient okHttpClient=new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .build();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8080/")
@@ -47,20 +41,21 @@ public class RetroInstance {
         return retrofit.create(APIService.class);
     }
 
-    public String getQuestion(){
+
+    public String getQuestion() {
         String ret = "";
 
         if (questionNumber < puzzles.size()) {
-            ret =  puzzles.get(questionNumber).getQuestion();
+            ret = puzzles.get(questionNumber).getQuestion();
         }
         return ret;
     }
 
-    public boolean isCorrect(String input){
+    public boolean isCorrect(String input) {
         boolean correct = false;
 
-        if (questionNumber < puzzles.size()){
-            if(puzzles.get(questionNumber).getAnswer().equals(input)){
+        if (questionNumber < puzzles.size()) {
+            if (puzzles.get(questionNumber).getAnswer().equals(input)) {
                 correct = true;
                 questionNumber++;
             }
@@ -68,35 +63,7 @@ public class RetroInstance {
         return correct;
     }
 
-   public void createPostRequest(RegisterRequest registerRequest){
-        userCall=apiService.registerUser(registerRequest);
-
-        userCall.enqueue(new Callback<RegisterResponse>() {
-            @Override
-            public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
-                if (response.isSuccessful()){
-                    String message="Successfully Registered";
-
-                }else{
-                    String message="Erron on response DES TO sto ActivityRegister";
-                    Toast.makeText(activityRegister, message, Toast.LENGTH_SHORT).show();
-
-                }
-
-            }
-            @Override
-            public void onFailure(Call<RegisterResponse> call, Throwable t) {
-
-                String message=t.getLocalizedMessage();
-              //  Toast.makeText(ActivityRegister.this, message, Toast.LENGTH_SHORT).show();
-                Toast.makeText(activityRegister, message, Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-    }
-
-    public void usersGetRequest(){
+    public void usersGetRequest() {
         callUsers = apiService.getUsers();
 
         callUsers.enqueue(new Callback<List<User>>() {
@@ -117,7 +84,7 @@ public class RetroInstance {
         });
     }
 
-    public void puzzlesGetRequest(){
+    public void puzzlesGetRequest() {
         apiService = initializeAPIService();
         callPuzzles = apiService.getPuzzles();
 
@@ -139,7 +106,7 @@ public class RetroInstance {
         });
     }
 
-    public void setCallListener(RetroCallBack callBack){
+    public void setCallListener(RetroCallBack callBack) {
         this.callBack = callBack;
     }
 
