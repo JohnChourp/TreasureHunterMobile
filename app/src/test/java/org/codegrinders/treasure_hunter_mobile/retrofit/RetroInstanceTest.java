@@ -7,8 +7,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
@@ -24,7 +22,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class RetroInstanceTest {
-    //Given or When_Then_Return or Get
     @Mock
     RetroInstance mockedInstance = mock(RetroInstance.class);
 
@@ -84,7 +81,7 @@ public class RetroInstanceTest {
     }
 
     @Test
-    public void whenIsCorrectIsCalledWithCorrectAnswerCheckIfAnswerIsCorrect(){
+    public void whenIsCorrectIsCalledWithCorrectAnswerCheckIfAnswerIsCorrect() {
         RetroInstance retroInstance = new RetroInstance();
         retroInstance.setPuzzles(new ArrayList<>());
         retroInstance.getPuzzles().add(new Puzzle());
@@ -93,7 +90,7 @@ public class RetroInstanceTest {
     }
 
     @Test
-    public void whenIsCorrectIsCalledWithWrongAnswerCheckIfAnswerIsNotCorrect(){
+    public void whenIsCorrectIsCalledWithWrongAnswerCheckIfAnswerIsNotCorrect() {
         RetroInstance retroInstance = new RetroInstance();
         retroInstance.setPuzzles(new ArrayList<>());
         retroInstance.getPuzzles().add(new Puzzle());
@@ -102,7 +99,7 @@ public class RetroInstanceTest {
     }
 
     @Test
-    public void whenIsCorrectIsCalledASecondTimeItChecksTheNextAnswerOnThePuzzleList(){
+    public void whenIsCorrectIsCalledASecondTimeItChecksTheNextAnswerOnThePuzzleList() {
         RetroInstance retroInstance = new RetroInstance();
         retroInstance.setPuzzles(new ArrayList<>());
         retroInstance.getPuzzles().add(new Puzzle());
@@ -114,7 +111,7 @@ public class RetroInstanceTest {
     }
 
     @Test
-    public void whenIsCorrectIsCalledASecondTimeAndTheresOnlyOnePuzzleItReturnsFalse(){
+    public void whenIsCorrectIsCalledASecondTimeIfTheresOnlyOnePuzzleItReturnsFalse() {
         RetroInstance retroInstance = new RetroInstance();
         retroInstance.setPuzzles(new ArrayList<>());
         retroInstance.getPuzzles().add(new Puzzle());
@@ -124,6 +121,33 @@ public class RetroInstanceTest {
     }
 
 
+    @Test
+    public void whenGetQuestionIsCalledAfterIsCorrectItReturnsTheQuestionOfTheNextPuzzle() {
+        RetroInstance retroInstance = new RetroInstance();
+        retroInstance.setPuzzles(new ArrayList<>());
+        retroInstance.getPuzzles().add(new Puzzle());
+        retroInstance.getPuzzles().add(new Puzzle());
+        retroInstance.getPuzzles().get(0).setQuestion("question1");
+        retroInstance.getPuzzles().get(0).setAnswer("answer1");
+        retroInstance.getPuzzles().get(1).setQuestion("question2");
+
+        assertEquals("question1", retroInstance.getQuestion());
+        assertTrue(retroInstance.isCorrect("answer1"));
+        assertEquals("question2", retroInstance.getQuestion());
+    }
+
+    @Test
+    public void whenGetQuestionIsCalledAfterIsCorrectIfTheresOnlyOnePuzzleItReturnsEmptyString() {
+        RetroInstance retroInstance = new RetroInstance();
+        retroInstance.setPuzzles(new ArrayList<>());
+        retroInstance.getPuzzles().add(new Puzzle());
+        retroInstance.getPuzzles().get(0).setQuestion("question1");
+        retroInstance.getPuzzles().get(0).setAnswer("answer1");
+
+        assertEquals("question1", retroInstance.getQuestion());
+        assertTrue(retroInstance.isCorrect("answer1"));
+        assertEquals("", retroInstance.getQuestion());
+    }
 
     @Test
     public void usersGetRequest() {
