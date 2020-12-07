@@ -3,7 +3,9 @@ package org.codegrinders.treasure_hunter_mobile.retrofit;
 import org.codegrinders.treasure_hunter_mobile.tables.Puzzle;
 import org.codegrinders.treasure_hunter_mobile.tables.User;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -16,33 +18,31 @@ public class RetroInstance {
     private List<User> users;
 
     RetroCallBack callBack;
-    APIService apiService;
     Call<List<User>> callUsers;
     Call<List<Puzzle>> callPuzzles;
 
-    public APIService initializeAPIService(){
+    public APIService initializeAPIService() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        apiService = retrofit.create(APIService.class);
         return retrofit.create(APIService.class);
     }
 
-    public String getQuestion(){
+    public String getQuestion() {
         String ret = "";
 
         if (questionNumber < puzzles.size()) {
-            ret =  puzzles.get(questionNumber).getQuestion();
+            ret = puzzles.get(questionNumber).getQuestion();
         }
         return ret;
     }
 
-    public boolean isCorrect(String input){
+    public boolean isCorrect(String input) {
         boolean correct = false;
 
-        if (questionNumber < puzzles.size()){
-            if(puzzles.get(questionNumber).getAnswer().equals(input)){
+        if (questionNumber < puzzles.size()) {
+            if (puzzles.get(questionNumber).getAnswer().equals(input)) {
                 correct = true;
                 questionNumber++;
             }
@@ -50,8 +50,8 @@ public class RetroInstance {
         return correct;
     }
 
-    public void usersGetRequest(){
-        callUsers = apiService.getUsers();
+    public void usersGetRequest() {
+        callUsers = initializeAPIService().getUsers();
 
         callUsers.enqueue(new Callback<List<User>>() {
             @Override
@@ -71,9 +71,8 @@ public class RetroInstance {
         });
     }
 
-    public void puzzlesGetRequest(){
-        apiService = initializeAPIService();
-        callPuzzles = apiService.getPuzzles();
+    public void puzzlesGetRequest() {
+        callPuzzles = initializeAPIService().getPuzzles();
 
         callPuzzles.enqueue(new Callback<List<Puzzle>>() {
             @Override
@@ -93,7 +92,7 @@ public class RetroInstance {
         });
     }
 
-    public void setCallListener(RetroCallBack callBack){
+    public void setCallListener(RetroCallBack callBack) {
         this.callBack = callBack;
     }
 
