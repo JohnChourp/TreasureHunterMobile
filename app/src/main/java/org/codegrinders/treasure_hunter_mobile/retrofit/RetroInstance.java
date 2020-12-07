@@ -19,9 +19,7 @@ public class RetroInstance {
     private List<Puzzle> puzzles;
     private List<User> users;
 
-<<<<<<< app/src/main/java/org/codegrinders/treasure_hunter_mobile/retrofit/RetroInstance.java
     private RetroCallBack callBack;
-    static APIService apiService;
     Call<List<User>> callUsers;
     Call<List<Puzzle>> callPuzzles;
 
