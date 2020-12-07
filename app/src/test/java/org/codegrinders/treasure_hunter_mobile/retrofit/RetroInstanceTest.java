@@ -199,13 +199,4 @@ public class RetroInstanceTest {
         assertTrue(retroInstance.isCorrect("answer1"));
         assertEquals("", retroInstance.getQuestion());
     }
-
-    @Test
-    public void usersGetRequest() {
-    }
-
-    @Test
-    public void puzzlesGetRequest() {
-    }
-
 }
