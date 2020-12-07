@@ -104,40 +104,6 @@ public class RetroInstanceTest {
     }
 
     @Test
-    public void whenServerStartThenCheckPortIsCorrect() {
-        assertEquals(8080, server.getPort());
-    }
-
-    @Test
-    public void whenServerStartThenCheckHostNameIsCorrect() {
-        assertEquals("127.0.0.1", server.getHostName());
-    }
-
-    @Test
-    public void whenServerStartThenCheckUrlPuzzlesIsCorrect() {
-        assertEquals("http://127.0.0.1:8080/puzzles/", server.url("/puzzles/").toString());
-    }
-
-    @Test
-    public void whenServerStartThenCheckUrlUsersIsCorrect() {
-        assertEquals("http://127.0.0.1:8080/users/", server.url("/users/").toString());
-    }
-
-    @Test
-    public void whenQuestionNumberWithInLimitThenGetDataSuccessfully() {
-        when(mockedInstance.getQuestion()).thenReturn("question1");
-        String result = mockedInstance.getQuestion();
-        assertEquals("question1", result);
-    }
-
-    @Test
-    public void whenAnswerIsCorrectThenReturnTrue() {
-        when(mockedInstance.isCorrect("10")).thenReturn(true);
-        boolean correct = mockedInstance.isCorrect("10");
-        assertTrue(correct);
-    }
-
-    @Test
     public void whenIsCorrectIsCalledWithCorrectAnswerCheckIfAnswerIsCorrect() {
         retroInstance.setPuzzles(new ArrayList<>());
         retroInstance.getPuzzles().add(new Puzzle());
