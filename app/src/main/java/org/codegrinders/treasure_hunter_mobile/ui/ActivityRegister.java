@@ -10,24 +10,36 @@ import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.google.gson.Gson;
+
 import org.codegrinders.treasure_hunter_mobile.R;
+import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
 import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
 import org.codegrinders.treasure_hunter_mobile.settings.Sound;
+import org.codegrinders.treasure_hunter_mobile.tables.RegisterRequest;
+import org.codegrinders.treasure_hunter_mobile.tables.RegisterResponse;
+import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.regex.Pattern;
 
-public class ActivityRegister extends AppCompatActivity
-{
-    EditText etUsername,etEmail,etPassword,etConfirmPassword;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class ActivityRegister extends AppCompatActivity {
+    EditText etUsername, etEmail, etPassword, etConfirmPassword;
     Button bt_submit;
     AwesomeValidation emailValidation;
     MediaService audioService;
 
     Intent intent;
-    boolean isBound =false;
+    boolean isBound = false;
     int backgroundMusic;
     int buttonSound;
 
@@ -39,30 +51,63 @@ public class ActivityRegister extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+
         etUsername = findViewById(R.id.et_username);
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
         etConfirmPassword = findViewById(R.id.et_confirm_password);
         bt_submit = findViewById(R.id.bt_submit);
 
+
         emailValidation = new AwesomeValidation(ValidationStyle.BASIC);
-        emailValidation.addValidation(this,R.id.et_email, Patterns.EMAIL_ADDRESS,R.string.invalid_email);
+        emailValidation.addValidation(this, R.id.et_email, Patterns.EMAIL_ADDRESS, R.string.invalid_email);
 
         bt_submit.setOnClickListener(v -> {
-            audioService.play(buttonSound,0);
-            if(emailValidation.validate() && validate()){
-                Toast.makeText(getApplicationContext(),"Form Validate Successfully...",Toast.LENGTH_SHORT).show();
-                openActivityLogin();
-            }else{
-                Toast.makeText(getApplicationContext(),"Validation Failed...",Toast.LENGTH_SHORT).show();
+            audioService.play(buttonSound, 0);
+            if (emailValidation.validate() && validate()) {
+                RegisterRequest registerRequest = new RegisterRequest();
+                registerRequest.setEmail(etEmail.getText().toString());
+                registerRequest.setUsername(etUsername.getText().toString());
+                registerRequest.setPassword(etPassword.getText().toString());
+                registerUser(registerRequest);
+                finish();
+            } else {
+                Toast.makeText(getApplicationContext(), "Validation Failed...", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void openActivityLogin()
-    {
-        Intent intent = new Intent(this, ActivityLogin.class);
-        startActivity(intent);
+    public void registerUser(RegisterRequest registerRequest) {
+
+        Call<RegisterResponse> registerResponseCall = RetroInstance.initializeAPIService().registerUser(registerRequest);
+
+        registerResponseCall.enqueue(new Callback<RegisterResponse>() {
+
+            @Override
+            public void onResponse(@NotNull Call<RegisterResponse> call, @NotNull Response<RegisterResponse> response) {
+                if (response.isSuccessful()) {
+                    String message = "Successfully Registered";
+                    Toast.makeText(ActivityRegister.this, message, Toast.LENGTH_SHORT).show();
+                } else {
+                    Gson gson = new Gson();
+                    try {
+                        RegisterResponse registerResponse = gson.fromJson(response.errorBody().string(), RegisterResponse.class);
+                        String message = registerResponse.getMessage();
+                        Toast.makeText(ActivityRegister.this, message, Toast.LENGTH_SHORT).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<RegisterResponse> call, @NotNull Throwable t) {
+
+                String message = t.getLocalizedMessage();
+                Toast.makeText(ActivityRegister.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private boolean validate() {

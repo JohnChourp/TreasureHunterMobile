@@ -6,6 +6,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -17,14 +19,23 @@ public class RetroInstance {
     private List<Puzzle> puzzles;
     private List<User> users;
 
-    RetroCallBack callBack;
+<<<<<<< app/src/main/java/org/codegrinders/treasure_hunter_mobile/retrofit/RetroInstance.java
+    private RetroCallBack callBack;
+    static APIService apiService;
     Call<List<User>> callUsers;
     Call<List<Puzzle>> callPuzzles;
 
-    public APIService initializeAPIService() {
+    public static APIService initializeAPIService() {
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
                 .build();
         return retrofit.create(APIService.class);
     }
@@ -72,6 +83,7 @@ public class RetroInstance {
     }
 
     public void puzzlesGetRequest() {
+
         callPuzzles = initializeAPIService().getPuzzles();
 
         callPuzzles.enqueue(new Callback<List<Puzzle>>() {
