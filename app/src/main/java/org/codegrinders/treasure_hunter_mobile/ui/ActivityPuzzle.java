@@ -6,7 +6,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
@@ -58,18 +60,18 @@ public class ActivityPuzzle extends AppCompatActivity {
 
         bt_continue.setOnClickListener(v -> {
 
-                if(retroInstance.isCorrect(et_answer.getText().toString())){
-                    Toast.makeText(this, "CORRECT", Toast.LENGTH_LONG).show();
-                    if(retroInstance.getQuestionNumber() < retroInstance.getPuzzles().size()){
-                        tv_question.setText(retroInstance.getQuestion());
-                        et_answer.setText("");
-                    }else{
-                        retroInstance.setQuestionNumber(0);
-                        openActivityStart();
-                    }
-                }else{
-                    Toast.makeText(this, "WRONG", Toast.LENGTH_LONG).show();
+            if (retroInstance.isCorrect(et_answer.getText().toString())) {
+                Toast.makeText(this, "CORRECT", Toast.LENGTH_LONG).show();
+                if (retroInstance.getQuestionNumber() < retroInstance.getPuzzles().size()) {
+                    tv_question.setText(retroInstance.getQuestion());
+                    et_answer.setText("");
+                } else {
+                    retroInstance.setQuestionNumber(0);
+                    openActivityStart();
                 }
+            } else {
+                Toast.makeText(this, "WRONG", Toast.LENGTH_LONG).show();
+            }
         });
     }
 
@@ -78,8 +80,7 @@ public class ActivityPuzzle extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void openActivityStart()
-    {
+    private void openActivityStart() {
         Intent intent = new Intent(this, ActivityStart.class);
         startActivity(intent);
     }

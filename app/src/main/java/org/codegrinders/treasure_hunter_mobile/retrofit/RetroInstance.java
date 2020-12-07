@@ -19,11 +19,11 @@ public class RetroInstance {
     private List<Puzzle> puzzles;
     private List<User> users;
 
+<<<<<<< app/src/main/java/org/codegrinders/treasure_hunter_mobile/retrofit/RetroInstance.java
     private RetroCallBack callBack;
     static APIService apiService;
     Call<List<User>> callUsers;
     Call<List<Puzzle>> callPuzzles;
-
 
     public static APIService initializeAPIService() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
@@ -37,10 +37,8 @@ public class RetroInstance {
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();
-        apiService = retrofit.create(APIService.class);
         return retrofit.create(APIService.class);
     }
-
 
     public String getQuestion() {
         String ret = "";
@@ -64,7 +62,7 @@ public class RetroInstance {
     }
 
     public void usersGetRequest() {
-        callUsers = apiService.getUsers();
+        callUsers = initializeAPIService().getUsers();
 
         callUsers.enqueue(new Callback<List<User>>() {
             @Override
@@ -85,8 +83,8 @@ public class RetroInstance {
     }
 
     public void puzzlesGetRequest() {
-        apiService = initializeAPIService();
-        callPuzzles = apiService.getPuzzles();
+
+        callPuzzles = initializeAPIService().getPuzzles();
 
         callPuzzles.enqueue(new Callback<List<Puzzle>>() {
             @Override
@@ -132,5 +130,14 @@ public class RetroInstance {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public void setCallUsers(Call<List<User>> callUsers) {
+        this.callUsers = callUsers;
+    }
+
+    public void setCallPuzzles(Call<List<Puzzle>> callPuzzles) {
+
+        this.callPuzzles = callPuzzles;
     }
 }
