@@ -2,6 +2,7 @@ package org.codegrinders.treasure_hunter_mobile.ui;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -89,8 +90,6 @@ public class ActivityMap extends AppCompatActivity implements
     public boolean onMyLocationButtonClick() {
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
 
-        proximityMarkers();
-
         return false;
     }
 
@@ -99,13 +98,20 @@ public class ActivityMap extends AppCompatActivity implements
     public void onMyLocationClick(@NonNull Location location) {
         Toast.makeText(this, "I am Here", Toast.LENGTH_SHORT).show();
 
-        proximityMarkers();
-
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+
+        openActivityPuzzles();
         return false;
+    }
+
+
+    private void openActivityPuzzles()
+    {
+        Intent intent = new Intent(this, ActivityPuzzle.class);
+        startActivity(intent);
     }
 
 
