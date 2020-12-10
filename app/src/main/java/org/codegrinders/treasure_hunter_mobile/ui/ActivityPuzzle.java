@@ -7,6 +7,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.codegrinders.treasure_hunter_mobile.MapData;
 import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
@@ -35,6 +37,8 @@ public class ActivityPuzzle extends AppCompatActivity {
         et_answer = findViewById(R.id.et_answer);
         bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
         retroInstance.initializeAPIService();
+
+        retroInstance.setQuestionNumber(MapData.searchNameList());
 
         retroInstance.setCallListener(new RetroCallBack() {
             @Override

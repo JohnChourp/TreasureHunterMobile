@@ -2,6 +2,7 @@ package org.codegrinders.treasure_hunter_mobile.ui;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 
+import org.codegrinders.treasure_hunter_mobile.MapData;
 import org.codegrinders.treasure_hunter_mobile.R;
 
 public class ActivityMap extends AppCompatActivity implements
@@ -48,6 +50,9 @@ public class ActivityMap extends AppCompatActivity implements
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        MapData.names.add("Library");
+        MapData.names.add("Canteen");
+        MapData.names.add("Management building");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -105,9 +110,17 @@ public class ActivityMap extends AppCompatActivity implements
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        MapData.markerName = marker.getTitle();
+        openActivityPuzzles();
         return false;
     }
 
+
+    private void openActivityPuzzles()
+    {
+        Intent intent = new Intent(this, ActivityPuzzle.class);
+        startActivity(intent);
+    }
 
     private void proximityMarkers() {
         LocationManager locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
