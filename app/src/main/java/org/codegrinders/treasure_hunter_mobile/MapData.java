@@ -4,7 +4,7 @@ import java.util.List;
 
 public class MapData {
     public static String markerName;
-    public static List < String > names = new ArrayList < String > ();
+    public static List <String> names = new ArrayList<>();
 
     public static int searchNameList() {
         int i;

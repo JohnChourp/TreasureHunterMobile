@@ -50,9 +50,6 @@ public class ActivityMap extends AppCompatActivity implements
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        MapData.names.add("Library");
-        MapData.names.add("Canteen");
-        MapData.names.add("Management building");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -74,6 +71,9 @@ public class ActivityMap extends AppCompatActivity implements
         mMap.setOnMarkerClickListener(this);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(university, 17));
 
+        MapData.names.add(Library.getTitle());
+        MapData.names.add(Canteen.getTitle());
+        MapData.names.add(ManagementBuilding.getTitle());
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -93,19 +93,14 @@ public class ActivityMap extends AppCompatActivity implements
     @Override
     public boolean onMyLocationButtonClick() {
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-
         proximityMarkers();
-
         return false;
     }
-
 
     @Override
     public void onMyLocationClick(@NonNull Location location) {
         Toast.makeText(this, "I am Here", Toast.LENGTH_SHORT).show();
-
         proximityMarkers();
-
     }
 
     @Override
@@ -115,9 +110,7 @@ public class ActivityMap extends AppCompatActivity implements
         return false;
     }
 
-
-    private void openActivityPuzzles()
-    {
+    private void openActivityPuzzles() {
         Intent intent = new Intent(this, ActivityPuzzle.class);
         startActivity(intent);
     }
@@ -157,12 +150,8 @@ public class ActivityMap extends AppCompatActivity implements
                 if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), ManagementBuilding.getPosition()) > 50) {
                     ManagementBuilding.setVisible(false);
                 }
-
             }
-
-
         };
-
         locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
     }
 }

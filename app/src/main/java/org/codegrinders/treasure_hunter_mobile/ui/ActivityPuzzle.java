@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.codegrinders.treasure_hunter_mobile.MapData;
@@ -36,8 +37,8 @@ public class ActivityPuzzle extends AppCompatActivity {
         tv_points = findViewById(R.id.tv_points);
         et_answer = findViewById(R.id.et_answer);
         bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
-        retroInstance.initializeAPIService();
 
+        RetroInstance.initializeAPIService();
         retroInstance.setQuestionNumber(MapData.searchNameList());
 
         retroInstance.setCallListener(new RetroCallBack() {
@@ -62,18 +63,13 @@ public class ActivityPuzzle extends AppCompatActivity {
 
         bt_continue.setOnClickListener(v -> {
 
-                if(retroInstance.isCorrect(et_answer.getText().toString())){
-                    Toast.makeText(this, "CORRECT", Toast.LENGTH_LONG).show();
-                    if(retroInstance.getQuestionNumber() < retroInstance.getPuzzles().size()){
-                        tv_question.setText(retroInstance.getQuestion());
-                        et_answer.setText("");
-                    }else{
-                        retroInstance.setQuestionNumber(0);
-                        openActivityStart();
-                    }
-                }else{
-                    Toast.makeText(this, "WRONG", Toast.LENGTH_LONG).show();
-                }
+            if (retroInstance.isCorrect(et_answer.getText().toString())) {
+                Toast.makeText(this, "CORRECT", Toast.LENGTH_LONG).show();
+                openActivityMap();
+            } else {
+                Toast.makeText(this, "WRONG", Toast.LENGTH_LONG).show();
+            }
+            et_answer.setText("");
         });
     }
 
@@ -82,9 +78,8 @@ public class ActivityPuzzle extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void openActivityStart()
-    {
-        Intent intent = new Intent(this, ActivityStart.class);
+    private void openActivityMap() {
+        Intent intent = new Intent(this, ActivityMap.class);
         startActivity(intent);
     }
 }
