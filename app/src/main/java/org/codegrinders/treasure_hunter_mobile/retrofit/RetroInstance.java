@@ -3,7 +3,11 @@ package org.codegrinders.treasure_hunter_mobile.retrofit;
 import org.codegrinders.treasure_hunter_mobile.tables.Puzzle;
 import org.codegrinders.treasure_hunter_mobile.tables.User;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -16,33 +20,38 @@ public class RetroInstance {
     private List<User> users;
 
     private RetroCallBack callBack;
-    APIService apiService;
     Call<List<User>> callUsers;
     Call<List<Puzzle>> callPuzzles;
 
-    public APIService initializeAPIService(){
+    public static APIService initializeAPIService() {
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
                 .build();
-        apiService = retrofit.create(APIService.class);
         return retrofit.create(APIService.class);
     }
 
-    public String getQuestion(){
+    public String getQuestion() {
         String ret = "";
 
         if (questionNumber < puzzles.size()) {
-            ret =  puzzles.get(questionNumber).getQuestion();
+            ret = puzzles.get(questionNumber).getQuestion();
         }
         return ret;
     }
 
-    public boolean isCorrect(String input){
+    public boolean isCorrect(String input) {
         boolean correct = false;
 
-        if (questionNumber < puzzles.size()){
-            if(puzzles.get(questionNumber).getAnswer().equals(input)){
+        if (questionNumber < puzzles.size()) {
+            if (puzzles.get(questionNumber).getAnswer().equals(input)) {
                 correct = true;
                 questionNumber++;
             }
@@ -50,8 +59,8 @@ public class RetroInstance {
         return correct;
     }
 
-    public void usersGetRequest(){
-        callUsers = apiService.getUsers();
+    public void usersGetRequest() {
+        callUsers = initializeAPIService().getUsers();
 
         callUsers.enqueue(new Callback<List<User>>() {
             @Override
@@ -71,9 +80,9 @@ public class RetroInstance {
         });
     }
 
-    public void puzzlesGetRequest(){
-        apiService = initializeAPIService();
-        callPuzzles = apiService.getPuzzles();
+    public void puzzlesGetRequest() {
+
+        callPuzzles = initializeAPIService().getPuzzles();
 
         callPuzzles.enqueue(new Callback<List<Puzzle>>() {
             @Override
@@ -93,7 +102,7 @@ public class RetroInstance {
         });
     }
 
-    public void setCallListener(RetroCallBack callBack){
+    public void setCallListener(RetroCallBack callBack) {
         this.callBack = callBack;
     }
 
@@ -119,5 +128,14 @@ public class RetroInstance {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public void setCallUsers(Call<List<User>> callUsers) {
+        this.callUsers = callUsers;
+    }
+
+    public void setCallPuzzles(Call<List<Puzzle>> callPuzzles) {
+
+        this.callPuzzles = callPuzzles;
     }
 }
