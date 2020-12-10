@@ -120,33 +120,36 @@ public class ActivityMap extends AppCompatActivity implements
             public void onLocationChanged(Location location) {
                 longitude[0] = location.getLongitude();
                 latitude[0] = location.getLatitude();
+
+                if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), Library.getPosition()) < 50) {
+                    Library.setVisible(true);
+                }
+
+                if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), Library.getPosition()) > 50) {
+                    Library.setVisible(false);
+                }
+
+                if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), Canteen.getPosition()) < 50) {
+                    Canteen.setVisible(true);
+                }
+
+                if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), Canteen.getPosition()) > 50) {
+                    Canteen.setVisible(false);
+                }
+
+                if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), ManagementBuilding.getPosition()) < 50) {
+                    ManagementBuilding.setVisible(true);
+                }
+
+                if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), ManagementBuilding.getPosition()) > 50) {
+                    ManagementBuilding.setVisible(false);
+                }
+
             }
+
+
         };
 
-        locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 0, locationListener);
-
-        if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), Library.getPosition()) < 50) {
-            Library.setVisible(true);
-        }
-
-        if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), Library.getPosition()) > 50) {
-            Library.setVisible(false);
-        }
-
-        if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), Canteen.getPosition()) < 50) {
-            Canteen.setVisible(true);
-        }
-
-        if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), Canteen.getPosition()) > 50) {
-            Canteen.setVisible(false);
-        }
-
-        if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), ManagementBuilding.getPosition()) < 50) {
-            ManagementBuilding.setVisible(true);
-        }
-
-        if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), ManagementBuilding.getPosition()) > 50) {
-            ManagementBuilding.setVisible(false);
-        }
+        locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
     }
 }
