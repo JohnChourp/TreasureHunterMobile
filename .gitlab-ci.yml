@@ -8,7 +8,7 @@ variables:
   PROJECT_VERSION: 0.0.1
 
 before_script:
-  - git remote set-url origin https://${GIT_USER}:${GITLAB_ACCESS_TOKEN}@gitlab.com/${CI_PROJECT_PATH}.git
+  - git remote set-url origin https://${GIT_USER}:${GIT_PASSWORD}@gitlab.com/${CI_PROJECT_PATH}.git
   - git config --global user.email 'anestis.zioulis@outlook.com'
   - git config --global user.name 'aneziou'
   - chmod +x ./gradlew
@@ -65,7 +65,7 @@ assembleRelease:
       curl --fail --output "/dev/null" --silent --show-error --write-out "HTTP response: ${http_code}\n\n" \
         --data "{\"tag_name\": \"${PROJECT_NAME}-${PROJECT_VERSION}-${CI_JOB_ID}\", \"name\": \"${CI_PROJECT_NAME}-${PROJECT_NAME}-${PROJECT_VERSION}-${CI_JOB_ID}\",  \"assets\": { \"links\": [{ \"name\": \"release\", \"url\": \"https://gitlab.com/aneziou/treasure_hunter_mobile/-/jobs/${CI_JOB_ID}/artifacts/download\" }] }, \"description\": \"No release notes.\"}" \
         --header "Content-Type: application/json" \
-        --header "Private-Token: ${TOKEN}" \
+        --header "Private-Token: ${GITLAB_ACCESS_TOKEN}" \
         --request POST \
         "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/releases"
   artifacts:
