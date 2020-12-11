@@ -4,11 +4,11 @@ variables:
   ANDROID_COMPILE_SDK: "30"
   ANDROID_BUILD_TOOLS: "30.0.2"
   ANDROID_SDK_TOOLS:   "4333796"
-  PROJECT_NAME: Treasure_Hunter
+  PROJECT_NAME: Treasure_Hunter_Mobile
   PROJECT_VERSION: 0.0.1
 
 before_script:
-  - git remote set-url origin https://$GIT_USER:$GIT_PASSWORD@gitlab.com/$CI_PROJECT_PATH.git
+  - git remote set-url origin https://$GIT_USER:$GITLAB_ACCESS_TOKEN@gitlab.com/$CI_PROJECT_PATH.git
   - git config --global user.email 'anestis.zioulis@outlook.com'
   - git config --global user.name 'aneziou'
   - chmod +x ./gradlew
