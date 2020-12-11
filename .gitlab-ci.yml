@@ -23,29 +23,29 @@ stages:
   - test
   - release
 
-lintDebug:
-  stage: build
-  only:
-    - master
-  script:
-    - ./gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
+# lintDebug:
+#   stage: build
+#   only:
+#     - master
+#   script:
+#     - ./gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
 
-assembleDebug:
-  stage: build
-  only:
-    - master
-  script:
-    - ./gradlew assembleDebug
-  artifacts:
-    paths:
-      - app/build/outputs/
+# assembleDebug:
+#   stage: build
+#   only:
+#     - master
+#   script:
+#     - ./gradlew assembleDebug
+#   artifacts:
+#     paths:
+#       - app/build/outputs/
 
-debugTests:
-  stage: test
-  only:
-    - master
-  script:
-    - ./gradlew -Pci --console=plain :app:testDebug
+# debugTests:
+#   stage: test
+#   only:
+#     - master
+#   script:
+#     - ./gradlew -Pci --console=plain :app:testDebug
 assembleRelease:
   stage: release
   only:
