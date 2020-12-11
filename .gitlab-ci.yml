@@ -4,7 +4,7 @@ variables:
   ANDROID_COMPILE_SDK: "30"
   ANDROID_BUILD_TOOLS: "30.0.2"
   ANDROID_SDK_TOOLS:   "4333796"
-  PROJECT_NAME: Treasure Hunter
+  PROJECT_NAME: Treasure_Hunter
   PROJECT_VERSION: 0.0.1
 
 before_script:
@@ -63,7 +63,7 @@ assembleRelease:
     - git push origin $PROJECT_NAME-$PROJECT_VERSION-$CI_JOB_ID
     - |
       curl --fail --output "/dev/null" --silent --show-error --write-out "HTTP response: ${http_code}\n\n" \
-        --data "{\"tag_name\": \"${PROJECT_NAME}-${PROJECT_VERSION}-${CI_JOB_ID}\", \"name\": \"${CI_PROJECT_NAME} ${PROJECT_NAME}-${PROJECT_VERSION}-${CI_JOB_ID}\",  \"assets\": { \"links\": [{ \"name\": \"release\", \"url\": \"https://gitlab.com/aneziou/treasure_hunter_mobile/-/jobs/${CI_JOB_ID}/artifacts/download\" }] }, \"description\": \"No release notes.\"}" \
+        --data "{\"tag_name\": \"${PROJECT_NAME}-${PROJECT_VERSION}-${CI_JOB_ID}\", \"name\": \"${CI_PROJECT_NAME}-${PROJECT_NAME}-${PROJECT_VERSION}-${CI_JOB_ID}\",  \"assets\": { \"links\": [{ \"name\": \"release\", \"url\": \"https://gitlab.com/aneziou/treasure_hunter_mobile/-/jobs/${CI_JOB_ID}/artifacts/download\" }] }, \"description\": \"No release notes.\"}" \
         --header "Content-Type: application/json" \
         --header "Private-Token: ${TOKEN}" \
         --request POST \
