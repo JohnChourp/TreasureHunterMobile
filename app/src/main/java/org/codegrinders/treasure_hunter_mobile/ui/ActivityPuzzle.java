@@ -38,7 +38,6 @@ public class ActivityPuzzle extends AppCompatActivity {
         et_answer = findViewById(R.id.et_answer);
         bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
 
-        RetroInstance.initializeAPIService();
         retroInstance.setQuestionNumber(MapData.searchNameList());
 
         retroInstance.setCallListener(new RetroCallBack() {
