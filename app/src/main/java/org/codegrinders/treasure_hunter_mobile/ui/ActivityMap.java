@@ -19,7 +19,6 @@ import androidx.core.app.ActivityCompat;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -36,8 +35,8 @@ public class ActivityMap extends AppCompatActivity implements
         OnMyLocationButtonClickListener,
         OnMyLocationClickListener,
         OnMapReadyCallback,
-        OnMarkerClickListener,
-        ActivityCompat.OnRequestPermissionsResultCallback {
+        ActivityCompat.OnRequestPermissionsResultCallback,
+        GoogleMap.OnInfoWindowClickListener {
     private GoogleMap mMap;
     private Marker Library, Canteen, ManagementBuilding;
     private FusedLocationProviderClient fusedLocationClient;
@@ -49,6 +48,7 @@ public class ActivityMap extends AppCompatActivity implements
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        assert mapFragment != null;
         mapFragment.getMapAsync(this);
     }
 
@@ -62,13 +62,13 @@ public class ActivityMap extends AppCompatActivity implements
         LatLng library = new LatLng(41.07634, 23.55451);
         LatLng canteen = new LatLng(41.07457, 23.55395);
         LatLng managementBuilding = new LatLng(41.07637, 23.55309);
-        Library = mMap.addMarker(new MarkerOptions().position(library).title("Library").visible(false));
-        Canteen = mMap.addMarker(new MarkerOptions().position(canteen).title("Canteen").visible(false));
-        ManagementBuilding = mMap.addMarker(new MarkerOptions().position(managementBuilding).title("Management building").visible(false));
+        Library = mMap.addMarker(new MarkerOptions().position(library).title("Library").snippet("Hard Puzzle").visible(false));
+        Canteen = mMap.addMarker(new MarkerOptions().position(canteen).title("Canteen").snippet("Easy Puzzle").visible(false));
+        ManagementBuilding = mMap.addMarker(new MarkerOptions().position(managementBuilding).title("Management building").snippet("Medium Puzzle").visible(false));
 
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
-        mMap.setOnMarkerClickListener(this);
+        mMap.setOnInfoWindowClickListener(this);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(university, 17));
 
         MapData.names.add(Library.getTitle());
@@ -93,21 +93,18 @@ public class ActivityMap extends AppCompatActivity implements
     @Override
     public boolean onMyLocationButtonClick() {
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-        proximityMarkers();
         return false;
     }
 
     @Override
     public void onMyLocationClick(@NonNull Location location) {
         Toast.makeText(this, "I am Here", Toast.LENGTH_SHORT).show();
-        proximityMarkers();
     }
 
     @Override
-    public boolean onMarkerClick(Marker marker) {
+    public void onInfoWindowClick(Marker marker) {
         MapData.markerName = marker.getTitle();
         openActivityPuzzles();
-        return false;
     }
 
     private void openActivityPuzzles() {
@@ -117,39 +114,47 @@ public class ActivityMap extends AppCompatActivity implements
 
     private void proximityMarkers() {
         LocationManager locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         final double[] longitude = {location.getLongitude()};
         final double[] latitude = {location.getLatitude()};
 
-        final LocationListener locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                longitude[0] = location.getLongitude();
-                latitude[0] = location.getLatitude();
+        final LocationListener locationListener = location1 -> {
+            longitude[0] = location1.getLongitude();
+            latitude[0] = location1.getLatitude();
 
-                if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), Library.getPosition()) < 50) {
-                    Library.setVisible(true);
-                }
+            if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), Library.getPosition()) < 50) {
+                Library.setVisible(true);
+            }
 
-                if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), Library.getPosition()) > 50) {
-                    Library.setVisible(false);
-                }
+            if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), Library.getPosition()) > 50) {
+                Library.setVisible(false);
+            }
 
-                if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), Canteen.getPosition()) < 50) {
-                    Canteen.setVisible(true);
-                }
+            if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), Canteen.getPosition()) < 50) {
+                Canteen.setVisible(true);
+            }
 
-                if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), Canteen.getPosition()) > 50) {
-                    Canteen.setVisible(false);
-                }
+            if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), Canteen.getPosition()) > 50) {
+                Canteen.setVisible(false);
+            }
 
-                if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), ManagementBuilding.getPosition()) < 50) {
-                    ManagementBuilding.setVisible(true);
-                }
+            if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), ManagementBuilding.getPosition()) < 50) {
+                ManagementBuilding.setVisible(true);
+            }
 
-                if (SphericalUtil.computeDistanceBetween(new LatLng(location.getLatitude(), location.getLongitude()), ManagementBuilding.getPosition()) > 50) {
-                    ManagementBuilding.setVisible(false);
-                }
+            if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), ManagementBuilding.getPosition()) > 50) {
+                ManagementBuilding.setVisible(false);
             }
         };
         locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
