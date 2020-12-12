@@ -25,17 +25,15 @@ public class ActivityLeaderBoard extends AppCompatActivity {
 
         retroInstance.setCallListener(new RetroCallBack() {
             @Override
-            public void onCallUsersFinished() {
-                getLeaderBoard();
-            }
-
-            @Override
-            public void onCallPuzzlesFinished() {
-
+            public void onCallFinished(String callType) {
+                if(callType.equals("Users")){
+                    getLeaderBoard();
+                }
             }
 
             @Override
             public void onCallFailed(String errorMessage) {
+
             }
         });
         retroInstance.usersGetRequest();

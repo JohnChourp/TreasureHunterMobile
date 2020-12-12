@@ -30,6 +30,8 @@ import com.google.maps.android.SphericalUtil;
 
 import org.codegrinders.treasure_hunter_mobile.MapData;
 import org.codegrinders.treasure_hunter_mobile.R;
+import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
+import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
 
 public class ActivityMap extends AppCompatActivity implements
         OnMyLocationButtonClickListener,
@@ -39,7 +41,7 @@ public class ActivityMap extends AppCompatActivity implements
         GoogleMap.OnInfoWindowClickListener {
     private GoogleMap mMap;
     private Marker Library, Canteen, ManagementBuilding;
-    private FusedLocationProviderClient fusedLocationClient;
+    private RetroInstance retroInstance = new RetroInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,22 @@ public class ActivityMap extends AppCompatActivity implements
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
+
+        RetroInstance.initializeAPIService();
+
+        retroInstance.setCallListener(new RetroCallBack() {
+            @Override
+            public void onCallFinished(String callType) {
+            }
+
+            @Override
+            public void onCallFailed(String errorMessage) {
+
+            }
+        });
+
+        retroInstance.markersGetRequest();
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

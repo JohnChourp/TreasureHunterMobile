@@ -1,5 +1,6 @@
 package org.codegrinders.treasure_hunter_mobile.retrofit;
 
+import org.codegrinders.treasure_hunter_mobile.tables.Marker;
 import org.codegrinders.treasure_hunter_mobile.tables.Puzzle;
 import org.codegrinders.treasure_hunter_mobile.tables.User;
 import org.jetbrains.annotations.NotNull;
@@ -18,10 +19,12 @@ public class RetroInstance {
     private int questionNumber = 0;
     private List<Puzzle> puzzles;
     private List<User> users;
+    private List<Marker> markers;
 
     private RetroCallBack callBack;
     Call<List<User>> callUsers;
     Call<List<Puzzle>> callPuzzles;
+    Call<List<Marker>> callMarkers;
 
     public static APIService initializeAPIService() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
@@ -61,7 +64,7 @@ public class RetroInstance {
                     return;
                 }
                 users = response.body();
-                callBack.onCallUsersFinished();
+                callBack.onCallFinished("Users");
             }
 
             @Override
@@ -82,7 +85,7 @@ public class RetroInstance {
                     return;
                 }
                 puzzles = response.body();
-                callBack.onCallPuzzlesFinished();
+                callBack.onCallFinished("Puzzles");
             }
 
             @Override
@@ -92,12 +95,42 @@ public class RetroInstance {
         });
     }
 
+    public void markersGetRequest(){
+        callMarkers = initializeAPIService().getMarkers();
+        callMarkers.enqueue(new Callback<List<Marker>>() {
+            @Override
+            public void onResponse(Call<List<Marker>> call, Response<List<Marker>> response) {
+                if (!response.isSuccessful()) {
+                    callBack.onCallFailed("code: " + response.code());
+                    return;
+                }
+
+                markers = response.body();
+                callBack.onCallFinished("Markers");
+            }
+
+            @Override
+            public void onFailure(Call<List<Marker>> call, Throwable t) {
+                callBack.onCallFailed(t.getMessage());
+            }
+        });
+
+    }
+
     public void setCallListener(RetroCallBack callBack) {
         this.callBack = callBack;
     }
 
     public void setQuestionNumber(int questionNumber) {
         this.questionNumber = questionNumber;
+    }
+
+    public List<Marker> getMarkers() {
+        return markers;
+    }
+
+    public void setMarkers(List<Marker> markers) {
+        this.markers = markers;
     }
 
     public List<User> getUsers() {

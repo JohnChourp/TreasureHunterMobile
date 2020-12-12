@@ -43,19 +43,20 @@ public class ActivityPuzzle extends AppCompatActivity {
 
         retroInstance.setCallListener(new RetroCallBack() {
             @Override
-            public void onCallUsersFinished() {
-                tv_username.setText(retroInstance.getUsers().get(0).getUsername());
-                tv_points.setText(String.valueOf(retroInstance.getUsers().get(0).getPoints()));
-            }
+            public void onCallFinished(String callType) {
+                if(callType.equals("Users")){
+                    tv_username.setText(retroInstance.getUsers().get(0).getUsername());
+                    tv_points.setText(String.valueOf(retroInstance.getUsers().get(0).getPoints()));
+                }
+                if(callType.equals("Puzzles")){
+                    tv_question.setText(retroInstance.getQuestion());
+                }
 
-            @Override
-            public void onCallPuzzlesFinished() {
-                tv_question.setText(retroInstance.getQuestion());
             }
 
             @Override
             public void onCallFailed(String errorMessage) {
-                tv_question.setText(errorMessage);
+                    tv_question.setText(errorMessage);
             }
         });
         retroInstance.puzzlesGetRequest();
