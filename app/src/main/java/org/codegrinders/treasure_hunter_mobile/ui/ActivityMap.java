@@ -32,6 +32,9 @@ import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ActivityMap extends AppCompatActivity implements
         OnMyLocationButtonClickListener,
         OnMyLocationClickListener,
@@ -39,14 +42,13 @@ public class ActivityMap extends AppCompatActivity implements
         ActivityCompat.OnRequestPermissionsResultCallback,
         GoogleMap.OnInfoWindowClickListener {
     private GoogleMap mMap;
-    private Marker Library, Canteen, ManagementBuilding;
+    private final List<Marker> markerList = new ArrayList<>();
     RetroInstance retroInstance = new RetroInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         assert mapFragment != null;
@@ -62,24 +64,15 @@ public class ActivityMap extends AppCompatActivity implements
         retroInstance.setCallListener(new RetroCallBack() {
             @Override
             public void onCallFinished(String callType) {
-
                 LatLng university = new LatLng(41.07529, 23.55330);
-                LatLng library = new LatLng(retroInstance.getMarkers().get(0).getLatitude(), retroInstance.getMarkers().get(0).getLongitude());
-                LatLng canteen = new LatLng(retroInstance.getMarkers().get(1).getLatitude(), retroInstance.getMarkers().get(1).getLongitude());
-                LatLng managementBuilding = new LatLng(retroInstance.getMarkers().get(2).getLatitude(), retroInstance.getMarkers().get(2).getLongitude());
-                Library = mMap.addMarker(new MarkerOptions().position(library).title(retroInstance.getMarkers().get(0).getMarkerTile()).snippet(retroInstance.getMarkers().get(0).getSnippet()).visible(false));
-                Canteen = mMap.addMarker(new MarkerOptions().position(canteen).title(retroInstance.getMarkers().get(1).getMarkerTile()).snippet(retroInstance.getMarkers().get(1).getSnippet()).visible(false));
-                ManagementBuilding = mMap.addMarker(new MarkerOptions().position(managementBuilding).title(retroInstance.getMarkers().get(2).getMarkerTile()).snippet(retroInstance.getMarkers().get(2).getSnippet()).visible(false));
 
-
+                for (int i = 0; i < retroInstance.getMarkers().size(); i++) {
+                    markerList.add(mMap.addMarker(new MarkerOptions().position(new LatLng(retroInstance.getMarkers().get(i).getLatitude(),
+                            retroInstance.getMarkers().get(i).getLongitude())).title(retroInstance.getMarkers().get(i).getMarkerTile()).snippet(retroInstance.getMarkers().get(i).getSnippet()).visible(false)));
+                    MapData.names.add(markerList.get(i).getTitle());
+                }
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(university, 17));
-
-                MapData.names.add(Library.getTitle());
-                MapData.names.add(Canteen.getTitle());
-                MapData.names.add(ManagementBuilding.getTitle());
-
                 proximityMarkers();
-
             }
 
             @Override
@@ -87,7 +80,6 @@ public class ActivityMap extends AppCompatActivity implements
 
             }
         });
-
         retroInstance.markersGetRequest();
 
         mMap.setOnMyLocationButtonClickListener(this);
@@ -105,9 +97,7 @@ public class ActivityMap extends AppCompatActivity implements
             return;
         }
         mMap.setMyLocationEnabled(true);
-
     }
-
 
     @Override
     public boolean onMyLocationButtonClick() {
@@ -124,11 +114,6 @@ public class ActivityMap extends AppCompatActivity implements
     public void onInfoWindowClick(Marker marker) {
         MapData.markerName = marker.getTitle();
         openActivityPuzzles();
-    }
-
-    private void openActivityPuzzles() {
-        Intent intent = new Intent(this, ActivityPuzzle.class);
-        startActivity(intent);
     }
 
     private void proximityMarkers() {
@@ -151,31 +136,21 @@ public class ActivityMap extends AppCompatActivity implements
         final LocationListener locationListener = location1 -> {
             longitude[0] = location1.getLongitude();
             latitude[0] = location1.getLatitude();
+            for (int i = 0; i < retroInstance.getMarkers().size(); i++) {
+                if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), markerList.get(i).getPosition()) < 50) {
+                    markerList.get(i).setVisible(true);
+                }
 
-            if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), Library.getPosition()) < 50) {
-                Library.setVisible(true);
-            }
-
-            if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), Library.getPosition()) > 50) {
-                Library.setVisible(false);
-            }
-
-            if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), Canteen.getPosition()) < 50) {
-                Canteen.setVisible(true);
-            }
-
-            if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), Canteen.getPosition()) > 50) {
-                Canteen.setVisible(false);
-            }
-
-            if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), ManagementBuilding.getPosition()) < 50) {
-                ManagementBuilding.setVisible(true);
-            }
-
-            if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), ManagementBuilding.getPosition()) > 50) {
-                ManagementBuilding.setVisible(false);
+                if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), markerList.get(i).getPosition()) > 50) {
+                    markerList.get(i).setVisible(false);
+                }
             }
         };
         locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+    }
+
+    private void openActivityPuzzles() {
+        Intent intent = new Intent(this, ActivityPuzzle.class);
+        startActivity(intent);
     }
 }

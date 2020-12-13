@@ -65,7 +65,7 @@ public class ActivityPuzzle extends AppCompatActivity {
 
             if (retroInstance.isCorrect(et_answer.getText().toString())) {
                 Toast.makeText(this, "CORRECT", Toast.LENGTH_LONG).show();
-                openActivityMap();
+                finish();
             } else {
                 Toast.makeText(this, "WRONG", Toast.LENGTH_LONG).show();
             }
@@ -75,11 +75,6 @@ public class ActivityPuzzle extends AppCompatActivity {
 
     private void openActivityLeaderBoard() {
         Intent intent = new Intent(this, ActivityLeaderBoard.class);
-        startActivity(intent);
-    }
-
-    private void openActivityMap() {
-        Intent intent = new Intent(this, ActivityMap.class);
         startActivity(intent);
     }
 }

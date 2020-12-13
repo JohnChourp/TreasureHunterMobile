@@ -21,7 +21,6 @@ public class ActivityLeaderBoard extends AppCompatActivity {
         setContentView(R.layout.activity_leaderboard);
 
         listView = findViewById(R.id.listView);
-        RetroInstance.initializeAPIService();
 
         retroInstance.setCallListener(new RetroCallBack() {
             @Override

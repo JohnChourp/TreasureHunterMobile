@@ -1,6 +1,6 @@
 package org.codegrinders.treasure_hunter_mobile.retrofit;
 
-import org.codegrinders.treasure_hunter_mobile.tables.Marker;
+import org.codegrinders.treasure_hunter_mobile.tables.Markers;
 import org.codegrinders.treasure_hunter_mobile.tables.Puzzle;
 import org.codegrinders.treasure_hunter_mobile.tables.User;
 import org.jetbrains.annotations.NotNull;
@@ -19,12 +19,12 @@ public class RetroInstance {
     private int questionNumber = 0;
     private List<Puzzle> puzzles;
     private List<User> users;
-    private List<Marker> markers;
+    private List<Markers> markers;
 
     private RetroCallBack callBack;
     Call<List<User>> callUsers;
     Call<List<Puzzle>> callPuzzles;
-    Call<List<Marker>> callMarkers;
+    Call<List<Markers>> callMarkers;
 
     public static APIService initializeAPIService() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
@@ -97,9 +97,9 @@ public class RetroInstance {
 
     public void markersGetRequest(){
         callMarkers = initializeAPIService().getMarkers();
-        callMarkers.enqueue(new Callback<List<Marker>>() {
+        callMarkers.enqueue(new Callback<List<Markers>>() {
             @Override
-            public void onResponse(Call<List<Marker>> call, Response<List<Marker>> response) {
+            public void onResponse(Call<List<Markers>> call, Response<List<Markers>> response) {
                 if (!response.isSuccessful()) {
                     callBack.onCallFailed("code: " + response.code());
                     return;
@@ -110,7 +110,7 @@ public class RetroInstance {
             }
 
             @Override
-            public void onFailure(Call<List<Marker>> call, Throwable t) {
+            public void onFailure(Call<List<Markers>> call, Throwable t) {
                 callBack.onCallFailed(t.getMessage());
             }
         });
@@ -125,11 +125,11 @@ public class RetroInstance {
         this.questionNumber = questionNumber;
     }
 
-    public List<Marker> getMarkers() {
+    public List<Markers> getMarkers() {
         return markers;
     }
 
-    public void setMarkers(List<Marker> markers) {
+    public void setMarkers(List<Markers> markers) {
         this.markers = markers;
     }
 

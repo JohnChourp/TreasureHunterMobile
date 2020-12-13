@@ -1,6 +1,6 @@
 package org.codegrinders.treasure_hunter_mobile.tables;
 
-public class Marker {
+public class Markers {
 
     private String id;
     private double latitude;
