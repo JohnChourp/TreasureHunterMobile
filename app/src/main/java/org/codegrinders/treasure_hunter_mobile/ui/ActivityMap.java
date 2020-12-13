@@ -64,14 +64,13 @@ public class ActivityMap extends AppCompatActivity implements
         retroInstance.setCallListener(new RetroCallBack() {
             @Override
             public void onCallFinished(String callType) {
-                LatLng university = new LatLng(41.07529, 23.55330);
 
                 for (int i = 0; i < retroInstance.getMarkers().size(); i++) {
                     markerList.add(mMap.addMarker(new MarkerOptions().position(new LatLng(retroInstance.getMarkers().get(i).getLatitude(),
                             retroInstance.getMarkers().get(i).getLongitude())).title(retroInstance.getMarkers().get(i).getMarkerTile()).snippet(retroInstance.getMarkers().get(i).getSnippet()).visible(false)));
                     MapData.names.add(markerList.get(i).getTitle());
                 }
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(university, 17));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.07529, 23.55330), 17));
                 proximityMarkers();
             }
 
