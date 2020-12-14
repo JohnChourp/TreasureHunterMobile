@@ -43,6 +43,7 @@ public class RetroInstance {
 
     public String getQuestion() {
         return puzzles.get(questionNumber).getQuestion();
+
     }
 
     public boolean isCorrect(String input) {
@@ -75,6 +76,7 @@ public class RetroInstance {
     }
 
     public void puzzlesGetRequest() {
+
         callPuzzles = initializeAPIService().getPuzzles();
 
         callPuzzles.enqueue(new Callback<List<Puzzle>>() {
@@ -115,6 +117,8 @@ public class RetroInstance {
             }
         });
 
+    public void setCallListener(RetroCallBack callBack) {
+        this.callBack = callBack;
     }
 
     public void setCallListener(RetroCallBack callBack) {

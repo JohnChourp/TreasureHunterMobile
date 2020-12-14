@@ -16,8 +16,10 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -44,11 +46,17 @@ public class ActivityMap extends AppCompatActivity implements
     private GoogleMap mMap;
     private final List<Marker> markerList = new ArrayList<>();
     RetroInstance retroInstance = new RetroInstance();
+        OnMarkerClickListener,
+        ActivityCompat.OnRequestPermissionsResultCallback {
+    private GoogleMap mMap;
+    private Marker Library, Canteen, ManagementBuilding;
+    private FusedLocationProviderClient fusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         assert mapFragment != null;
@@ -98,11 +106,13 @@ public class ActivityMap extends AppCompatActivity implements
         mMap.setMyLocationEnabled(true);
     }
 
+
     @Override
     public boolean onMyLocationButtonClick() {
         Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
         return false;
     }
+
 
     @Override
     public void onMyLocationClick(@NonNull Location location) {
