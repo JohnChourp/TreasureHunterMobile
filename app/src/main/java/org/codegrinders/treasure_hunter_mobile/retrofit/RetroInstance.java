@@ -1,5 +1,6 @@
 package org.codegrinders.treasure_hunter_mobile.retrofit;
 
+import org.codegrinders.treasure_hunter_mobile.tables.Markers;
 import org.codegrinders.treasure_hunter_mobile.tables.Puzzle;
 import org.codegrinders.treasure_hunter_mobile.tables.User;
 import org.jetbrains.annotations.NotNull;
@@ -18,10 +19,12 @@ public class RetroInstance {
     private int questionNumber = 0;
     private List<Puzzle> puzzles;
     private List<User> users;
+    private List<Markers> markers;
 
     private RetroCallBack callBack;
     Call<List<User>> callUsers;
     Call<List<Puzzle>> callPuzzles;
+    Call<List<Markers>> callMarkers;
 
     public static APIService initializeAPIService() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
@@ -39,22 +42,14 @@ public class RetroInstance {
     }
 
     public String getQuestion() {
-        String ret = "";
+        return puzzles.get(questionNumber).getQuestion();
 
-        if (questionNumber < puzzles.size()) {
-            ret = puzzles.get(questionNumber).getQuestion();
-        }
-        return ret;
     }
 
     public boolean isCorrect(String input) {
         boolean correct = false;
-
-        if (questionNumber < puzzles.size()) {
-            if (puzzles.get(questionNumber).getAnswer().equals(input)) {
-                correct = true;
-                questionNumber++;
-            }
+        if (puzzles.get(questionNumber).getAnswer().equals(input)) {
+            correct = true;
         }
         return correct;
     }
@@ -70,7 +65,7 @@ public class RetroInstance {
                     return;
                 }
                 users = response.body();
-                callBack.onCallUsersFinished();
+                callBack.onCallFinished("Users");
             }
 
             @Override
@@ -92,7 +87,7 @@ public class RetroInstance {
                     return;
                 }
                 puzzles = response.body();
-                callBack.onCallPuzzlesFinished();
+                callBack.onCallFinished("Puzzles");
             }
 
             @Override
@@ -102,40 +97,47 @@ public class RetroInstance {
         });
     }
 
+    public void markersGetRequest(){
+        callMarkers = initializeAPIService().getMarkers();
+        callMarkers.enqueue(new Callback<List<Markers>>() {
+            @Override
+            public void onResponse(Call<List<Markers>> call, Response<List<Markers>> response) {
+                if (!response.isSuccessful()) {
+                    callBack.onCallFailed("code: " + response.code());
+                    return;
+                }
+
+                markers = response.body();
+                callBack.onCallFinished("Markers");
+            }
+
+            @Override
+            public void onFailure(Call<List<Markers>> call, Throwable t) {
+                callBack.onCallFailed(t.getMessage());
+            }
+        });
+
     public void setCallListener(RetroCallBack callBack) {
         this.callBack = callBack;
     }
 
-    public int getQuestionNumber() {
-        return questionNumber;
+    public void setCallListener(RetroCallBack callBack) {
+        this.callBack = callBack;
     }
 
     public void setQuestionNumber(int questionNumber) {
         this.questionNumber = questionNumber;
     }
 
-    public List<Puzzle> getPuzzles() {
-        return puzzles;
+    public List<Markers> getMarkers() {
+        return markers;
     }
 
-    public void setPuzzles(List<Puzzle> puzzles) {
-        this.puzzles = puzzles;
+    public void setMarkers(List<Markers> markers) {
+        this.markers = markers;
     }
 
     public List<User> getUsers() {
         return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
-    public void setCallUsers(Call<List<User>> callUsers) {
-        this.callUsers = callUsers;
-    }
-
-    public void setCallPuzzles(Call<List<Puzzle>> callPuzzles) {
-
-        this.callPuzzles = callPuzzles;
     }
 }

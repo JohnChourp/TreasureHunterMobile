@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.codegrinders.treasure_hunter_mobile.MapData;
 import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
@@ -36,23 +37,25 @@ public class ActivityPuzzle extends AppCompatActivity {
         tv_points = findViewById(R.id.tv_points);
         et_answer = findViewById(R.id.et_answer);
         bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
-        retroInstance.initializeAPIService();
+
+        retroInstance.setQuestionNumber(MapData.searchNameList());
 
         retroInstance.setCallListener(new RetroCallBack() {
             @Override
-            public void onCallUsersFinished() {
-                tv_username.setText(retroInstance.getUsers().get(0).getUsername());
-                tv_points.setText(String.valueOf(retroInstance.getUsers().get(0).getPoints()));
-            }
+            public void onCallFinished(String callType) {
+                if(callType.equals("Users")){
+                    tv_username.setText(retroInstance.getUsers().get(0).getUsername());
+                    tv_points.setText(String.valueOf(retroInstance.getUsers().get(0).getPoints()));
+                }
+                if(callType.equals("Puzzles")){
+                    tv_question.setText(retroInstance.getQuestion());
+                }
 
-            @Override
-            public void onCallPuzzlesFinished() {
-                tv_question.setText(retroInstance.getQuestion());
             }
 
             @Override
             public void onCallFailed(String errorMessage) {
-                tv_question.setText(errorMessage);
+                    tv_question.setText(errorMessage);
             }
         });
         retroInstance.puzzlesGetRequest();
@@ -62,26 +65,16 @@ public class ActivityPuzzle extends AppCompatActivity {
 
             if (retroInstance.isCorrect(et_answer.getText().toString())) {
                 Toast.makeText(this, "CORRECT", Toast.LENGTH_LONG).show();
-                if (retroInstance.getQuestionNumber() < retroInstance.getPuzzles().size()) {
-                    tv_question.setText(retroInstance.getQuestion());
-                    et_answer.setText("");
-                } else {
-                    retroInstance.setQuestionNumber(0);
-                    openActivityStart();
-                }
+                finish();
             } else {
                 Toast.makeText(this, "WRONG", Toast.LENGTH_LONG).show();
             }
+            et_answer.setText("");
         });
     }
 
     private void openActivityLeaderBoard() {
         Intent intent = new Intent(this, ActivityLeaderBoard.class);
-        startActivity(intent);
-    }
-
-    private void openActivityStart() {
-        Intent intent = new Intent(this, ActivityStart.class);
         startActivity(intent);
     }
 }

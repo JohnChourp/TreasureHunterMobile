@@ -21,21 +21,18 @@ public class ActivityLeaderBoard extends AppCompatActivity {
         setContentView(R.layout.activity_leaderboard);
 
         listView = findViewById(R.id.listView);
-        retroInstance.initializeAPIService();
 
         retroInstance.setCallListener(new RetroCallBack() {
             @Override
-            public void onCallUsersFinished() {
-                getLeaderBoard();
-            }
-
-            @Override
-            public void onCallPuzzlesFinished() {
-
+            public void onCallFinished(String callType) {
+                if(callType.equals("Users")){
+                    getLeaderBoard();
+                }
             }
 
             @Override
             public void onCallFailed(String errorMessage) {
+
             }
         });
         retroInstance.usersGetRequest();
