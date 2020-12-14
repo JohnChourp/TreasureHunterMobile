@@ -120,49 +120,11 @@ public class RetroInstanceTest {
     }
 
     @Test
-    public void whenIsCorrectIsCalledASecondTimeItChecksTheNextAnswerOnThePuzzleList() {
-        retroInstance.setPuzzles(new ArrayList<>());
-        retroInstance.getPuzzles().add(new Puzzle());
-        retroInstance.getPuzzles().add(new Puzzle());
-        retroInstance.getPuzzles().get(0).setAnswer("answer1");
-        retroInstance.getPuzzles().get(1).setAnswer("answer2");
-        assertTrue(retroInstance.isCorrect("answer1"));
-        assertTrue(retroInstance.isCorrect("answer2"));
-    }
-
-    @Test
     public void whenIsCorrectIsCalledASecondTimeIfTheresOnlyOnePuzzleItReturnsFalse() {
         retroInstance.setPuzzles(new ArrayList<>());
         retroInstance.getPuzzles().add(new Puzzle());
         retroInstance.getPuzzles().get(0).setAnswer("answer1");
         assertTrue(retroInstance.isCorrect("answer1"));
         assertFalse(retroInstance.isCorrect(""));
-    }
-
-
-    @Test
-    public void whenGetQuestionIsCalledAfterIsCorrectItReturnsTheQuestionOfTheNextPuzzle() {
-        retroInstance.setPuzzles(new ArrayList<>());
-        retroInstance.getPuzzles().add(new Puzzle());
-        retroInstance.getPuzzles().add(new Puzzle());
-        retroInstance.getPuzzles().get(0).setQuestion("question1");
-        retroInstance.getPuzzles().get(0).setAnswer("answer1");
-        retroInstance.getPuzzles().get(1).setQuestion("question2");
-
-        assertEquals("question1", retroInstance.getQuestion());
-        assertTrue(retroInstance.isCorrect("answer1"));
-        assertEquals("question2", retroInstance.getQuestion());
-    }
-
-    @Test
-    public void whenGetQuestionIsCalledAfterIsCorrectIfTheresOnlyOnePuzzleItReturnsEmptyString() {
-        retroInstance.setPuzzles(new ArrayList<>());
-        retroInstance.getPuzzles().add(new Puzzle());
-        retroInstance.getPuzzles().get(0).setQuestion("question1");
-        retroInstance.getPuzzles().get(0).setAnswer("answer1");
-
-        assertEquals("question1", retroInstance.getQuestion());
-        assertTrue(retroInstance.isCorrect("answer1"));
-        assertEquals("", retroInstance.getQuestion());
     }
 }
