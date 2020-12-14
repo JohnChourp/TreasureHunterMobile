@@ -89,8 +89,9 @@ public class ActivityRegister extends AppCompatActivity {
                     String message = "Successfully Registered";
                     Toast.makeText(ActivityRegister.this, message, Toast.LENGTH_SHORT).show();
                 } else {
-                    Gson gson = new Gson();
                     try {
+                        Gson gson = new Gson();
+                        assert response.errorBody() != null;
                         RegisterResponse registerResponse = gson.fromJson(response.errorBody().string(), RegisterResponse.class);
                         String message = registerResponse.getMessage();
                         Toast.makeText(ActivityRegister.this, message, Toast.LENGTH_SHORT).show();
@@ -104,7 +105,7 @@ public class ActivityRegister extends AppCompatActivity {
             @Override
             public void onFailure(@NotNull Call<RegisterResponse> call, @NotNull Throwable t) {
 
-                String message = t.getLocalizedMessage();
+                String message = "Registration failed miserably!";
                 Toast.makeText(ActivityRegister.this, message, Toast.LENGTH_SHORT).show();
             }
         });
