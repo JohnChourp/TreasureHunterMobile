@@ -97,11 +97,11 @@ public class RetroInstance {
         });
     }
 
-    public void markersGetRequest(){
+    public void markersGetRequest() {
         callMarkers = initializeAPIService().getMarkers();
         callMarkers.enqueue(new Callback<List<Markers>>() {
             @Override
-            public void onResponse(Call<List<Markers>> call, Response<List<Markers>> response) {
+            public void onResponse(@NotNull Call<List<Markers>> call, @NotNull Response<List<Markers>> response) {
                 if (!response.isSuccessful()) {
                     callBack.onCallFailed("code: " + response.code());
                     return;
@@ -112,13 +112,10 @@ public class RetroInstance {
             }
 
             @Override
-            public void onFailure(Call<List<Markers>> call, Throwable t) {
+            public void onFailure(@NotNull Call<List<Markers>> call, @NotNull Throwable t) {
                 callBack.onCallFailed(t.getMessage());
             }
         });
-
-    public void setCallListener(RetroCallBack callBack) {
-        this.callBack = callBack;
     }
 
     public void setCallListener(RetroCallBack callBack) {
