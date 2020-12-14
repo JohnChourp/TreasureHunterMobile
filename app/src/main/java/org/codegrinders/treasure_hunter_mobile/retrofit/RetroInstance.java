@@ -134,6 +134,14 @@ public class RetroInstance {
         this.markers = markers;
     }
 
+    public List<Puzzle> getPuzzles() {
+        return puzzles;
+    }
+
+    public void setPuzzles(List<Puzzle> puzzles) {
+        this.puzzles = puzzles;
+    }
+
     public List<User> getUsers() {
         return users;
     }
