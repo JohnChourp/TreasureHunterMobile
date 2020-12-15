@@ -21,8 +21,8 @@ public class RetroGetRequest {
 
     private RetroCallBack callBack;
 
-    private Call<List<User>> callUsers;
     private Call<List<Puzzle>> callPuzzles;
+    private Call<List<User>> callUsers;
     private Call<List<Markers>> callMarkers;
 
     public String getQuestion() {
