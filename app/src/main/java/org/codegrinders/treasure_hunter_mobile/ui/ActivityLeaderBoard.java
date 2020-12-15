@@ -3,21 +3,26 @@ package org.codegrinders.treasure_hunter_mobile.ui;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import java.util.List;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import org.codegrinders.treasure_hunter_mobile.R;
+import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesGetRequest;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
-import org.codegrinders.treasure_hunter_mobile.retrofit.RetroGetRequest;
+import org.codegrinders.treasure_hunter_mobile.retrofit.UsersGetRequest;
 import org.codegrinders.treasure_hunter_mobile.tables.User;
+
+import java.util.List;
 
 public class ActivityLeaderBoard extends AppCompatActivity {
 
     private ListView listView;
-    RetroGetRequest retroGetRequest = new RetroGetRequest();
+    PuzzlesGetRequest puzzlesGetRequest = new PuzzlesGetRequest();
+    UsersGetRequest usersGetRequest = new UsersGetRequest();
     RetroCallBack retroCallBack;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
 
@@ -26,7 +31,7 @@ public class ActivityLeaderBoard extends AppCompatActivity {
         retroCallBack = new RetroCallBack() {
             @Override
             public void onCallFinished(String callType) {
-                if(callType.equals("Users")){
+                if (callType.equals("Users")) {
                     getLeaderBoard();
                 }
             }
@@ -37,15 +42,16 @@ public class ActivityLeaderBoard extends AppCompatActivity {
             }
         };
 
-        retroGetRequest.setCallBack(retroCallBack);
+        puzzlesGetRequest.setCallBack(retroCallBack);
+        usersGetRequest.setCallBack(retroCallBack);
 
-        retroGetRequest.usersGetRequest();
+        usersGetRequest.usersGetRequest();
     }
 
-    void getLeaderBoard(){
-        List<User> pointsList = retroGetRequest.getUsers();
+    void getLeaderBoard() {
+        List<User> pointsList = usersGetRequest.getUsers();
         String[] leaderBoard = new String[pointsList.size()];
-        for(int i=0; i<pointsList.size();i++){
+        for (int i = 0; i < pointsList.size(); i++) {
             leaderBoard[i] = pointsList.get(i).getUsername()
                     + " : " + pointsList.get(i).getPoints();
         }
