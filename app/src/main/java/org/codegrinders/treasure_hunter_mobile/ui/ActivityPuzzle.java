@@ -24,6 +24,7 @@ public class ActivityPuzzle extends AppCompatActivity {
     EditText et_answer;
 
     RetroGetRequest retroGetRequest = new RetroGetRequest();
+    RetroCallBack retroCallBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,8 @@ public class ActivityPuzzle extends AppCompatActivity {
 
         retroGetRequest.setQuestionNumber(MapData.searchNameList());
 
-        retroGetRequest.setCallBack(new RetroCallBack() {
+
+        retroCallBack = new RetroCallBack() {
             @Override
             public void onCallFinished(String callType) {
                 if (callType.equals("Users")) {
@@ -56,7 +58,10 @@ public class ActivityPuzzle extends AppCompatActivity {
             public void onCallFailed(String errorMessage) {
                 tv_question.setText(errorMessage);
             }
-        });
+        };
+
+        retroGetRequest.setCallBack(retroCallBack);
+
         retroGetRequest.puzzlesGetRequest();
         retroGetRequest.usersGetRequest();
 

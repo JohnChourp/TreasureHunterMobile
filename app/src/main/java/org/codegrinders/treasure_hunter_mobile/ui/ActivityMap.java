@@ -44,6 +44,7 @@ public class ActivityMap extends AppCompatActivity implements
     private GoogleMap mMap;
     private final List<Marker> markerList = new ArrayList<>();
     RetroGetRequest retroGetRequest = new RetroGetRequest();
+    RetroCallBack retroCallBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public class ActivityMap extends AppCompatActivity implements
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
-        retroGetRequest.setCallBack(new RetroCallBack() {
+        retroCallBack = new RetroCallBack() {
             @Override
             public void onCallFinished(String callType) {
 
@@ -78,7 +79,10 @@ public class ActivityMap extends AppCompatActivity implements
             public void onCallFailed(String errorMessage) {
 
             }
-        });
+        };
+
+        retroGetRequest.setCallBack(retroCallBack);
+
         retroGetRequest.markersGetRequest();
 
         mMap.setOnMyLocationButtonClickListener(this);

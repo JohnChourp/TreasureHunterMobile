@@ -8,13 +8,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroGetRequest;
-import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
 import org.codegrinders.treasure_hunter_mobile.tables.User;
 
 public class ActivityLeaderBoard extends AppCompatActivity {
 
     private ListView listView;
     RetroGetRequest retroGetRequest = new RetroGetRequest();
+    RetroCallBack retroCallBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -22,7 +23,7 @@ public class ActivityLeaderBoard extends AppCompatActivity {
 
         listView = findViewById(R.id.listView);
 
-        retroGetRequest.setCallBack(new RetroCallBack() {
+        retroCallBack = new RetroCallBack() {
             @Override
             public void onCallFinished(String callType) {
                 if(callType.equals("Users")){
@@ -34,7 +35,10 @@ public class ActivityLeaderBoard extends AppCompatActivity {
             public void onCallFailed(String errorMessage) {
 
             }
-        });
+        };
+
+        retroGetRequest.setCallBack(retroCallBack);
+
         retroGetRequest.usersGetRequest();
     }
 
