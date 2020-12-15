@@ -25,4 +25,10 @@ public interface APIService {
 
     @POST("/user/")
     Call<RegisterResponse> registerUser(@Body RegisterRequest registerRequest);
+
+    @POST("/puzzle/")
+    Call<RegisterResponse> registerPuzzle(@Body RegisterRequest registerRequest);
+
+    @POST("/marker/")
+    Call<RegisterResponse> registerMarker(@Body RegisterRequest registerRequest);
 }

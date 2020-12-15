@@ -31,7 +31,6 @@ import org.codegrinders.treasure_hunter_mobile.MapData;
 import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroGetRequest;
-import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
 
 import java.util.ArrayList;
 import java.util.List;
