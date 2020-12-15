@@ -30,6 +30,7 @@ import com.google.maps.android.SphericalUtil;
 import org.codegrinders.treasure_hunter_mobile.MapData;
 import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
+import org.codegrinders.treasure_hunter_mobile.retrofit.RetroGetRequest;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class ActivityMap extends AppCompatActivity implements
         GoogleMap.OnInfoWindowClickListener {
     private GoogleMap mMap;
     private final List<Marker> markerList = new ArrayList<>();
-    RetroInstance retroInstance = new RetroInstance();
+    RetroGetRequest retroGetRequest = new RetroGetRequest();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +62,13 @@ public class ActivityMap extends AppCompatActivity implements
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
-        retroInstance.setCallListener(new RetroCallBack() {
+        retroGetRequest.setCallBack(new RetroCallBack() {
             @Override
             public void onCallFinished(String callType) {
 
-                for (int i = 0; i < retroInstance.getMarkers().size(); i++) {
-                    markerList.add(mMap.addMarker(new MarkerOptions().position(new LatLng(retroInstance.getMarkers().get(i).getLatitude(),
-                            retroInstance.getMarkers().get(i).getLongitude())).title(retroInstance.getMarkers().get(i).getMarkerTile()).snippet(retroInstance.getMarkers().get(i).getSnippet()).visible(false)));
+                for (int i = 0; i < retroGetRequest.getMarkers().size(); i++) {
+                    markerList.add(mMap.addMarker(new MarkerOptions().position(new LatLng(retroGetRequest.getMarkers().get(i).getLatitude(),
+                            retroGetRequest.getMarkers().get(i).getLongitude())).title(retroGetRequest.getMarkers().get(i).getMarkerTile()).snippet(retroGetRequest.getMarkers().get(i).getSnippet()).visible(false)));
                     MapData.names.add(markerList.get(i).getTitle());
                 }
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.07529, 23.55330), 17));
@@ -79,7 +80,7 @@ public class ActivityMap extends AppCompatActivity implements
 
             }
         });
-        retroInstance.markersGetRequest();
+        retroGetRequest.markersGetRequest();
 
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
@@ -137,7 +138,7 @@ public class ActivityMap extends AppCompatActivity implements
         final LocationListener locationListener = location1 -> {
             longitude[0] = location1.getLongitude();
             latitude[0] = location1.getLatitude();
-            for (int i = 0; i < retroInstance.getMarkers().size(); i++) {
+            for (int i = 0; i < retroGetRequest.getMarkers().size(); i++) {
                 if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), markerList.get(i).getPosition()) < 50) {
                     markerList.get(i).setVisible(true);
                 }

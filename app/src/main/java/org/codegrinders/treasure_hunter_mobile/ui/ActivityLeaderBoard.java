@@ -7,14 +7,14 @@ import java.util.List;
 import androidx.appcompat.app.AppCompatActivity;
 import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
+import org.codegrinders.treasure_hunter_mobile.retrofit.RetroGetRequest;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
 import org.codegrinders.treasure_hunter_mobile.tables.User;
 
 public class ActivityLeaderBoard extends AppCompatActivity {
 
     private ListView listView;
-    RetroInstance retroInstance = new RetroInstance();
-
+    RetroGetRequest retroGetRequest = new RetroGetRequest();
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -22,7 +22,7 @@ public class ActivityLeaderBoard extends AppCompatActivity {
 
         listView = findViewById(R.id.listView);
 
-        retroInstance.setCallListener(new RetroCallBack() {
+        retroGetRequest.setCallBack(new RetroCallBack() {
             @Override
             public void onCallFinished(String callType) {
                 if(callType.equals("Users")){
@@ -35,11 +35,11 @@ public class ActivityLeaderBoard extends AppCompatActivity {
 
             }
         });
-        retroInstance.usersGetRequest();
+        retroGetRequest.usersGetRequest();
     }
 
     void getLeaderBoard(){
-        List<User> pointsList = retroInstance.getUsers();
+        List<User> pointsList = retroGetRequest.getUsers();
         String[] leaderBoard = new String[pointsList.size()];
         for(int i=0; i<pointsList.size();i++){
             leaderBoard[i] = pointsList.get(i).getUsername()
