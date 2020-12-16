@@ -9,15 +9,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MarkersGetRequest {
+public class MarkersCall {
 
     private List<Markers> markers;
     private RetroCallBack callBack;
-    private Call<List<Markers>> callMarkers;
+    private Call<List<Markers>> call;
 
     public void markersGetRequest() {
-        callMarkers = RetroInstance.initializeAPIService().getMarkers();
-        callMarkers.enqueue(new Callback<List<Markers>>() {
+        call = RetroInstance.initializeAPIService().getMarkers();
+        call.enqueue(new Callback<List<Markers>>() {
             @Override
             public void onResponse(@NotNull Call<List<Markers>> call, @NotNull Response<List<Markers>> response) {
                 if (!response.isSuccessful()) {
@@ -44,12 +44,12 @@ public class MarkersGetRequest {
         this.markers = markers;
     }
 
-    public Call<List<Markers>> getCallMarkers() {
-        return callMarkers;
+    public Call<List<Markers>> getCall() {
+        return call;
     }
 
-    public void setCallMarkers(Call<List<Markers>> callMarkers) {
-        this.callMarkers = callMarkers;
+    public void setCall(Call<List<Markers>> call) {
+        this.call = call;
     }
 
     public RetroCallBack getCallBack() {

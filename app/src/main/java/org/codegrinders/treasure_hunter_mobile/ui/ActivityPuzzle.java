@@ -11,9 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.codegrinders.treasure_hunter_mobile.MapData;
 import org.codegrinders.treasure_hunter_mobile.R;
-import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesGetRequest;
+import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
-import org.codegrinders.treasure_hunter_mobile.retrofit.UsersGetRequest;
+import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
 
 public class ActivityPuzzle extends AppCompatActivity {
 
@@ -24,8 +24,8 @@ public class ActivityPuzzle extends AppCompatActivity {
     TextView tv_points;
     EditText et_answer;
 
-    PuzzlesGetRequest puzzlesGetRequest = new PuzzlesGetRequest();
-    UsersGetRequest usersGetRequest = new UsersGetRequest();
+    PuzzlesCall puzzlesCall = new PuzzlesCall();
+    UsersCall usersCall = new UsersCall();
     RetroCallBack retroCallBack;
 
     @Override
@@ -41,18 +41,18 @@ public class ActivityPuzzle extends AppCompatActivity {
         et_answer = findViewById(R.id.et_answer);
         bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
 
-        puzzlesGetRequest.setQuestionNumber(MapData.searchNameList());
+        puzzlesCall.setQuestionNumber(MapData.searchNameList());
 
 
         retroCallBack = new RetroCallBack() {
             @Override
             public void onCallFinished(String callType) {
                 if (callType.equals("Users")) {
-                    tv_username.setText(usersGetRequest.getUsers().get(0).getUsername());
-                    tv_points.setText(String.valueOf(usersGetRequest.getUsers().get(0).getPoints()));
+                    tv_username.setText(usersCall.getUsers().get(0).getUsername());
+                    tv_points.setText(String.valueOf(usersCall.getUsers().get(0).getPoints()));
                 }
                 if (callType.equals("Puzzles")) {
-                    tv_question.setText(puzzlesGetRequest.getQuestion());
+                    tv_question.setText(puzzlesCall.getQuestion());
                 }
             }
 
@@ -62,15 +62,15 @@ public class ActivityPuzzle extends AppCompatActivity {
             }
         };
 
-        puzzlesGetRequest.setCallBack(retroCallBack);
-        usersGetRequest.setCallBack(retroCallBack);
+        puzzlesCall.setCallBack(retroCallBack);
+        usersCall.setCallBack(retroCallBack);
 
-        puzzlesGetRequest.puzzlesGetRequest();
-        usersGetRequest.usersGetRequest();
+        puzzlesCall.puzzlesGetRequest();
+        usersCall.usersGetRequest();
 
         bt_continue.setOnClickListener(v -> {
 
-            if (puzzlesGetRequest.isCorrect(et_answer.getText().toString())) {
+            if (puzzlesCall.isCorrect(et_answer.getText().toString())) {
                 Toast.makeText(this, "CORRECT", Toast.LENGTH_LONG).show();
                 finish();
             } else {

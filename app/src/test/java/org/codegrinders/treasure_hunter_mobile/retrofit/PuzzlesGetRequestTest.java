@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 public class PuzzlesGetRequestTest {
 
     MockWebServer server = new MockWebServer();
-    PuzzlesGetRequest puzzlesGetRequest = new PuzzlesGetRequest();
+    PuzzlesCall puzzlesCall = new PuzzlesCall();
 
     @Before
     public void setUp() throws Exception {
@@ -26,34 +26,34 @@ public class PuzzlesGetRequestTest {
 
     @Test
     public void whenGetQuestionIsCalledCheckIfQuestionIsCorrect() {
-        puzzlesGetRequest.setPuzzles(new ArrayList<>());
-        puzzlesGetRequest.getPuzzles().add(new Puzzle());
-        puzzlesGetRequest.getPuzzles().get(0).setQuestion("question1");
-        assertEquals("question1", puzzlesGetRequest.getQuestion());
+        puzzlesCall.setPuzzles(new ArrayList<>());
+        puzzlesCall.getPuzzles().add(new Puzzle());
+        puzzlesCall.getPuzzles().get(0).setQuestion("question1");
+        assertEquals("question1", puzzlesCall.getQuestion());
     }
 
     @Test
     public void whenGetQuestionIsCalledCheckIfQuestionIsWrong() {
-        puzzlesGetRequest.setPuzzles(new ArrayList<>());
-        puzzlesGetRequest.getPuzzles().add(new Puzzle());
-        puzzlesGetRequest.getPuzzles().get(0).setQuestion("question1");
-        assertNotEquals("ques", puzzlesGetRequest.getQuestion());
+        puzzlesCall.setPuzzles(new ArrayList<>());
+        puzzlesCall.getPuzzles().add(new Puzzle());
+        puzzlesCall.getPuzzles().get(0).setQuestion("question1");
+        assertNotEquals("ques", puzzlesCall.getQuestion());
     }
 
     @Test
     public void whenIsCorrectIsCalledWithCorrectAnswerCheckIfAnswerIsCorrect() {
-        puzzlesGetRequest.setPuzzles(new ArrayList<>());
-        puzzlesGetRequest.getPuzzles().add(new Puzzle());
-        puzzlesGetRequest.getPuzzles().get(0).setAnswer("answer1");
-        assertTrue(puzzlesGetRequest.isCorrect("answer1"));
+        puzzlesCall.setPuzzles(new ArrayList<>());
+        puzzlesCall.getPuzzles().add(new Puzzle());
+        puzzlesCall.getPuzzles().get(0).setAnswer("answer1");
+        assertTrue(puzzlesCall.isCorrect("answer1"));
     }
 
     @Test
     public void whenIsCorrectIsCalledWithWrongAnswerCheckIfAnswerIsNotCorrect() {
-        puzzlesGetRequest.setPuzzles(new ArrayList<>());
-        puzzlesGetRequest.getPuzzles().add(new Puzzle());
-        puzzlesGetRequest.getPuzzles().get(0).setAnswer("answer1");
-        assertFalse(puzzlesGetRequest.isCorrect("ans"));
+        puzzlesCall.setPuzzles(new ArrayList<>());
+        puzzlesCall.getPuzzles().add(new Puzzle());
+        puzzlesCall.getPuzzles().get(0).setAnswer("answer1");
+        assertFalse(puzzlesCall.isCorrect("ans"));
     }
 
     @After

@@ -9,15 +9,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UsersGetRequest {
+public class UsersCall {
 
     private RetroCallBack callBack;
     private List<User> users;
-    private Call<List<User>> callUsers;
+    private Call<List<User>> call;
 
     public void usersGetRequest() {
-        callUsers = RetroInstance.initializeAPIService().getUsers();
-        callUsers.enqueue(new Callback<List<User>>() {
+        call = RetroInstance.initializeAPIService().getUsers();
+        call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
                 if (!response.isSuccessful()) {
@@ -43,12 +43,12 @@ public class UsersGetRequest {
         this.users = users;
     }
 
-    public Call<List<User>> getCallUsers() {
-        return callUsers;
+    public Call<List<User>> getCall() {
+        return call;
     }
 
-    public void setCallUsers(Call<List<User>> callUsers) {
-        this.callUsers = callUsers;
+    public void setCall(Call<List<User>> call) {
+        this.call = call;
     }
 
     public RetroCallBack getCallBack() {

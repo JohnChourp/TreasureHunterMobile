@@ -7,9 +7,8 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.codegrinders.treasure_hunter_mobile.R;
-import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesGetRequest;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
-import org.codegrinders.treasure_hunter_mobile.retrofit.UsersGetRequest;
+import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
 import org.codegrinders.treasure_hunter_mobile.tables.User;
 
 import java.util.List;
@@ -17,8 +16,7 @@ import java.util.List;
 public class ActivityLeaderBoard extends AppCompatActivity {
 
     private ListView listView;
-    PuzzlesGetRequest puzzlesGetRequest = new PuzzlesGetRequest();
-    UsersGetRequest usersGetRequest = new UsersGetRequest();
+    UsersCall usersCall = new UsersCall();
     RetroCallBack retroCallBack;
 
     @Override
@@ -42,14 +40,13 @@ public class ActivityLeaderBoard extends AppCompatActivity {
             }
         };
 
-        puzzlesGetRequest.setCallBack(retroCallBack);
-        usersGetRequest.setCallBack(retroCallBack);
+        usersCall.setCallBack(retroCallBack);
 
-        usersGetRequest.usersGetRequest();
+        usersCall.usersGetRequest();
     }
 
     void getLeaderBoard() {
-        List<User> pointsList = usersGetRequest.getUsers();
+        List<User> pointsList = usersCall.getUsers();
         String[] leaderBoard = new String[pointsList.size()];
         for (int i = 0; i < pointsList.size(); i++) {
             leaderBoard[i] = pointsList.get(i).getUsername()

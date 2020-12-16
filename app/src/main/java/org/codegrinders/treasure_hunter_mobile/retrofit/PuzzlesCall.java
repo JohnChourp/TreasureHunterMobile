@@ -9,12 +9,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PuzzlesGetRequest {
+public class PuzzlesCall {
 
     private int questionNumber = 0;
     private List<Puzzle> puzzles;
     private RetroCallBack callBack;
-    private Call<List<Puzzle>> callPuzzles;
+    private Call<List<Puzzle>> call;
 
     public String getQuestion() {
         return puzzles.get(questionNumber).getQuestion();
@@ -29,8 +29,8 @@ public class PuzzlesGetRequest {
     }
 
     public void puzzlesGetRequest() {
-        callPuzzles = RetroInstance.initializeAPIService().getPuzzles();
-        callPuzzles.enqueue(new Callback<List<Puzzle>>() {
+        call = RetroInstance.initializeAPIService().getPuzzles();
+        call.enqueue(new Callback<List<Puzzle>>() {
             @Override
             public void onResponse(@NotNull Call<List<Puzzle>> call, @NotNull Response<List<Puzzle>> response) {
                 if (!response.isSuccessful()) {
@@ -72,11 +72,11 @@ public class PuzzlesGetRequest {
         this.callBack = callBack;
     }
 
-    public Call<List<Puzzle>> getCallPuzzles() {
-        return callPuzzles;
+    public Call<List<Puzzle>> getCall() {
+        return call;
     }
 
-    public void setCallPuzzles(Call<List<Puzzle>> callPuzzles) {
-        this.callPuzzles = callPuzzles;
+    public void setCall(Call<List<Puzzle>> call) {
+        this.call = call;
     }
 }
