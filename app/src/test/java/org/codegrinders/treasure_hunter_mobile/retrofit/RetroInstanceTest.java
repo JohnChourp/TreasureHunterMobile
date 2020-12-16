@@ -1,5 +1,6 @@
 package org.codegrinders.treasure_hunter_mobile.retrofit;
 
+import org.codegrinders.treasure_hunter_mobile.tables.PuzzlesResponse;
 import org.codegrinders.treasure_hunter_mobile.tables.RegisterRequest;
 import org.codegrinders.treasure_hunter_mobile.tables.RegisterResponse;
 import org.junit.After;
@@ -22,13 +23,16 @@ public class RetroInstanceTest {
 
     @Test
     public void whenServerStartThenCheckUlrUsers() {
-
         RegisterRequest registerRequest = new RegisterRequest();
-        registerRequest.setEmail("jonhiedarn@gmail.com");
-        registerRequest.setUsername("john");
-        registerRequest.setPassword("12345678A!");
         Call<RegisterResponse> registerResponseCall = RetroInstance.initializeAPIService().registerUser(registerRequest);
         assertEquals("http://10.0.2.2:8080/user/", registerResponseCall.request().url().toString());
+    }
+
+    @Test
+    public void whenServerStartThenCheckUlrPuzzles(){
+        PuzzlesRequest puzzlesRequest = new PuzzlesRequest();
+        Call<PuzzlesResponse> postResponseCall = RetroInstance.initializeAPIService().postPuzzles(puzzlesRequest);
+        assertEquals("http://10.0.2.2:8080/puzzle/", postResponseCall.request().url().toString());
     }
 
     @After

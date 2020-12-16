@@ -2,6 +2,7 @@ package org.codegrinders.treasure_hunter_mobile.retrofit;
 
 import org.codegrinders.treasure_hunter_mobile.tables.Markers;
 import org.codegrinders.treasure_hunter_mobile.tables.Puzzle;
+import org.codegrinders.treasure_hunter_mobile.tables.PuzzlesResponse;
 import org.codegrinders.treasure_hunter_mobile.tables.RegisterRequest;
 import org.codegrinders.treasure_hunter_mobile.tables.RegisterResponse;
 import org.codegrinders.treasure_hunter_mobile.tables.User;
@@ -27,8 +28,5 @@ public interface APIService {
     Call<RegisterResponse> registerUser(@Body RegisterRequest registerRequest);
 
     @POST("/puzzle/")
-    Call<RegisterResponse> registerPuzzle(@Body RegisterRequest registerRequest);
-
-    @POST("/marker/")
-    Call<RegisterResponse> registerMarker(@Body RegisterRequest registerRequest);
+    Call<PuzzlesResponse> postPuzzles(@Body PuzzlesRequest PuzzlesRequest);
 }
