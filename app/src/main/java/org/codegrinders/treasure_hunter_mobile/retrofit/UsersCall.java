@@ -15,6 +15,7 @@ public class UsersCall {
     private List<User> users;
     private Call<List<User>> call;
 
+
     public void usersGetRequest() {
         call = RetroInstance.initializeAPIService().getUsers();
         call.enqueue(new Callback<List<User>>() {
@@ -58,4 +59,8 @@ public class UsersCall {
     public void setCallBack(RetroCallBack callBack) {
         this.callBack = callBack;
     }
+
+
+
+
 }
