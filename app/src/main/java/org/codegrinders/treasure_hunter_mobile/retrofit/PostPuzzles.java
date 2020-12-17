@@ -1,10 +1,11 @@
-package org.codegrinders.treasure_hunter_mobile.tables;
+package org.codegrinders.treasure_hunter_mobile.retrofit;
 
-public class Puzzle {
+public class PostPuzzles {
     private String id;
     private String question;
     private String answer;
     private int points;
+    private String puzzleId;
 
     public String getId() {
         return id;
@@ -37,4 +38,13 @@ public class Puzzle {
     public void setPoints(int points) {
         this.points = points;
     }
+
+    public String getPuzzleId() {
+        return puzzleId;
+    }
+
+    public void setPuzzleId(String puzzleId) {
+        this.puzzleId = puzzleId;
+    }
 }
+

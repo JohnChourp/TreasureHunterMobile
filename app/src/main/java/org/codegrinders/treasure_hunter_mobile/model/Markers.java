@@ -1,4 +1,4 @@
-package org.codegrinders.treasure_hunter_mobile.tables;
+package org.codegrinders.treasure_hunter_mobile.model;
 
 public class Markers {
 

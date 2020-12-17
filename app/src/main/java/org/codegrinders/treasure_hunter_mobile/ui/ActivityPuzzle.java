@@ -11,8 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.codegrinders.treasure_hunter_mobile.MapData;
 import org.codegrinders.treasure_hunter_mobile.R;
+import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
-import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
+import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
 
 public class ActivityPuzzle extends AppCompatActivity {
 
@@ -23,7 +24,9 @@ public class ActivityPuzzle extends AppCompatActivity {
     TextView tv_points;
     EditText et_answer;
 
-    RetroInstance retroInstance = new RetroInstance();
+    PuzzlesCall puzzlesCall = new PuzzlesCall();
+    UsersCall usersCall = new UsersCall();
+    RetroCallBack retroCallBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,32 +41,36 @@ public class ActivityPuzzle extends AppCompatActivity {
         et_answer = findViewById(R.id.et_answer);
         bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
 
-        retroInstance.setQuestionNumber(MapData.searchNameList());
+        puzzlesCall.setQuestionNumber(MapData.searchNameList());
 
-        retroInstance.setCallListener(new RetroCallBack() {
+
+        retroCallBack = new RetroCallBack() {
             @Override
             public void onCallFinished(String callType) {
-                if(callType.equals("Users")){
-                    tv_username.setText(retroInstance.getUsers().get(0).getUsername());
-                    tv_points.setText(String.valueOf(retroInstance.getUsers().get(0).getPoints()));
+                if (callType.equals("Users")) {
+                    tv_username.setText(usersCall.getUsers().get(0).getUsername());
+                    tv_points.setText(String.valueOf(usersCall.getUsers().get(0).getPoints()));
                 }
-                if(callType.equals("Puzzles")){
-                    tv_question.setText(retroInstance.getQuestion());
+                if (callType.equals("Puzzles")) {
+                    tv_question.setText(puzzlesCall.getQuestion());
                 }
-
             }
 
             @Override
             public void onCallFailed(String errorMessage) {
-                    tv_question.setText(errorMessage);
+                tv_question.setText(errorMessage);
             }
-        });
-        retroInstance.puzzlesGetRequest();
-        retroInstance.usersGetRequest();
+        };
+
+        puzzlesCall.setCallBack(retroCallBack);
+        usersCall.setCallBack(retroCallBack);
+
+        puzzlesCall.puzzlesGetRequest();
+        usersCall.usersGetRequest();
 
         bt_continue.setOnClickListener(v -> {
 
-            if (retroInstance.isCorrect(et_answer.getText().toString())) {
+            if (puzzlesCall.isCorrect(et_answer.getText().toString())) {
                 Toast.makeText(this, "CORRECT", Toast.LENGTH_LONG).show();
                 finish();
             } else {
