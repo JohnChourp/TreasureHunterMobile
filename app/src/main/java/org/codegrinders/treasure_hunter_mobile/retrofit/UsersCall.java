@@ -1,6 +1,6 @@
 package org.codegrinders.treasure_hunter_mobile.retrofit;
 
-import org.codegrinders.treasure_hunter_mobile.tables.User;
+import org.codegrinders.treasure_hunter_mobile.model.User;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

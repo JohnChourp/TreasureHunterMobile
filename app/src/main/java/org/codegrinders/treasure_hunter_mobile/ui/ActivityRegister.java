@@ -21,8 +21,8 @@ import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
 import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
 import org.codegrinders.treasure_hunter_mobile.settings.Sound;
-import org.codegrinders.treasure_hunter_mobile.tables.RegisterRequest;
-import org.codegrinders.treasure_hunter_mobile.tables.RegisterResponse;
+import org.codegrinders.treasure_hunter_mobile.model.RegisterRequest;
+import org.codegrinders.treasure_hunter_mobile.model.RegisterResponse;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;

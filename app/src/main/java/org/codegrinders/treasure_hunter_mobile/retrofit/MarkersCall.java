@@ -1,6 +1,6 @@
 package org.codegrinders.treasure_hunter_mobile.retrofit;
 
-import org.codegrinders.treasure_hunter_mobile.tables.Markers;
+import org.codegrinders.treasure_hunter_mobile.model.Markers;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

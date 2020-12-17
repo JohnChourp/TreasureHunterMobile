@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
-import org.codegrinders.treasure_hunter_mobile.tables.User;
+import org.codegrinders.treasure_hunter_mobile.model.User;
 
 import java.util.List;
 

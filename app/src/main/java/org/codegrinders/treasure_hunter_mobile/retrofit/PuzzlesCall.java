@@ -1,6 +1,6 @@
 package org.codegrinders.treasure_hunter_mobile.retrofit;
 
-import org.codegrinders.treasure_hunter_mobile.tables.Puzzle;
+import org.codegrinders.treasure_hunter_mobile.model.Puzzle;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

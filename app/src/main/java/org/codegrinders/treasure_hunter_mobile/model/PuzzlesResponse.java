@@ -1,8 +1,6 @@
-package org.codegrinders.treasure_hunter_mobile.tables;
+package org.codegrinders.treasure_hunter_mobile.model;
 
 import java.util.List;
-
-import retrofit2.Call;
 
 public class PuzzlesResponse {
     private List<Puzzle> call;

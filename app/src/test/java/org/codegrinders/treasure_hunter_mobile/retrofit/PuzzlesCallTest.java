@@ -3,15 +3,11 @@ package org.codegrinders.treasure_hunter_mobile.retrofit;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.codegrinders.treasure_hunter_mobile.tables.Puzzle;
+import org.codegrinders.treasure_hunter_mobile.model.Puzzle;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;

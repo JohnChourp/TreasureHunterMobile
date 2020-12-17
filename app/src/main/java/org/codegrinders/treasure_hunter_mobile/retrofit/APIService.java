@@ -1,11 +1,11 @@
 package org.codegrinders.treasure_hunter_mobile.retrofit;
 
-import org.codegrinders.treasure_hunter_mobile.tables.Markers;
-import org.codegrinders.treasure_hunter_mobile.tables.Puzzle;
-import org.codegrinders.treasure_hunter_mobile.tables.PuzzlesResponse;
-import org.codegrinders.treasure_hunter_mobile.tables.RegisterRequest;
-import org.codegrinders.treasure_hunter_mobile.tables.RegisterResponse;
-import org.codegrinders.treasure_hunter_mobile.tables.User;
+import org.codegrinders.treasure_hunter_mobile.model.Markers;
+import org.codegrinders.treasure_hunter_mobile.model.Puzzle;
+import org.codegrinders.treasure_hunter_mobile.model.PuzzlesResponse;
+import org.codegrinders.treasure_hunter_mobile.model.RegisterRequest;
+import org.codegrinders.treasure_hunter_mobile.model.RegisterResponse;
+import org.codegrinders.treasure_hunter_mobile.model.User;
 
 import java.util.List;
 
