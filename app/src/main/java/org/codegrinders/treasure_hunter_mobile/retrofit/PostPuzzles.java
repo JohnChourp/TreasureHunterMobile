@@ -1,6 +1,6 @@
 package org.codegrinders.treasure_hunter_mobile.retrofit;
 
-public class PuzzlesRequest {
+public class PostPuzzles {
     private String id;
     private String question;
     private String answer;

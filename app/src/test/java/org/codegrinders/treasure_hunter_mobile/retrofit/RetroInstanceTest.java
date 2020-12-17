@@ -30,8 +30,8 @@ public class RetroInstanceTest {
 
     @Test
     public void whenServerStartThenCheckUlrPuzzles(){
-        PuzzlesRequest puzzlesRequest = new PuzzlesRequest();
-        Call<PuzzlesResponse> postResponseCall = RetroInstance.initializeAPIService().postPuzzles(puzzlesRequest);
+        PostPuzzles postPuzzles = new PostPuzzles();
+        Call<PuzzlesResponse> postResponseCall = RetroInstance.initializeAPIService().postPuzzles(postPuzzles);
         assertEquals("http://10.0.2.2:8080/puzzle/", postResponseCall.request().url().toString());
     }
 
