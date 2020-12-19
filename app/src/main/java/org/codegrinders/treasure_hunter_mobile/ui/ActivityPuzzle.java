@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.codegrinders.treasure_hunter_mobile.MapData;
 import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
@@ -40,9 +39,6 @@ public class ActivityPuzzle extends AppCompatActivity {
         tv_points = findViewById(R.id.tv_points);
         et_answer = findViewById(R.id.et_answer);
         bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
-
-        puzzlesCall.setQuestionNumber(MapData.searchNameList());
-
 
         retroCallBack = new RetroCallBack() {
             @Override

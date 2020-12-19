@@ -30,6 +30,7 @@ import com.google.maps.android.SphericalUtil;
 import org.codegrinders.treasure_hunter_mobile.MapData;
 import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.retrofit.MarkersCall;
+import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 
 import java.util.ArrayList;
@@ -45,7 +46,9 @@ public class ActivityMap extends AppCompatActivity implements
     private final List<Marker> markerList = new ArrayList<>();
 
     MarkersCall markersCall = new MarkersCall();
+    PuzzlesCall puzzlesCall = new PuzzlesCall();
     RetroCallBack retroCallBack;
+    public static int markerIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,14 +69,16 @@ public class ActivityMap extends AppCompatActivity implements
         retroCallBack = new RetroCallBack() {
             @Override
             public void onCallFinished(String callType) {
+                if (callType.equals("Markers")) {
+                    for (int i = 0; i < markersCall.getMarkers().size(); i++) {
+                        markerList.add(mMap.addMarker(new MarkerOptions().position(new LatLng(markersCall.getMarkers().get(i).getLatitude(),
+                                markersCall.getMarkers().get(i).getLongitude())).title(markersCall.getMarkers().get(i).getMarkerTile()).snippet(markersCall.getMarkers().get(i).getSnippet()).visible(false)));
+                        MapData.names.add(markerList.get(i).getTitle());
+                    }
 
-                for (int i = 0; i < markersCall.getMarkers().size(); i++) {
-                    markerList.add(mMap.addMarker(new MarkerOptions().position(new LatLng(markersCall.getMarkers().get(i).getLatitude(),
-                            markersCall.getMarkers().get(i).getLongitude())).title(markersCall.getMarkers().get(i).getMarkerTile()).snippet(markersCall.getMarkers().get(i).getSnippet()).visible(false)));
-                    MapData.names.add(markerList.get(i).getTitle());
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.07529, 23.55330), 17));
+                    proximityMarkers();
                 }
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.07529, 23.55330), 17));
-                proximityMarkers();
             }
 
             @Override
@@ -83,7 +88,9 @@ public class ActivityMap extends AppCompatActivity implements
         };
 
         markersCall.setCallBack(retroCallBack);
+        puzzlesCall.setCallBack(retroCallBack);
         markersCall.markersGetRequest();
+        puzzlesCall.puzzlesGetRequest();
 
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
@@ -118,6 +125,9 @@ public class ActivityMap extends AppCompatActivity implements
     @Override
     public void onInfoWindowClick(Marker marker) {
         MapData.markerName = marker.getTitle();
+        markerIndex = MapData.searchNameList();
+
+        puzzlesCall.searchPuzzleByID(markersCall.getMarkers().get(markerIndex).getPuzzleId());
         openActivityPuzzles();
     }
 
