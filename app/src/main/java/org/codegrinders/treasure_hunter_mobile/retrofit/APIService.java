@@ -31,6 +31,6 @@ public interface APIService {
     @POST("/puzzle/")
     Call<PuzzlesResponse> postPuzzles(@Body PostPuzzles postPuzzles);
 
-    @GET("/user/username/")
+    @GET("/user/login/")
     Call<User> loginRequest(@Query("username") String username,@Query("password") String password);
 }

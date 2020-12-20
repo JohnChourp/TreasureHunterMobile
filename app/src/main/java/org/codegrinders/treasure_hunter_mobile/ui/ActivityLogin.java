@@ -75,7 +75,7 @@ public class ActivityLogin extends AppCompatActivity
         String usernameInput = etUsername.getText().toString();
         String passwordInput = etPassword.getText().toString();
 
-        if (USERNAME_PATTERN.matcher(usernameInput).matches() || usernameInput.contains(" ")) {
+        /*if (USERNAME_PATTERN.matcher(usernameInput).matches() || usernameInput.contains(" ")) {
             etUsername.setError("Wrong Username or Email");
             return false;
         } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches() || passwordInput.contains(" ")) {
@@ -84,7 +84,8 @@ public class ActivityLogin extends AppCompatActivity
         }  else {
             etPassword.setError(null);
             return true;
-        }
+        }*/
+        return true;
     }
 
     private void openActivityMap() {
