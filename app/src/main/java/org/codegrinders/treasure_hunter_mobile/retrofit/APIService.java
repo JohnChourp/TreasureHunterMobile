@@ -28,5 +28,5 @@ public interface APIService {
     Call<RegisterResponse> registerUser(@Body RegisterRequest registerRequest);
 
     @POST("/puzzle/")
-    Call<PuzzlesResponse> postPuzzles(@Body PostPuzzles postPuzzles);
+    Call<PuzzlesResponse> postPuzzles(@Body Puzzle puzzle);
 }

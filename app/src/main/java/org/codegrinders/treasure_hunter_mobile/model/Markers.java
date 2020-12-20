@@ -5,7 +5,7 @@ public class Markers {
     private String id;
     private double latitude;
     private double longitude;
-    private String markerTile;
+    private String markerTitle;
     private String snippet;
     private String puzzleId;
     private boolean visibility;
@@ -34,12 +34,12 @@ public class Markers {
         this.longitude = longitude;
     }
 
-    public String getMarkerTile() {
-        return markerTile;
+    public String getMarkerTitle() {
+        return markerTitle;
     }
 
-    public void setMarkerTile(String markerTile) {
-        this.markerTile = markerTile;
+    public void setMarkerTitle(String markerTitle) {
+        this.markerTitle = markerTitle;
     }
 
     public String getSnippet() {
