@@ -27,8 +27,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 
-import org.codegrinders.treasure_hunter_mobile.MapData;
 import org.codegrinders.treasure_hunter_mobile.R;
+import org.codegrinders.treasure_hunter_mobile.model.Markers;
 import org.codegrinders.treasure_hunter_mobile.retrofit.MarkersCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
@@ -44,11 +44,12 @@ public class ActivityMap extends AppCompatActivity implements
         GoogleMap.OnInfoWindowClickListener {
     private GoogleMap mMap;
     private final List<Marker> markerList = new ArrayList<>();
-    public static MarkersCall markersCall = new MarkersCall();
+    private final MarkersCall markersCall = new MarkersCall();
 
     PuzzlesCall puzzlesCall = new PuzzlesCall();
     RetroCallBack retroCallBack;
-    public static int markerIndex = 0;
+    public static Markers currentMarkerData = null;
+    public static Marker currentMarker = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,6 @@ public class ActivityMap extends AppCompatActivity implements
                     for (int i = 0; i < markersCall.getMarkers().size(); i++) {
                         markerList.add(mMap.addMarker(new MarkerOptions().position(new LatLng(markersCall.getMarkers().get(i).getLatitude(),
                                 markersCall.getMarkers().get(i).getLongitude())).title(markersCall.getMarkers().get(i).getMarkerTile()).snippet(markersCall.getMarkers().get(i).getSnippet()).visible(false)));
-                        MapData.names.add(markerList.get(i).getTitle());
                     }
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.07529, 23.55330), 17));
                     proximityMarkers();
@@ -122,10 +122,11 @@ public class ActivityMap extends AppCompatActivity implements
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        MapData.markerName = marker.getTitle();
-        markerIndex = MapData.searchNameList();
 
-        puzzlesCall.searchPuzzleByID(markersCall.getMarkers().get(markerIndex).getPuzzleId());
+        currentMarkerData = markersCall.searchMarkerByTitle(marker.getTitle());
+        currentMarker = marker;
+
+        puzzlesCall.searchPuzzleByID(currentMarkerData.getPuzzleId());
         openActivityPuzzles();
     }
 
@@ -161,13 +162,5 @@ public class ActivityMap extends AppCompatActivity implements
     private void openActivityPuzzles() {
         Intent intent = new Intent(this, ActivityPuzzle.class);
         startActivity(intent);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (markerList.size() != 0) {
-            markerList.get(markerIndex).setVisible(markersCall.getMarkers().get(markerIndex).getVisibility());
-        }
     }
 }

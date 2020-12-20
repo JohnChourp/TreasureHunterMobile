@@ -25,7 +25,6 @@ public class PuzzlesCall {
         boolean correct = false;
         if (puzzles.get(questionNumber).getAnswer().equals(input)) {
             correct = true;
-            ActivityMap.markersCall.getMarkers().get(ActivityMap.markerIndex).setVisibility(false);
         }
         return correct;
     }
@@ -35,6 +34,7 @@ public class PuzzlesCall {
         for (int i = 0; i < puzzles.size(); i++) {
             if (puzzles.get(i).getId().equals(ID)) {
                 pos = i;
+                break;
             }
         }
         questionNumber = pos;

@@ -68,6 +68,8 @@ public class ActivityPuzzle extends AppCompatActivity {
 
             if (puzzlesCall.isCorrect(et_answer.getText().toString())) {
                 Toast.makeText(this, "CORRECT", Toast.LENGTH_LONG).show();
+                ActivityMap.currentMarkerData.setVisibility(false);
+                ActivityMap.currentMarker.setVisible(false);
                 finish();
             } else {
                 Toast.makeText(this, "WRONG", Toast.LENGTH_LONG).show();
