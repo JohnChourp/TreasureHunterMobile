@@ -17,10 +17,10 @@ MarkersCall markersCall = new MarkersCall();
         markersCall.getMarkers().add(new Markers());
         markersCall.getMarkers().add(new Markers());
 
-        markersCall.getMarkers().get(0).setMarkerTitle("first title");
+        markersCall.getMarkers().get(0).setTitle("first title");
         markersCall.getMarkers().get(0).setSnippet("first snippet");
 
-        markersCall.getMarkers().get(1).setMarkerTitle("second title");
+        markersCall.getMarkers().get(1).setTitle("second title");
         markersCall.getMarkers().get(1).setSnippet("second snippet");
 
         assertEquals("second snippet",markersCall.searchMarkerByTitle("second title").getSnippet());
@@ -33,8 +33,8 @@ MarkersCall markersCall = new MarkersCall();
         markersCall.getMarkers().add(new Markers());
         markersCall.getMarkers().add(new Markers());
 
-        markersCall.getMarkers().get(0).setMarkerTitle("first title");
-        markersCall.getMarkers().get(1).setMarkerTitle("second title");
+        markersCall.getMarkers().get(0).setTitle("first title");
+        markersCall.getMarkers().get(1).setTitle("second title");
 
         assertNull(markersCall.searchMarkerByTitle("some title"));
     }

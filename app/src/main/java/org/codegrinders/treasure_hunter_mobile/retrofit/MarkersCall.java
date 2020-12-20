@@ -18,7 +18,7 @@ public class MarkersCall {
     public Markers searchMarkerByTitle(String title) {
         Markers marker = null;
         for (int i = 0; i < markers.size(); i++) {
-            if (markers.get(i).getMarkerTitle().equals(title)) {
+            if (markers.get(i).getTitle().equals(title)) {
                 marker = markers.get(i);
                 break;
             }

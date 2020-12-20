@@ -73,7 +73,7 @@ public class ActivityMap extends AppCompatActivity implements
                 if (callType.equals("Markers")) {
                     for (int i = 0; i < markersCall.getMarkers().size(); i++) {
                         markerList.add(mMap.addMarker(new MarkerOptions().position(new LatLng(markersCall.getMarkers().get(i).getLatitude(),
-                                markersCall.getMarkers().get(i).getLongitude())).title(markersCall.getMarkers().get(i).getMarkerTitle()).snippet(markersCall.getMarkers().get(i).getSnippet()).visible(false)));
+                                markersCall.getMarkers().get(i).getLongitude())).title(markersCall.getMarkers().get(i).getTitle()).snippet(markersCall.getMarkers().get(i).getSnippet()).visible(false)));
                     }
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.07529, 23.55330), 17));
                     proximityMarkers();
