@@ -87,6 +87,10 @@ public class ActivityLogin extends AppCompatActivity
         }
     }
 
+    private void openActivityMap() {
+        Intent intent = new Intent(this, ActivityMap.class);
+        startActivity(intent);
+    }
 
     public  void login(){
         boolean res = validate();
@@ -98,7 +102,7 @@ public class ActivityLogin extends AppCompatActivity
                     if(user != null){
                         Toast.makeText(getApplicationContext(),"Login Successfully...",Toast.LENGTH_SHORT).show();
                         Toast.makeText(getApplicationContext(),user.getUsername().toString(),Toast.LENGTH_SHORT).show();
-
+                        openActivityMap();
                     }else{
                         Toast.makeText(getApplicationContext(),"Login Failed...",Toast.LENGTH_SHORT).show();
                     }
