@@ -25,7 +25,7 @@ public class PuzzlesCall {
         boolean correct = false;
         if (puzzles.get(questionNumber).getAnswer().equals(input)) {
             correct = true;
-            ActivityMap.markersCall.getMarkers().get(ActivityMap.markerIndex).setVisible(false);
+            ActivityMap.markersCall.getMarkers().get(ActivityMap.markerIndex).setVisibility(false);
         }
         return correct;
     }

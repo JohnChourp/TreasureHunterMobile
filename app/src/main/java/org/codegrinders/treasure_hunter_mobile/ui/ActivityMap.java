@@ -44,8 +44,8 @@ public class ActivityMap extends AppCompatActivity implements
         GoogleMap.OnInfoWindowClickListener {
     private GoogleMap mMap;
     private final List<Marker> markerList = new ArrayList<>();
-
     public static MarkersCall markersCall = new MarkersCall();
+
     PuzzlesCall puzzlesCall = new PuzzlesCall();
     RetroCallBack retroCallBack;
     public static int markerIndex = 0;
@@ -75,7 +75,6 @@ public class ActivityMap extends AppCompatActivity implements
                                 markersCall.getMarkers().get(i).getLongitude())).title(markersCall.getMarkers().get(i).getMarkerTile()).snippet(markersCall.getMarkers().get(i).getSnippet()).visible(false)));
                         MapData.names.add(markerList.get(i).getTitle());
                     }
-
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.07529, 23.55330), 17));
                     proximityMarkers();
                 }
@@ -108,7 +107,6 @@ public class ActivityMap extends AppCompatActivity implements
         }
         mMap.setMyLocationEnabled(true);
     }
-
 
     @Override
     public boolean onMyLocationButtonClick() {
@@ -154,7 +152,7 @@ public class ActivityMap extends AppCompatActivity implements
             for (int i = 0; i < markersCall.getMarkers().size(); i++) {
                 markerList.get(i).setVisible(SphericalUtil
                         .computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), markerList.get(i).getPosition()) < 50
-                        && markersCall.getMarkers().get(i).isVisible());
+                        && markersCall.getMarkers().get(i).getVisibility());
             }
         };
         locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
@@ -169,7 +167,7 @@ public class ActivityMap extends AppCompatActivity implements
     protected void onStart() {
         super.onStart();
         if (markerList.size() != 0) {
-            markerList.get(markerIndex).setVisible(markersCall.getMarkers().get(markerIndex).isVisible());
+            markerList.get(markerIndex).setVisible(markersCall.getMarkers().get(markerIndex).getVisibility());
         }
     }
 }
