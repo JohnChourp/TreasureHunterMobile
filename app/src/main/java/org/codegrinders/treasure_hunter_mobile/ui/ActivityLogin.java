@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.model.User;
 import org.codegrinders.treasure_hunter_mobile.retrofit.LoginRequest;
+import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
 import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
 import org.codegrinders.treasure_hunter_mobile.settings.Sound;
@@ -25,7 +26,7 @@ public class ActivityLogin extends AppCompatActivity
     TextView tv_register;
     EditText etUsername,etPassword;
     MediaService audioService;
-    LoginRequest loginRequest;
+    LoginRequest loginRequest = new LoginRequest();
     User user;
 
     Intent intent;
@@ -49,14 +50,14 @@ public class ActivityLogin extends AppCompatActivity
         tv_register.setOnClickListener(v -> openActivityRegister());
         bt_login.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
-
-            if(validate()){
+            login();
+            /*if(validate()){
                 Toast.makeText(getApplicationContext(),"Login Successfully...",Toast.LENGTH_SHORT).show();
                 Toast.makeText(getApplicationContext(),user.getUsername().toString(),Toast.LENGTH_SHORT).show();
                 finish();
             }else{
                 Toast.makeText(getApplicationContext(),"Login Failed...",Toast.LENGTH_SHORT).show();
-            }
+            }*/
 
         });
     }
@@ -74,26 +75,45 @@ public class ActivityLogin extends AppCompatActivity
         String usernameInput = etUsername.getText().toString();
         String passwordInput = etPassword.getText().toString();
 
-//        if (USERNAME_PATTERN.matcher(usernameInput).matches() || usernameInput.contains(" ")) {
-//            etUsername.setError("Wrong Username or Email");
-//            return false;
-//        } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches() || passwordInput.contains(" ")) {
-//            etPassword.setError("Wrong Password");
-//            return false;
-//        }  else {
-//            etPassword.setError(null);
-//            return true;
-//        }
-
-        loginRequest.UserLoginRequest(usernameInput,passwordInput);
-        if(loginRequest.getUser() != null){
-            user = loginRequest.getUser();
+        if (USERNAME_PATTERN.matcher(usernameInput).matches() || usernameInput.contains(" ")) {
+            etUsername.setError("Wrong Username or Email");
+            return false;
+        } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches() || passwordInput.contains(" ")) {
+            etPassword.setError("Wrong Password");
+            return false;
+        }  else {
+            etPassword.setError(null);
             return true;
         }
-        else return false;
-
     }
 
+
+    public  void login(){
+        boolean res = validate();
+        if(res == true){
+            loginRequest.retroCallBack = new RetroCallBack() {
+                @Override
+                public void onCallFinished(String callType) {
+                    user = loginRequest.getUser();
+                    if(user != null){
+                        Toast.makeText(getApplicationContext(),"Login Successfully...",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),user.getUsername().toString(),Toast.LENGTH_SHORT).show();
+
+                    }else{
+                        Toast.makeText(getApplicationContext(),"Login Failed...",Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCallFailed(String errorMessage) {
+
+                }
+            };
+            loginRequest.UserLoginRequest(etUsername.getText().toString(),etPassword.getText().toString());
+        }else{
+            Toast.makeText(getApplicationContext(),"Login Failed...",Toast.LENGTH_SHORT).show();
+        }
+    }
 
     ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
