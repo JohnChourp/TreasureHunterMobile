@@ -9,6 +9,8 @@ public class Markers {
     private String snippet;
     private String puzzleId;
 
+    private boolean isVisible = true;
+
     public String getId() {
         return id;
     }
@@ -55,5 +57,14 @@ public class Markers {
 
     public void setPuzzleId(String puzzleId) {
         this.puzzleId = puzzleId;
+    }
+
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
     }
 }

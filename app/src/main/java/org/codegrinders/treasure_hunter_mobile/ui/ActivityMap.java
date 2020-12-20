@@ -45,10 +45,10 @@ public class ActivityMap extends AppCompatActivity implements
     private GoogleMap mMap;
     private final List<Marker> markerList = new ArrayList<>();
 
-    MarkersCall markersCall = new MarkersCall();
+    public static MarkersCall markersCall = new MarkersCall();
     PuzzlesCall puzzlesCall = new PuzzlesCall();
     RetroCallBack retroCallBack;
-    public static int markerIndex;
+    public static int markerIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,13 +152,9 @@ public class ActivityMap extends AppCompatActivity implements
             longitude[0] = location1.getLongitude();
             latitude[0] = location1.getLatitude();
             for (int i = 0; i < markersCall.getMarkers().size(); i++) {
-                if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), markerList.get(i).getPosition()) < 50) {
-                    markerList.get(i).setVisible(true);
-                }
-
-                if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), markerList.get(i).getPosition()) > 50) {
-                    markerList.get(i).setVisible(false);
-                }
+                markerList.get(i).setVisible(SphericalUtil
+                        .computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), markerList.get(i).getPosition()) < 50
+                        && markersCall.getMarkers().get(i).isVisible());
             }
         };
         locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
@@ -167,5 +163,13 @@ public class ActivityMap extends AppCompatActivity implements
     private void openActivityPuzzles() {
         Intent intent = new Intent(this, ActivityPuzzle.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (markerList.size() != 0) {
+            markerList.get(markerIndex).setVisible(markersCall.getMarkers().get(markerIndex).isVisible());
+        }
     }
 }

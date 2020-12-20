@@ -1,6 +1,7 @@
 package org.codegrinders.treasure_hunter_mobile.retrofit;
 
 import org.codegrinders.treasure_hunter_mobile.model.Puzzle;
+import org.codegrinders.treasure_hunter_mobile.ui.ActivityMap;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class PuzzlesCall {
         boolean correct = false;
         if (puzzles.get(questionNumber).getAnswer().equals(input)) {
             correct = true;
+            ActivityMap.markersCall.getMarkers().get(ActivityMap.markerIndex).setVisible(false);
         }
         return correct;
     }
