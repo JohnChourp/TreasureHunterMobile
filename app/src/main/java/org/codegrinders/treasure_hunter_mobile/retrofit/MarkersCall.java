@@ -15,6 +15,17 @@ public class MarkersCall {
     private RetroCallBack callBack;
     private Call<List<Markers>> call;
 
+    public Markers searchMarkerByTitle(String title) {
+        Markers marker = null;
+        for (int i = 0; i < markers.size(); i++) {
+            if (markers.get(i).getTitle().equals(title)) {
+                marker = markers.get(i);
+                break;
+            }
+        }
+        return marker;
+    }
+
     public void markersGetRequest() {
         call = RetroInstance.initializeAPIService().getMarkers();
         call.enqueue(new Callback<List<Markers>>() {

@@ -1,6 +1,7 @@
 package org.codegrinders.treasure_hunter_mobile.retrofit;
 
 import org.codegrinders.treasure_hunter_mobile.model.Puzzle;
+import org.codegrinders.treasure_hunter_mobile.ui.ActivityMap;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import retrofit2.Response;
 
 public class PuzzlesCall {
 
-    private int questionNumber = 0;
+    public static int questionNumber = 0;
     private List<Puzzle> puzzles;
     private RetroCallBack callBack;
     private Call<List<Puzzle>> call;
@@ -26,6 +27,18 @@ public class PuzzlesCall {
             correct = true;
         }
         return correct;
+    }
+
+    public int searchPuzzleByID(String ID) {
+        int pos = -1;
+        for (int i = 0; i < puzzles.size(); i++) {
+            if (puzzles.get(i).getId().equals(ID)) {
+                pos = i;
+                break;
+            }
+        }
+        questionNumber = pos;
+        return pos;
     }
 
     public void puzzlesGetRequest() {
@@ -46,14 +59,6 @@ public class PuzzlesCall {
                 callBack.onCallFailed(t.getMessage());
             }
         });
-    }
-
-    public int getQuestionNumber() {
-        return questionNumber;
-    }
-
-    public void setQuestionNumber(int questionNumber) {
-        this.questionNumber = questionNumber;
     }
 
     public List<Puzzle> getPuzzles() {

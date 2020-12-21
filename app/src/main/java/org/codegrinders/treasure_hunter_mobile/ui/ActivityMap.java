@@ -27,9 +27,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 
-import org.codegrinders.treasure_hunter_mobile.MapData;
 import org.codegrinders.treasure_hunter_mobile.R;
+import org.codegrinders.treasure_hunter_mobile.model.Markers;
 import org.codegrinders.treasure_hunter_mobile.retrofit.MarkersCall;
+import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 
 import java.util.ArrayList;
@@ -43,9 +44,12 @@ public class ActivityMap extends AppCompatActivity implements
         GoogleMap.OnInfoWindowClickListener {
     private GoogleMap mMap;
     private final List<Marker> markerList = new ArrayList<>();
+    private final MarkersCall markersCall = new MarkersCall();
 
-    MarkersCall markersCall = new MarkersCall();
+    PuzzlesCall puzzlesCall = new PuzzlesCall();
     RetroCallBack retroCallBack;
+    public static Markers currentMarkerData = null;
+    public static Marker currentMarker = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,14 +70,14 @@ public class ActivityMap extends AppCompatActivity implements
         retroCallBack = new RetroCallBack() {
             @Override
             public void onCallFinished(String callType) {
-
-                for (int i = 0; i < markersCall.getMarkers().size(); i++) {
-                    markerList.add(mMap.addMarker(new MarkerOptions().position(new LatLng(markersCall.getMarkers().get(i).getLatitude(),
-                            markersCall.getMarkers().get(i).getLongitude())).title(markersCall.getMarkers().get(i).getMarkerTile()).snippet(markersCall.getMarkers().get(i).getSnippet()).visible(false)));
-                    MapData.names.add(markerList.get(i).getTitle());
+                if (callType.equals("Markers")) {
+                    for (int i = 0; i < markersCall.getMarkers().size(); i++) {
+                        markerList.add(mMap.addMarker(new MarkerOptions().position(new LatLng(markersCall.getMarkers().get(i).getLatitude(),
+                                markersCall.getMarkers().get(i).getLongitude())).title(markersCall.getMarkers().get(i).getTitle()).snippet(markersCall.getMarkers().get(i).getSnippet()).visible(false)));
+                    }
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.07529, 23.55330), 17));
+                    proximityMarkers();
                 }
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.07529, 23.55330), 17));
-                proximityMarkers();
             }
 
             @Override
@@ -83,13 +87,16 @@ public class ActivityMap extends AppCompatActivity implements
         };
 
         markersCall.setCallBack(retroCallBack);
+        puzzlesCall.setCallBack(retroCallBack);
         markersCall.markersGetRequest();
+        puzzlesCall.puzzlesGetRequest();
 
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -101,7 +108,6 @@ public class ActivityMap extends AppCompatActivity implements
         }
         mMap.setMyLocationEnabled(true);
     }
-
 
     @Override
     public boolean onMyLocationButtonClick() {
@@ -117,13 +123,18 @@ public class ActivityMap extends AppCompatActivity implements
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        MapData.markerName = marker.getTitle();
+
+        currentMarkerData = markersCall.searchMarkerByTitle(marker.getTitle());
+        currentMarker = marker;
+
+        puzzlesCall.searchPuzzleByID(currentMarkerData.getPuzzleId());
         openActivityPuzzles();
     }
 
     private void proximityMarkers() {
         LocationManager locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -142,13 +153,9 @@ public class ActivityMap extends AppCompatActivity implements
             longitude[0] = location1.getLongitude();
             latitude[0] = location1.getLatitude();
             for (int i = 0; i < markersCall.getMarkers().size(); i++) {
-                if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), markerList.get(i).getPosition()) < 50) {
-                    markerList.get(i).setVisible(true);
-                }
-
-                if (SphericalUtil.computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), markerList.get(i).getPosition()) > 50) {
-                    markerList.get(i).setVisible(false);
-                }
+                markerList.get(i).setVisible(SphericalUtil
+                        .computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), markerList.get(i).getPosition()) < 50
+                        && markersCall.getMarkers().get(i).getVisibility());
             }
         };
         locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);

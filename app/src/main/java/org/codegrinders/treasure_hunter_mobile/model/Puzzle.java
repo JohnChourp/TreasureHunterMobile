@@ -5,7 +5,6 @@ public class Puzzle {
     private String question;
     private String answer;
     private int points;
-    private String puzzleId;
 
     public String getId() {
         return id;
@@ -37,13 +36,5 @@ public class Puzzle {
 
     public void setPoints(int points) {
         this.points = points;
-    }
-
-    public String getPuzzleId() {
-        return puzzleId;
-    }
-
-    public void setPuzzleId(String puzzleId) {
-        this.puzzleId = puzzleId;
     }
 }

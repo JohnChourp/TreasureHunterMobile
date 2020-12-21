@@ -32,7 +32,6 @@ public class PuzzlesCallTest {
 
     MockWebServer server = new MockWebServer();
     PuzzlesCall puzzlesCall = new PuzzlesCall();
-    List<Puzzle> puzzles;
 
     @Before
     public void setUp() throws Exception {
@@ -60,6 +59,7 @@ public class PuzzlesCallTest {
         puzzlesCall.setPuzzles(new ArrayList<>());
         puzzlesCall.getPuzzles().add(new Puzzle());
         puzzlesCall.getPuzzles().get(0).setAnswer("answer1");
+        PuzzlesCall.questionNumber = 0;
         assertTrue(puzzlesCall.isCorrect("answer1"));
     }
 
@@ -70,6 +70,49 @@ public class PuzzlesCallTest {
         puzzlesCall.getPuzzles().get(0).setAnswer("answer1");
         assertFalse(puzzlesCall.isCorrect("ans"));
     }
+
+    @Test
+    public void whenSearchPuzzleByIDIsCalledWithExistingIDItReturnsCorrespondingPuzzleIndex() {
+        puzzlesCall.setPuzzles(new ArrayList<>());
+        puzzlesCall.getPuzzles().add(new Puzzle());
+        puzzlesCall.getPuzzles().add(new Puzzle());
+
+        puzzlesCall.getPuzzles().get(0).setId("first id");
+        puzzlesCall.getPuzzles().get(0).setQuestion("Question1");
+
+        puzzlesCall.getPuzzles().get(1).setId("second id");
+        puzzlesCall.getPuzzles().get(1).setQuestion("Question2");
+
+        assertEquals("Question2", puzzlesCall.getPuzzles().get(puzzlesCall.searchPuzzleByID("second id")).getQuestion());
+        assertEquals("Question1", puzzlesCall.getPuzzles().get(puzzlesCall.searchPuzzleByID("first id")).getQuestion());
+    }
+
+    @Test
+    public void whenSearchPuzzleByIDIsCalledWithNonExistingIDItReturnsMinusOne() {
+        puzzlesCall.setPuzzles(new ArrayList<>());
+        puzzlesCall.getPuzzles().add(new Puzzle());
+        puzzlesCall.getPuzzles().add(new Puzzle());
+
+        puzzlesCall.getPuzzles().get(0).setId("first id");
+        puzzlesCall.getPuzzles().get(1).setId("second id");
+
+        assertEquals(-1, puzzlesCall.searchPuzzleByID("some id"));
+    }
+
+    /*@Test
+    public void searchPuzzleByID() {
+        puzzlesCall.setPuzzles(new ArrayList<>());
+        puzzlesCall.getPuzzles().add(new Puzzle());
+        puzzlesCall.getPuzzles().add(new Puzzle());
+        puzzlesCall.getPuzzles().get(0).setId("first id");
+        puzzlesCall.getPuzzles().get(0).setQuestion("question1");
+
+        puzzlesCall.getPuzzles().get(1).setId("second id");
+        puzzlesCall.getPuzzles().get(1).setQuestion("question2");
+
+        assertEquals("question2", puzzlesCall.getPuzzles().get(puzzlesCall.searchPuzzleByID("second id")).getQuestion());
+        assertEquals("question1", puzzlesCall.getPuzzles().get(puzzlesCall.searchPuzzleByID("first id")).getQuestion());
+    }*/
 
 //    @Test
 //    public void puzzlesGetRequest() {
