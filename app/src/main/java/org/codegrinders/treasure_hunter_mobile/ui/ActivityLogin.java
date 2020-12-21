@@ -12,6 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import org.codegrinders.treasure_hunter_mobile.R;
+import org.codegrinders.treasure_hunter_mobile.model.User;
+import org.codegrinders.treasure_hunter_mobile.retrofit.LoginRequest;
+import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
+import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
 import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
 import org.codegrinders.treasure_hunter_mobile.settings.Sound;
 import java.util.regex.Pattern;
@@ -22,6 +26,8 @@ public class ActivityLogin extends AppCompatActivity
     TextView tv_register;
     EditText etUsername,etPassword;
     MediaService audioService;
+    LoginRequest loginRequest = new LoginRequest();
+    User user;
 
     Intent intent;
     boolean isBound =false;
@@ -44,13 +50,15 @@ public class ActivityLogin extends AppCompatActivity
         tv_register.setOnClickListener(v -> openActivityRegister());
         bt_login.setOnClickListener(v -> {
             audioService.play(buttonSound,0);
-
-            if(validate()){
+            login();
+            /*if(validate()){
                 Toast.makeText(getApplicationContext(),"Login Successfully...",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),user.getUsername().toString(),Toast.LENGTH_SHORT).show();
                 finish();
             }else{
                 Toast.makeText(getApplicationContext(),"Login Failed...",Toast.LENGTH_SHORT).show();
-            }
+            }*/
+
         });
     }
 
@@ -60,11 +68,14 @@ public class ActivityLogin extends AppCompatActivity
         startActivity(intent);
     }
 
+
+
+
     private boolean validate() {
         String usernameInput = etUsername.getText().toString();
         String passwordInput = etPassword.getText().toString();
 
-        if (USERNAME_PATTERN.matcher(usernameInput).matches() || usernameInput.contains(" ")) {
+        /*if (USERNAME_PATTERN.matcher(usernameInput).matches() || usernameInput.contains(" ")) {
             etUsername.setError("Wrong Username or Email");
             return false;
         } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches() || passwordInput.contains(" ")) {
@@ -73,6 +84,39 @@ public class ActivityLogin extends AppCompatActivity
         }  else {
             etPassword.setError(null);
             return true;
+        }*/
+        return true;
+    }
+
+    private void openActivityMap() {
+        Intent intent = new Intent(this, ActivityMap.class);
+        startActivity(intent);
+    }
+
+    public  void login(){
+        boolean res = validate();
+        if(res == true){
+            loginRequest.retroCallBack = new RetroCallBack() {
+                @Override
+                public void onCallFinished(String callType) {
+                    user = loginRequest.getUser();
+                    if(user != null){
+                        Toast.makeText(getApplicationContext(),"Login Successfully...",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),user.getUsername().toString(),Toast.LENGTH_SHORT).show();
+                        openActivityMap();
+                    }else{
+                        Toast.makeText(getApplicationContext(),"Login Failed...",Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCallFailed(String errorMessage) {
+
+                }
+            };
+            loginRequest.UserLoginRequest(etUsername.getText().toString(),etPassword.getText().toString());
+        }else{
+            Toast.makeText(getApplicationContext(),"Login Failed...",Toast.LENGTH_SHORT).show();
         }
     }
 
