@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,8 @@ public class ActivityMap extends AppCompatActivity implements
     private final List<Marker> markerList = new ArrayList<>();
     private final MarkersCall markersCall = new MarkersCall();
 
+    Button bt_leaderBoard;
+
     PuzzlesCall puzzlesCall = new PuzzlesCall();
     RetroCallBack retroCallBack;
     public static Markers currentMarkerData = null;
@@ -59,6 +62,14 @@ public class ActivityMap extends AppCompatActivity implements
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
+
+        bt_leaderBoard = findViewById(R.id.bt_leaderBoard);
+        bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
+    }
+
+    private void openActivityLeaderBoard() {
+        Intent intent = new Intent(this, ActivityLeaderBoard.class);
+        startActivity(intent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)

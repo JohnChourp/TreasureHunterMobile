@@ -2,6 +2,8 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
 
     android:layout_height="fill_parent"
@@ -16,6 +18,32 @@
         android:id="@+id/map"
         tools:context=".MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewLeaderBoard"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="58dp"
+            app:cardCornerRadius="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Button
+                android:id="@+id/bt_leaderBoard"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="16dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="@string/puzzleLeaderBoard"
+                android:textSize="15sp" />
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </RelativeLayout>
