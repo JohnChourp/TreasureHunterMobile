@@ -109,7 +109,6 @@ public class ActivityLogin extends AppCompatActivity
                 }
                 @Override
                 public void onCallFailed(String errorMessage) {
-
                 }
             };
             loginRequest.userLoginRequest(etUsername.getText().toString(),etPassword.getText().toString());
