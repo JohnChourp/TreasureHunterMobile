@@ -15,7 +15,6 @@ import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.model.User;
 import org.codegrinders.treasure_hunter_mobile.retrofit.LoginRequest;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
-import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
 import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
 import org.codegrinders.treasure_hunter_mobile.settings.Sound;
 import java.util.regex.Pattern;
@@ -108,13 +107,12 @@ public class ActivityLogin extends AppCompatActivity
                         Toast.makeText(getApplicationContext(),"Login Failed...",Toast.LENGTH_SHORT).show();
                     }
                 }
-
                 @Override
                 public void onCallFailed(String errorMessage) {
 
                 }
             };
-            loginRequest.UserLoginRequest(etUsername.getText().toString(),etPassword.getText().toString());
+            loginRequest.userLoginRequest(etUsername.getText().toString(),etPassword.getText().toString());
         }else{
             Toast.makeText(getApplicationContext(),"Login Failed...",Toast.LENGTH_SHORT).show();
         }
