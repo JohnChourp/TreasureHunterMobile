@@ -79,7 +79,6 @@ public class ActivityPuzzle extends AppCompatActivity {
         puzzlesCall.puzzlesGetRequest();
         usersCall.usersGetRequest();
 
-
         bt_continue.setOnClickListener(v -> puzzlesCall.puzzleIsCorrect(et_answer.getText().toString()));
     }
 }
