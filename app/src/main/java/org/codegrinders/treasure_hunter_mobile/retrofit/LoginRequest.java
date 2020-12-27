@@ -8,9 +8,9 @@ import retrofit2.Response;
 
 public class LoginRequest {
     private User user;
-public RetroCallBack retroCallBack;
+    public RetroCallBack retroCallBack;
 
-    public void UserLoginRequest(String username, String password){
+    public void userLoginRequest(String username, String password){
         Call<User> call = RetroInstance.initializeAPIService().loginRequest(username,password);
         call.enqueue(new Callback<User>() {
             @Override

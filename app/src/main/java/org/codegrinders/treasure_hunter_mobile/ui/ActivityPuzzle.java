@@ -1,6 +1,5 @@
 package org.codegrinders.treasure_hunter_mobile.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.codegrinders.treasure_hunter_mobile.R;
+import org.codegrinders.treasure_hunter_mobile.model.Puzzle;
 import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
@@ -25,6 +25,7 @@ public class ActivityPuzzle extends AppCompatActivity {
     PuzzlesCall puzzlesCall = new PuzzlesCall();
     UsersCall usersCall = new UsersCall();
     RetroCallBack retroCallBack;
+    Puzzle puzzle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,25 @@ public class ActivityPuzzle extends AppCompatActivity {
                 if (callType.equals("Puzzles")) {
                     tv_question.setText(puzzlesCall.getQuestion());
                 }
+
+                if (callType.equals("postAnswer")) {
+                    puzzle = puzzlesCall.getPuzzle();
+                    if (puzzle != null) {
+                        Toast.makeText(getBaseContext(), "Answer Sent Successfully...", Toast.LENGTH_SHORT).show();
+                        if (et_answer.getText().toString().equals(puzzle.getAnswer())) {
+                            Toast.makeText(getApplicationContext(), "CORRECT", Toast.LENGTH_LONG).show();
+                            ActivityMap.currentMarkerData.setVisibility(false);
+                            ActivityMap.currentMarker.setVisible(false);
+                            finish();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "WRONG", Toast.LENGTH_LONG).show();
+                        }
+                        et_answer.setText("");
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Answer Didn't Sent...", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
             }
 
             @Override
@@ -61,22 +81,9 @@ public class ActivityPuzzle extends AppCompatActivity {
         puzzlesCall.puzzlesGetRequest();
         usersCall.usersGetRequest();
 
+
         bt_continue.setOnClickListener(v -> {
-
-            if (puzzlesCall.isCorrect(et_answer.getText().toString())) {
-                Toast.makeText(this, "CORRECT", Toast.LENGTH_LONG).show();
-                ActivityMap.currentMarkerData.setVisibility(false);
-                ActivityMap.currentMarker.setVisible(false);
-                finish();
-            } else {
-                Toast.makeText(this, "WRONG", Toast.LENGTH_LONG).show();
-            }
-            et_answer.setText("");
+            puzzlesCall.puzzleIsCorrect(et_answer.getText().toString());
         });
-    }
-
-    private void openActivityLeaderBoard() {
-        Intent intent = new Intent(this, ActivityLeaderBoard.class);
-        startActivity(intent);
     }
 }

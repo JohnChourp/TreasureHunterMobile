@@ -6,6 +6,11 @@ public class Puzzle {
     private String answer;
     private int points;
 
+    public Puzzle(String id, String answer) {
+        this.id = id;
+        this.answer = answer;
+    }
+
     public String getId() {
         return id;
     }

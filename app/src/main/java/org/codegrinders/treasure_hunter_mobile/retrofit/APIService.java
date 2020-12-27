@@ -2,7 +2,6 @@ package org.codegrinders.treasure_hunter_mobile.retrofit;
 
 import org.codegrinders.treasure_hunter_mobile.model.Markers;
 import org.codegrinders.treasure_hunter_mobile.model.Puzzle;
-import org.codegrinders.treasure_hunter_mobile.model.PuzzlesResponse;
 import org.codegrinders.treasure_hunter_mobile.model.RegisterRequest;
 import org.codegrinders.treasure_hunter_mobile.model.RegisterResponse;
 import org.codegrinders.treasure_hunter_mobile.model.User;
@@ -28,10 +27,11 @@ public interface APIService {
     @POST("/user/")
     Call<RegisterResponse> registerUser(@Body RegisterRequest registerRequest);
 
-    @POST("/puzzle/")
-    Call<PuzzlesResponse> postPuzzles(@Body Puzzle puzzle);
-
     @GET("/user/login/")
-    Call<User> loginRequest(@Query("username") String username,@Query("password") String password);
+    Call<User> loginRequest(@Query("username") String username, @Query("password") String password);
+
+    @GET("/puzzle/answer")
+    Call<Puzzle> answerIsCorrect(@Query("id") String id, @Query("answer") String answer);
+
 
 }
