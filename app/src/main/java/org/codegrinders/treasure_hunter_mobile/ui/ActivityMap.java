@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 
 import org.codegrinders.treasure_hunter_mobile.R;
+import org.codegrinders.treasure_hunter_mobile.model.User;
 import org.codegrinders.treasure_hunter_mobile.retrofit.MarkersCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
@@ -47,9 +49,13 @@ public class ActivityMap extends AppCompatActivity implements
     private final MarkersCall markersCall = new MarkersCall();
 
     Button bt_leaderBoard;
+    TextView txtUsername;
+    TextView txtPoints;
 
     PuzzlesCall puzzlesCall = new PuzzlesCall();
     RetroCallBack retroCallBack;
+
+    User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +68,14 @@ public class ActivityMap extends AppCompatActivity implements
 
         bt_leaderBoard = findViewById(R.id.bt_leaderBoard);
         bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
+        txtPoints = findViewById(R.id.txtPoints);
+        txtUsername = findViewById(R.id.txtUsername);
+
+
+        user = (User) getIntent().getSerializableExtra("User");
+        txtUsername.setText(user.getUsername());
+        txtPoints.setText(String.valueOf(user.getPoints()));
+
     }
 
     private void openActivityLeaderBoard() {

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -89,6 +90,7 @@ public class ActivityLogin extends AppCompatActivity
 
     private void openActivityMap() {
         Intent intent = new Intent(this, ActivityMap.class);
+        intent.putExtra("User", user);
         startActivity(intent);
     }
 
