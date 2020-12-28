@@ -32,6 +32,4 @@ public interface APIService {
 
     @GET("/puzzle/answer")
     Call<Puzzle> answerIsCorrect(@Query("id") String id, @Query("answer") String answer);
-
-
 }

@@ -29,7 +29,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 
 import org.codegrinders.treasure_hunter_mobile.R;
-import org.codegrinders.treasure_hunter_mobile.model.Markers;
 import org.codegrinders.treasure_hunter_mobile.retrofit.MarkersCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
@@ -51,8 +50,6 @@ public class ActivityMap extends AppCompatActivity implements
 
     PuzzlesCall puzzlesCall = new PuzzlesCall();
     RetroCallBack retroCallBack;
-    public static Markers currentMarkerData = null;
-    public static Marker currentMarker = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +96,7 @@ public class ActivityMap extends AppCompatActivity implements
 
         markersCall.setCallBack(retroCallBack);
         puzzlesCall.setCallBack(retroCallBack);
-        markersCall.markersGetRequest();
         puzzlesCall.puzzlesGetRequest();
-
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
@@ -134,11 +129,7 @@ public class ActivityMap extends AppCompatActivity implements
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-
-        currentMarkerData = markersCall.searchMarkerByTitle(marker.getTitle());
-        currentMarker = marker;
-
-        puzzlesCall.searchPuzzleByID(currentMarkerData.getPuzzleId());
+        puzzlesCall.searchPuzzleByID(markersCall.searchMarkerByTitle(marker.getTitle()).getPuzzleId());
         openActivityPuzzles();
     }
 
@@ -175,5 +166,11 @@ public class ActivityMap extends AppCompatActivity implements
     private void openActivityPuzzles() {
         Intent intent = new Intent(this, ActivityPuzzle.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        markersCall.markersGetRequest();
     }
 }
