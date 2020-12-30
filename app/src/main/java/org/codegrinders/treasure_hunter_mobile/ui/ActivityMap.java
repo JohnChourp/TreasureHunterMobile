@@ -1,6 +1,7 @@
 package org.codegrinders.treasure_hunter_mobile.ui;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -49,14 +50,15 @@ public class ActivityMap extends AppCompatActivity implements
     private final MarkersCall markersCall = new MarkersCall();
 
     Button bt_leaderBoard;
-    TextView txtUsername;
-    TextView txtPoints;
+    TextView tv_username;
+    TextView tv_points;
 
     PuzzlesCall puzzlesCall = new PuzzlesCall();
     RetroCallBack retroCallBack;
 
     User user;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,13 +70,13 @@ public class ActivityMap extends AppCompatActivity implements
 
         bt_leaderBoard = findViewById(R.id.bt_leaderBoard);
         bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
-        txtPoints = findViewById(R.id.txtPoints);
-        txtUsername = findViewById(R.id.txtUsername);
+        tv_points = findViewById(R.id.tv_points);
+        tv_username = findViewById(R.id.tv_username);
 
 
         user = (User) getIntent().getSerializableExtra("User");
-        txtUsername.setText(user.getUsername());
-        txtPoints.setText(String.valueOf(user.getPoints()));
+        tv_username.setText(user.getUsername());
+        tv_points.setText("Score: " + user.getPoints());
 
     }
 
