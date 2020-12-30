@@ -54,17 +54,17 @@ public class PuzzlesCall {
     }
 
     public void puzzleIsCorrect(String answer) {
-        Call<Puzzle> call = RetroInstance.initializeAPIService().answerIsCorrect(puzzles.get(questionNumber).getId(), answer);
+        Call<Puzzle> call = RetroInstance.initializeAPIService().answerIsCorrect(puzzles.get(questionNumber).getId(), answer,"1");
         call.enqueue(new Callback<Puzzle>() {
             @Override
-            public void onResponse(Call<Puzzle> call, Response<Puzzle> response) {
+            public void onResponse(@NotNull Call<Puzzle> call, @NotNull Response<Puzzle> response) {
                 assert response.body() != null;
                 puzzle = new Puzzle(response.body().getId(), response.body().getAnswer());
                 callBack.onCallFinished("postAnswer");
             }
 
             @Override
-            public void onFailure(Call<Puzzle> call, Throwable t) {
+            public void onFailure(@NotNull Call<Puzzle> call, @NotNull Throwable t) {
                 puzzle = null;
             }
         });
