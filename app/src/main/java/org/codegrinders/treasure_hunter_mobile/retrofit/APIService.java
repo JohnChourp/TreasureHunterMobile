@@ -15,7 +15,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface APIService {
-    @GET("/user/")
+    @GET("/user/leaderboard")
     Call<List<User>> getUsers();
 
     @GET("/puzzle/")
