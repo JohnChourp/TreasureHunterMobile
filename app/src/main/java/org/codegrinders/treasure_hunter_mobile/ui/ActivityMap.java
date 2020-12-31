@@ -35,6 +35,7 @@ import org.codegrinders.treasure_hunter_mobile.model.User;
 import org.codegrinders.treasure_hunter_mobile.retrofit.MarkersCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
+import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,7 @@ public class ActivityMap extends AppCompatActivity implements
     TextView tv_points;
 
     PuzzlesCall puzzlesCall = new PuzzlesCall();
+    public static UsersCall usersCall = new UsersCall();
     RetroCallBack retroCallBack;
 
     User user;
@@ -92,6 +94,7 @@ public class ActivityMap extends AppCompatActivity implements
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
         retroCallBack = new RetroCallBack() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onCallFinished(String callType) {
                 if (callType.equals("Markers")) {
@@ -101,6 +104,10 @@ public class ActivityMap extends AppCompatActivity implements
                     }
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.07529, 23.55330), 17));
                     proximityMarkers();
+                }
+                if(callType.equals("OneUser")){
+                    user.setPoints(usersCall.user.getPoints());
+                    tv_points.setText("Score: " + user.getPoints());
                 }
             }
 
@@ -112,6 +119,7 @@ public class ActivityMap extends AppCompatActivity implements
 
         markersCall.setCallBack(retroCallBack);
         puzzlesCall.setCallBack(retroCallBack);
+        usersCall.setCallBack(retroCallBack);
         puzzlesCall.puzzlesGetRequest();
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
@@ -188,5 +196,6 @@ public class ActivityMap extends AppCompatActivity implements
     protected void onStart() {
         super.onStart();
         markersCall.markersGetRequest();
+        usersCall.oneUserGetRequest(user.getId());
     }
 }
