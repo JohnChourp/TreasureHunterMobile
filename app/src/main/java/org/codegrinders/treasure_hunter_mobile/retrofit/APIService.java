@@ -15,7 +15,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface APIService {
-    @GET("/user/")
+    @GET("/user/leaderboard")
     Call<List<User>> getUsers();
 
     @GET("/puzzle/")
@@ -30,6 +30,9 @@ public interface APIService {
     @GET("/user/login/")
     Call<User> loginRequest(@Query("username") String username, @Query("password") String password);
 
+    @GET("/user/update/points")
+    Call<User> updateUserPoints(@Query("id") String id);
+
     @GET("/puzzle/answer")
-    Call<Puzzle> answerIsCorrect(@Query("id") String id, @Query("answer") String answer);
+    Call<Puzzle> answerIsCorrect(@Query("id") String id, @Query("answer") String answer, @Query("userId") String userId);
 }

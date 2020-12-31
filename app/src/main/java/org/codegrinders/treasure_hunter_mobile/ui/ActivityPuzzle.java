@@ -18,8 +18,7 @@ public class ActivityPuzzle extends AppCompatActivity {
 
     Button bt_continue;
     TextView tv_question;
-    TextView tv_username;
-    TextView tv_points;
+    TextView tv_puzzlePoints;
     EditText et_answer;
 
     PuzzlesCall puzzlesCall = new PuzzlesCall();
@@ -34,19 +33,15 @@ public class ActivityPuzzle extends AppCompatActivity {
 
         bt_continue = findViewById(R.id.bt_continue);
         tv_question = findViewById(R.id.tv_question);
-        tv_username = findViewById(R.id.tv_username);
-        tv_points = findViewById(R.id.tv_points);
+        tv_puzzlePoints = findViewById(R.id.tv_puzzlepoints);
         et_answer = findViewById(R.id.et_answer);
 
         retroCallBack = new RetroCallBack() {
             @Override
             public void onCallFinished(String callType) {
-                if (callType.equals("Users")) {
-                    tv_username.setText(usersCall.getUsers().get(0).getUsername());
-                    tv_points.setText(String.valueOf(usersCall.getUsers().get(0).getPoints()));
-                }
                 if (callType.equals("Puzzles")) {
                     tv_question.setText(puzzlesCall.getQuestion());
+                    //tv_puzzlePoints.setText(getPuzzlePoints("500"));
                 }
 
                 if (callType.equals("postAnswer")) {
@@ -80,5 +75,9 @@ public class ActivityPuzzle extends AppCompatActivity {
         usersCall.usersGetRequest();
 
         bt_continue.setOnClickListener(v -> puzzlesCall.puzzleIsCorrect(et_answer.getText().toString()));
+    }
+    private String getPuzzlePoints(String puzzleId){
+        return "Puzzle's points: " + puzzlesCall.getPuzzles()
+                .get(puzzlesCall.searchPuzzleByID(puzzleId)).getPoints();
     }
 }

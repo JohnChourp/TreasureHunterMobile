@@ -36,7 +36,7 @@
         android:layout_width="270dp"
         android:layout_height="50dp"
         android:layout_marginStart="68dp"
-        android:layout_marginBottom="340dp"
+        android:layout_marginBottom="288dp"
         app:cardCornerRadius="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -52,31 +52,11 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewMap"
-        android:layout_width="270dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="68dp"
-        android:layout_marginBottom="268dp"
-        app:cardCornerRadius="25dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/bt_map"
-            android:layout_width="270dp"
-            android:layout_height="50dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:text="@string/map"
-            android:textSize="15sp" />
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
         android:id="@+id/cardViewSettings"
         android:layout_width="270dp"
         android:layout_height="50dp"
         android:layout_marginStart="68dp"
-        android:layout_marginBottom="52dp"
+        android:layout_marginBottom="100dp"
         app:cardCornerRadius="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">

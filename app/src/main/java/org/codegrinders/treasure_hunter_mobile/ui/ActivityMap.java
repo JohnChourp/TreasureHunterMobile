@@ -1,6 +1,7 @@
 package org.codegrinders.treasure_hunter_mobile.ui;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -34,6 +35,7 @@ import org.codegrinders.treasure_hunter_mobile.model.User;
 import org.codegrinders.treasure_hunter_mobile.retrofit.MarkersCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
+import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,14 +51,16 @@ public class ActivityMap extends AppCompatActivity implements
     private final MarkersCall markersCall = new MarkersCall();
 
     Button bt_leaderBoard;
-    TextView txtUsername;
-    TextView txtPoints;
+    TextView tv_username;
+    TextView tv_points;
 
     PuzzlesCall puzzlesCall = new PuzzlesCall();
+    public static UsersCall usersCall = new UsersCall();
     RetroCallBack retroCallBack;
 
     User user;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,13 +72,13 @@ public class ActivityMap extends AppCompatActivity implements
 
         bt_leaderBoard = findViewById(R.id.bt_leaderBoard);
         bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
-        txtPoints = findViewById(R.id.txtPoints);
-        txtUsername = findViewById(R.id.txtUsername);
+        tv_points = findViewById(R.id.tv_points);
+        tv_username = findViewById(R.id.tv_username);
 
 
         user = (User) getIntent().getSerializableExtra("User");
-        txtUsername.setText(user.getUsername());
-        txtPoints.setText(String.valueOf(user.getPoints()));
+        tv_username.setText(user.getUsername());
+        tv_points.setText("Score: " + user.getPoints());
 
     }
 
@@ -90,6 +94,7 @@ public class ActivityMap extends AppCompatActivity implements
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
         retroCallBack = new RetroCallBack() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onCallFinished(String callType) {
                 if (callType.equals("Markers")) {
@@ -99,6 +104,10 @@ public class ActivityMap extends AppCompatActivity implements
                     }
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.07529, 23.55330), 17));
                     proximityMarkers();
+                }
+                if(callType.equals("OneUser")){
+                    user.setPoints(usersCall.user.getPoints());
+                    tv_points.setText("Score: " + user.getPoints());
                 }
             }
 
@@ -110,6 +119,7 @@ public class ActivityMap extends AppCompatActivity implements
 
         markersCall.setCallBack(retroCallBack);
         puzzlesCall.setCallBack(retroCallBack);
+        usersCall.setCallBack(retroCallBack);
         puzzlesCall.puzzlesGetRequest();
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
@@ -186,5 +196,6 @@ public class ActivityMap extends AppCompatActivity implements
     protected void onStart() {
         super.onStart();
         markersCall.markersGetRequest();
+        usersCall.oneUserGetRequest(user.getId());
     }
 }
