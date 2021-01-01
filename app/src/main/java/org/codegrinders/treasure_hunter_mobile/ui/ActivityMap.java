@@ -39,6 +39,8 @@ import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ActivityMap extends AppCompatActivity implements
         OnMyLocationButtonClickListener,
@@ -60,6 +62,16 @@ public class ActivityMap extends AppCompatActivity implements
 
     User user;
 
+    private Timer timer;
+    private final TimerTask timerTask = new TimerTask() {
+
+        @Override
+        public void run() {
+            markersCall.markersGetRequest();
+            usersCall.oneUserGetRequest(user.getId());
+        }
+    };
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,16 +87,9 @@ public class ActivityMap extends AppCompatActivity implements
         tv_points = findViewById(R.id.tv_points);
         tv_username = findViewById(R.id.tv_username);
 
-
         user = (User) getIntent().getSerializableExtra("User");
         tv_username.setText(user.getUsername());
         tv_points.setText("Score: " + user.getPoints());
-
-    }
-
-    private void openActivityLeaderBoard() {
-        Intent intent = new Intent(this, ActivityLeaderBoard.class);
-        startActivity(intent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -102,10 +107,9 @@ public class ActivityMap extends AppCompatActivity implements
                         markerList.add(mMap.addMarker(new MarkerOptions().position(new LatLng(markersCall.getMarkers().get(i).getLatitude(),
                                 markersCall.getMarkers().get(i).getLongitude())).title(markersCall.getMarkers().get(i).getTitle()).snippet(markersCall.getMarkers().get(i).getSnippet()).visible(false)));
                     }
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.07529, 23.55330), 17));
                     proximityMarkers();
                 }
-                if(callType.equals("OneUser")){
+                if (callType.equals("OneUser")) {
                     user.setPoints(usersCall.user.getPoints());
                     tv_points.setText("Score: " + user.getPoints());
                 }
@@ -113,7 +117,7 @@ public class ActivityMap extends AppCompatActivity implements
 
             @Override
             public void onCallFailed(String errorMessage) {
-
+                Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         };
 
@@ -124,37 +128,7 @@ public class ActivityMap extends AppCompatActivity implements
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        mMap.setMyLocationEnabled(true);
-    }
-
-    @Override
-    public boolean onMyLocationButtonClick() {
-        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-        return false;
-    }
-
-
-    @Override
-    public void onMyLocationClick(@NonNull Location location) {
-        Toast.makeText(this, "I am Here", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onInfoWindowClick(Marker marker) {
-        puzzlesCall.searchPuzzleByID(markersCall.searchMarkerByTitle(marker.getTitle()).getPuzzleId());
-        openActivityPuzzles();
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.07529, 23.55330), 17));
     }
 
     private void proximityMarkers() {
@@ -171,7 +145,6 @@ public class ActivityMap extends AppCompatActivity implements
             return;
         }
         Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
         final double[] longitude = {location.getLongitude()};
         final double[] latitude = {location.getLatitude()};
 
@@ -185,6 +158,24 @@ public class ActivityMap extends AppCompatActivity implements
             }
         };
         locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+        mMap.setMyLocationEnabled(true);
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
+        return false;
+    }
+
+    @Override
+    public void onMyLocationClick(@NonNull Location location) {
+        Toast.makeText(this, "I am Here", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        puzzlesCall.searchPuzzleByID(markersCall.searchMarkerByTitle(marker.getTitle()).getPuzzleId());
+        openActivityPuzzles();
     }
 
     private void openActivityPuzzles() {
@@ -192,10 +183,18 @@ public class ActivityMap extends AppCompatActivity implements
         startActivity(intent);
     }
 
+    private void openActivityLeaderBoard() {
+        Intent intent = new Intent(this, ActivityLeaderBoard.class);
+        startActivity(intent);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-        markersCall.markersGetRequest();
-        usersCall.oneUserGetRequest(user.getId());
+        if (timer != null) {
+            return;
+        }
+        timer = new Timer();
+        timer.scheduleAtFixedRate(timerTask, 0, 2000);
     }
 }
