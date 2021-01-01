@@ -39,6 +39,8 @@ import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ActivityMap extends AppCompatActivity implements
         OnMyLocationButtonClickListener,
@@ -59,6 +61,16 @@ public class ActivityMap extends AppCompatActivity implements
     RetroCallBack retroCallBack;
 
     User user;
+
+    private Timer timer;
+    private final TimerTask timerTask = new TimerTask() {
+
+        @Override
+        public void run() {
+            markersCall.markersGetRequest();
+            usersCall.oneUserGetRequest(user.getId());
+        }
+    };
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -103,7 +115,7 @@ public class ActivityMap extends AppCompatActivity implements
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.07529, 23.55330), 17));
                     proximityMarkers();
                 }
-                if(callType.equals("OneUser")){
+                if (callType.equals("OneUser")) {
                     user.setPoints(usersCall.user.getPoints());
                     tv_points.setText("Score: " + user.getPoints());
                 }
@@ -192,7 +204,10 @@ public class ActivityMap extends AppCompatActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        markersCall.markersGetRequest();
-        usersCall.oneUserGetRequest(user.getId());
+        if (timer != null) {
+            return;
+        }
+        timer = new Timer();
+        timer.scheduleAtFixedRate(timerTask, 0, 2000);
     }
 }
