@@ -114,11 +114,13 @@ public class ActivityMap extends AppCompatActivity implements
                     tv_points.setText("Score: " + user.getPoints());
                 }
             }
+
             @Override
             public void onCallFailed(String errorMessage) {
                 Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         };
+
         markersCall.setCallBack(retroCallBack);
         puzzlesCall.setCallBack(retroCallBack);
         usersCall.setCallBack(retroCallBack);
