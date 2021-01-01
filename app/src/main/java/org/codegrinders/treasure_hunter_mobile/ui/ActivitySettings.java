@@ -61,8 +61,7 @@ public class ActivitySettings extends AppCompatActivity {
                 musicVolSlider.setProgress(0);
                 musicIsMuted = true;
             }
-            Settings.setElement("musicVol",String.valueOf(Settings.musicVol));
-            Settings.writeToFile(Settings.data, getApplicationContext());
+            Settings.saveInt("musicVol",Settings.musicVol);
         });
 
         muteSounds.setOnClickListener(v -> {
@@ -75,8 +74,7 @@ public class ActivitySettings extends AppCompatActivity {
                 soundVolSlider.setProgress(0);
                 soundsAreMuted = true;
             }
-            Settings.setElement("soundVol",String.valueOf(Settings.soundVol));
-            Settings.writeToFile(Settings.data, getApplicationContext());
+            Settings.saveInt("soundVol",Settings.soundVol);
         });
 
         musicVolSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -95,8 +93,7 @@ public class ActivitySettings extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Settings.setElement("musicVol",String.valueOf(Settings.musicVol));
-                Settings.writeToFile(Settings.data, getApplicationContext());
+                Settings.saveInt("musicVol",Settings.musicVol);
             }
         });
 
@@ -116,8 +113,7 @@ public class ActivitySettings extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 audioService.play(buttonSound, 0);
-                Settings.setElement("soundVol",String.valueOf(Settings.soundVol));
-                Settings.writeToFile(Settings.data, getApplicationContext());
+                Settings.saveInt("soundVol",Settings.soundVol);
             }
         });
 
