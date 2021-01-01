@@ -25,4 +25,5 @@ public class Settings {
         editor.putInt(key, value);
         editor.apply();
     }
+
 }
