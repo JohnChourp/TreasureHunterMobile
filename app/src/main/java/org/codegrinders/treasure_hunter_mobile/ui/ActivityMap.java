@@ -92,11 +92,6 @@ public class ActivityMap extends AppCompatActivity implements
         tv_points.setText("Score: " + user.getPoints());
     }
 
-    private void openActivityLeaderBoard() {
-        Intent intent = new Intent(this, ActivityLeaderBoard.class);
-        startActivity(intent);
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -112,7 +107,6 @@ public class ActivityMap extends AppCompatActivity implements
                         markerList.add(mMap.addMarker(new MarkerOptions().position(new LatLng(markersCall.getMarkers().get(i).getLatitude(),
                                 markersCall.getMarkers().get(i).getLongitude())).title(markersCall.getMarkers().get(i).getTitle()).snippet(markersCall.getMarkers().get(i).getSnippet()).visible(false)));
                     }
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.07529, 23.55330), 17));
                     proximityMarkers();
                 }
                 if (callType.equals("OneUser")) {
@@ -120,13 +114,11 @@ public class ActivityMap extends AppCompatActivity implements
                     tv_points.setText("Score: " + user.getPoints());
                 }
             }
-
             @Override
             public void onCallFailed(String errorMessage) {
-
+                Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         };
-
         markersCall.setCallBack(retroCallBack);
         puzzlesCall.setCallBack(retroCallBack);
         usersCall.setCallBack(retroCallBack);
@@ -134,7 +126,11 @@ public class ActivityMap extends AppCompatActivity implements
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(41.07529, 23.55330), 17));
+    }
 
+    private void proximityMarkers() {
+        LocationManager locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -146,6 +142,20 @@ public class ActivityMap extends AppCompatActivity implements
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+        Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        final double[] longitude = {location.getLongitude()};
+        final double[] latitude = {location.getLatitude()};
+
+        final LocationListener locationListener = location1 -> {
+            longitude[0] = location1.getLongitude();
+            latitude[0] = location1.getLatitude();
+            for (int i = 0; i < markersCall.getMarkers().size(); i++) {
+                markerList.get(i).setVisible(SphericalUtil
+                        .computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), markerList.get(i).getPosition()) < 50
+                        && markersCall.getMarkers().get(i).getVisibility());
+            }
+        };
+        locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
         mMap.setMyLocationEnabled(true);
     }
 
@@ -166,38 +176,13 @@ public class ActivityMap extends AppCompatActivity implements
         openActivityPuzzles();
     }
 
-    private void proximityMarkers() {
-        LocationManager locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-        final double[] longitude = {location.getLongitude()};
-        final double[] latitude = {location.getLatitude()};
-
-        final LocationListener locationListener = location1 -> {
-            longitude[0] = location1.getLongitude();
-            latitude[0] = location1.getLatitude();
-            for (int i = 0; i < markersCall.getMarkers().size(); i++) {
-                markerList.get(i).setVisible(SphericalUtil
-                        .computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), markerList.get(i).getPosition()) < 50
-                        && markersCall.getMarkers().get(i).getVisibility());
-            }
-        };
-        locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
-    }
-
     private void openActivityPuzzles() {
         Intent intent = new Intent(this, ActivityPuzzle.class);
+        startActivity(intent);
+    }
+
+    private void openActivityLeaderBoard() {
+        Intent intent = new Intent(this, ActivityLeaderBoard.class);
         startActivity(intent);
     }
 
