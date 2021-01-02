@@ -28,6 +28,7 @@
         android:max="100"
         android:progressTint="#191919"
         android:thumbTint="@color/black"
+        android:progressBackgroundTint="@color/gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -66,6 +67,7 @@
         android:max="100"
         android:progressTint="#191919"
         android:thumbTint="@color/black"
+        android:progressBackgroundTint="@color/gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

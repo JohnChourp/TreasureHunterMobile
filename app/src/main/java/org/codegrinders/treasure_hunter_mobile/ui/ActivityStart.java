@@ -69,9 +69,9 @@ public class ActivityStart extends AppCompatActivity {
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
             isBound = true;
-            Settings.init(getApplicationContext());
 
             if (Sound.firstInit) {
+                Settings.init(getApplicationContext());
                 backgroundMusic = Sound.add(R.raw.wanabe_epic_music, "music");
                 buttonSound = Sound.add(R.raw.pop, "sound");
                 audioService.init(backgroundMusic, Settings.musicVol, true);
