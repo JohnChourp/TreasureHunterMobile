@@ -41,7 +41,7 @@ public class ActivityPuzzle extends AppCompatActivity {
             public void onCallFinished(String callType) {
                 if (callType.equals("Puzzles")) {
                     tv_question.setText(puzzlesCall.getQuestion());
-                    //tv_puzzlePoints.setText(getPuzzlePoints("500"));
+                    tv_puzzlePoints.setText(getPuzzlePoints());
                 }
 
                 if (callType.equals("postAnswer")) {
