@@ -67,13 +67,9 @@ public class ActivityPuzzle extends AppCompatActivity {
                 tv_question.setText(errorMessage);
             }
         };
-
         puzzlesCall.setCallBack(retroCallBack);
         usersCall.setCallBack(retroCallBack);
-
         puzzlesCall.puzzlesGetRequest();
-        usersCall.usersGetRequest();
-
         bt_continue.setOnClickListener(v -> puzzlesCall.puzzleIsCorrect(et_answer.getText().toString()));
     }
     private String getPuzzlePoints(String puzzleId){
