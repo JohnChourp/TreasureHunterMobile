@@ -41,7 +41,7 @@ public class ActivityPuzzle extends AppCompatActivity {
             public void onCallFinished(String callType) {
                 if (callType.equals("Puzzles")) {
                     tv_question.setText(puzzlesCall.getQuestion());
-                    //tv_puzzlePoints.setText(getPuzzlePoints("500"));
+                    tv_puzzlePoints.setText(getPuzzlePoints());
                 }
 
                 if (callType.equals("postAnswer")) {
@@ -72,8 +72,7 @@ public class ActivityPuzzle extends AppCompatActivity {
         puzzlesCall.puzzlesGetRequest();
         bt_continue.setOnClickListener(v -> puzzlesCall.puzzleIsCorrect(et_answer.getText().toString()));
     }
-    private String getPuzzlePoints(String puzzleId){
-        return "Puzzle's points: " + puzzlesCall.getPuzzles()
-                .get(puzzlesCall.searchPuzzleByID(puzzleId)).getPoints();
+    private String getPuzzlePoints(){
+        return "Puzzle's points: " + puzzlesCall.getPoints();
     }
 }

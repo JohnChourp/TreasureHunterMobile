@@ -23,6 +23,10 @@ public class PuzzlesCall {
         return puzzles.get(questionNumber).getQuestion();
     }
 
+    public int getPoints() {
+        return puzzles.get(questionNumber).getPoints();
+    }
+
     public int searchPuzzleByID(String ID) {
         int pos = -1;
         for (int i = 0; i < puzzles.size(); i++) {
