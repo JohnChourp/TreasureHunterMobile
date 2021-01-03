@@ -55,7 +55,7 @@ public class ActivityMap extends AppCompatActivity implements
     Button bt_leaderBoard;
     TextView tv_username;
     TextView tv_points;
-
+    boolean isActivityOpen = false;
     PuzzlesCall puzzlesCall = new PuzzlesCall();
     public static UsersCall usersCall = new UsersCall();
     RetroCallBack retroCallBack;
@@ -64,7 +64,6 @@ public class ActivityMap extends AppCompatActivity implements
 
     private Timer timer;
     private final TimerTask timerTask = new TimerTask() {
-
         @Override
         public void run() {
             markersCall.markersGetRequest();
@@ -180,21 +179,34 @@ public class ActivityMap extends AppCompatActivity implements
 
     private void openActivityPuzzles() {
         Intent intent = new Intent(this, ActivityPuzzle.class);
+        isActivityOpen = true;
         startActivity(intent);
     }
 
     private void openActivityLeaderBoard() {
         Intent intent = new Intent(this, ActivityLeaderBoard.class);
+        isActivityOpen = true;
         startActivity(intent);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (timer != null) {
+        if(timer != null) {
             return;
         }
         timer = new Timer();
         timer.scheduleAtFixedRate(timerTask, 0, 2000);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(!isActivityOpen){
+            timer.cancel();
+            timer = null;
+        }else{
+            isActivityOpen = false;
+        }
     }
 }
