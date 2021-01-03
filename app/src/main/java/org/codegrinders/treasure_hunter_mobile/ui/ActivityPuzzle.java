@@ -72,8 +72,7 @@ public class ActivityPuzzle extends AppCompatActivity {
         puzzlesCall.puzzlesGetRequest();
         bt_continue.setOnClickListener(v -> puzzlesCall.puzzleIsCorrect(et_answer.getText().toString()));
     }
-    private String getPuzzlePoints(String puzzleId){
-        return "Puzzle's points: " + puzzlesCall.getPuzzles()
-                .get(puzzlesCall.searchPuzzleByID(puzzleId)).getPoints();
+    private String getPuzzlePoints(){
+        return "Puzzle's points: " + puzzlesCall.getPoints();
     }
 }
