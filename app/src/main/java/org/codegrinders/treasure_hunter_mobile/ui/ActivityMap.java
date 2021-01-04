@@ -86,7 +86,6 @@ public class ActivityMap extends AppCompatActivity implements
         bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
         tv_points = findViewById(R.id.tv_points);
         tv_username = findViewById(R.id.tv_username);
-
         user = (User) getIntent().getSerializableExtra("User");
         tv_username.setText(user.getUsername());
         tv_points.setText("Score: " + user.getPoints());
