@@ -2,6 +2,7 @@ package org.codegrinders.treasure_hunter_mobile.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -59,7 +61,6 @@ public class ActivityMap extends AppCompatActivity implements
     PuzzlesCall puzzlesCall = new PuzzlesCall();
     public static UsersCall usersCall = new UsersCall();
     RetroCallBack retroCallBack;
-
     User user;
 
     private Timer timer;
@@ -85,12 +86,12 @@ public class ActivityMap extends AppCompatActivity implements
         bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
         tv_points = findViewById(R.id.tv_points);
         tv_username = findViewById(R.id.tv_username);
-
         user = (User) getIntent().getSerializableExtra("User");
         tv_username.setText(user.getUsername());
         tv_points.setText("Score: " + user.getPoints());
     }
 
+    @SuppressLint("PotentialBehaviorOverride")
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -106,12 +107,12 @@ public class ActivityMap extends AppCompatActivity implements
                         markerList.add(mMap.addMarker(new MarkerOptions().position(new LatLng(markersCall.getMarkers().get(i).getLatitude(),
                                 markersCall.getMarkers().get(i).getLongitude())).title(markersCall.getMarkers().get(i).getTitle()).snippet(markersCall.getMarkers().get(i).getSnippet()).visible(false)));
                     }
-                    proximityMarkers();
                 }
                 if (callType.equals("OneUser")) {
                     user.setPoints(usersCall.user.getPoints());
                     tv_points.setText("Score: " + user.getPoints());
                 }
+                proximityMarkers();
             }
 
             @Override
@@ -119,7 +120,7 @@ public class ActivityMap extends AppCompatActivity implements
                 Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         };
-
+        showPhoneStatePermission();
         markersCall.setCallBack(retroCallBack);
         puzzlesCall.setCallBack(retroCallBack);
         usersCall.setCallBack(retroCallBack);
@@ -177,6 +178,32 @@ public class ActivityMap extends AppCompatActivity implements
         openActivityPuzzles();
     }
 
+    private void showPhoneStatePermission() {
+        int permissionCheck = ContextCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                showExplanation();
+            } else {
+                requestPermission();
+            }
+        }
+    }
+
+    private void showExplanation() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Permission Needed")
+                .setMessage("Rationale")
+                .setPositiveButton(android.R.string.ok, (dialog, id) -> requestPermission());
+        builder.create().show();
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+    }
+
     private void openActivityPuzzles() {
         Intent intent = new Intent(this, ActivityPuzzle.class);
         isActivityOpen = true;
@@ -192,7 +219,7 @@ public class ActivityMap extends AppCompatActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        if(timer != null) {
+        if (timer != null) {
             return;
         }
         timer = new Timer();
@@ -202,10 +229,10 @@ public class ActivityMap extends AppCompatActivity implements
     @Override
     protected void onStop() {
         super.onStop();
-        if(!isActivityOpen){
+        if (!isActivityOpen) {
             timer.cancel();
             timer = null;
-        }else{
+        } else {
             isActivityOpen = false;
         }
     }
