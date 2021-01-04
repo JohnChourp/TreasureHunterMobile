@@ -22,7 +22,6 @@ public class ActivityPuzzle extends AppCompatActivity {
     EditText et_answer;
 
     PuzzlesCall puzzlesCall = new PuzzlesCall();
-    UsersCall usersCall = new UsersCall();
     RetroCallBack retroCallBack;
     Puzzle puzzle;
 
@@ -43,7 +42,6 @@ public class ActivityPuzzle extends AppCompatActivity {
                     tv_question.setText(puzzlesCall.getQuestion());
                     tv_puzzlePoints.setText(getPuzzlePoints());
                 }
-
                 if (callType.equals("postAnswer")) {
                     puzzle = puzzlesCall.getPuzzle();
                     if (puzzle != null) {
@@ -58,7 +56,6 @@ public class ActivityPuzzle extends AppCompatActivity {
                     } else {
                         Toast.makeText(getApplicationContext(), "Answer Didn't Sent...", Toast.LENGTH_SHORT).show();
                     }
-
                 }
             }
 
@@ -68,7 +65,6 @@ public class ActivityPuzzle extends AppCompatActivity {
             }
         };
         puzzlesCall.setCallBack(retroCallBack);
-        usersCall.setCallBack(retroCallBack);
         puzzlesCall.puzzlesGetRequest();
         bt_continue.setOnClickListener(v -> puzzlesCall.puzzleIsCorrect(et_answer.getText().toString()));
     }
