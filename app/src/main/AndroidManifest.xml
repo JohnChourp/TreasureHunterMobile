@@ -16,7 +16,9 @@
         android:theme="@style/Theme.Treasure_Hunter_Mobile"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".ui.ActivityResults" />
+        <activity android:name=".ui.ActivityResults"></activity>
+        <activity android:name=".ui.ActivityLost" />
+        <activity android:name=".ui.ActivityWon" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
