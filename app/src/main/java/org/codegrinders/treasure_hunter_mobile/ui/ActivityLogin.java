@@ -127,7 +127,7 @@ public class ActivityLogin extends AppCompatActivity
             isBound = true;
             backgroundMusic = Sound.searchByResId(R.raw.wanabe_epic_music);
             buttonSound = Sound.searchByResId(R.raw.pop);
-            audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
+//            audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
         }
 
         @Override
