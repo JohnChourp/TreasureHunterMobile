@@ -9,6 +9,7 @@ public class User implements Serializable {
     private String username;
     private String password;
     private int points;
+    private boolean hasWon;
 
     public User(String id, String username, int points) {
         this.id = id;
@@ -54,5 +55,13 @@ public class User implements Serializable {
 
     public void setPoints(int points) {
         this.points = points;
+    }
+
+    public boolean isHasWon() {
+        return hasWon;
+    }
+
+    public void setHasWon(boolean hasWon) {
+        this.hasWon = hasWon;
     }
 }

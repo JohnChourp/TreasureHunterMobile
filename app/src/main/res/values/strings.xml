@@ -38,4 +38,6 @@
     <string name="permission_rationale_location" />
     <string name="music">Music</string>
     <string name="sounds">Sounds</string>
+    <string name="you_won">You Won!!!!!</string>
+    <string name="check_results">Check Results</string>
 </resources>

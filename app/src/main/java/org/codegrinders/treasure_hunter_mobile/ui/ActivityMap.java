@@ -110,6 +110,7 @@ public class ActivityMap extends AppCompatActivity implements
                 }
                 if (callType.equals("OneUser")) {
                     user.setPoints(usersCall.user.getPoints());
+                    user.setHasWon(usersCall.user.isHasWon());
                     tv_points.setText("Score: " + user.getPoints());
                 }
                 proximityMarkers();
@@ -212,6 +213,12 @@ public class ActivityMap extends AppCompatActivity implements
 
     private void openActivityLeaderBoard() {
         Intent intent = new Intent(this, ActivityLeaderBoard.class);
+        isActivityOpen = true;
+        startActivity(intent);
+    }
+
+    private void openActivityResults() {
+        Intent intent = new Intent(this, ActivityResults.class);
         isActivityOpen = true;
         startActivity(intent);
     }
