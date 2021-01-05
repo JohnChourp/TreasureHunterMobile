@@ -5,7 +5,6 @@ public class Puzzle {
     private String question;
     private String answer;
     private int points;
-    private String userId;
 
     public Puzzle(String id, String answer) {
         this.id = id;

@@ -31,8 +31,8 @@ public interface APIService {
     Call<User> loginRequest(@Query("username") String username, @Query("password") String password);
 
     @GET("/user/update/points")
-    Call<User> updateUserPoints(@Query("id") String id);
+    Call<User> updateUserPoints(@Query("id") String userId);
 
     @GET("/puzzle/answer")
-    Call<Puzzle> answerIsCorrect(@Query("id") String id, @Query("answer") String answer, @Query("userId") String userId);
+    Call<Puzzle> answerIsCorrect(@Query("id") String puzzleId, @Query("answer") String answer, @Query("userId") String userId);
 }

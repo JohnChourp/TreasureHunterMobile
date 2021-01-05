@@ -62,6 +62,7 @@ public class ActivityMap extends AppCompatActivity implements
     public static UsersCall usersCall = new UsersCall();
     RetroCallBack retroCallBack;
     User user;
+    boolean firstTime = true;
 
     private Timer timer;
     private final TimerTask timerTask = new TimerTask() {
@@ -89,6 +90,12 @@ public class ActivityMap extends AppCompatActivity implements
         user = (User) getIntent().getSerializableExtra("User");
         tv_username.setText(user.getUsername());
         tv_points.setText("Score: " + user.getPoints());
+
+        if (timer != null) {
+            return;
+        }
+        timer = new Timer();
+        timer.scheduleAtFixedRate(timerTask, 0, 2000);
     }
 
     @SuppressLint("PotentialBehaviorOverride")
@@ -110,7 +117,12 @@ public class ActivityMap extends AppCompatActivity implements
                 }
                 if (callType.equals("OneUser")) {
                     user.setPoints(usersCall.user.getPoints());
+                    user.setHasWon(usersCall.user.isHasWon());
                     tv_points.setText("Score: " + user.getPoints());
+                    if(user.isHasWon() && firstTime){
+                        firstTime = false;
+                        openActivityWon();
+                    }
                 }
                 proximityMarkers();
             }
@@ -216,14 +228,10 @@ public class ActivityMap extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (timer != null) {
-            return;
-        }
-        timer = new Timer();
-        timer.scheduleAtFixedRate(timerTask, 0, 2000);
+    private void openActivityWon() {
+        Intent intent = new Intent(this, ActivityResults.class);
+        isActivityOpen = true;
+        startActivity(intent);
     }
 
     @Override
