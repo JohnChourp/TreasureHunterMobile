@@ -16,7 +16,7 @@ before_script:
 cache:
   key: ${CI_PROJECT_ID}
   paths:
-  - .gradle/
+    - .gradle/
 
 stages:
   - build
@@ -46,6 +46,7 @@ debugTests:
     - master
   script:
     - ./gradlew -Pci --console=plain :app:testDebug
+
 assembleRelease:
   stage: release
   only:
@@ -59,8 +60,8 @@ assembleRelease:
       -Pandroid.injected.signing.key.password=$KEY_PASSWORD
     - mv "app/build/outputs/apk/release/app-release.apk" "app/build/outputs/apk/release/${PROJECT_NAME}-${PROJECT_VERSION}-${CI_JOB_ID}.apk"
     - ls app/build/outputs/apk/release/
-    - git log --oneline --decorate > CHANGELOG
-    - git tag -a $PROJECT_NAME-$PROJECT_VERSION-$CI_JOB_ID -F CHANGELOG
+    - git log --pretty=format:"%cd %s" > changelog.txt
+    - git tag -a $PROJECT_NAME-$PROJECT_VERSION-$CI_JOB_ID -F changelog.txt
     - git push origin $PROJECT_NAME-$PROJECT_VERSION-$CI_JOB_ID
     - |
       curl --fail --output "/dev/null" --silent --show-error --write-out "HTTP response: $http_code\n\n" \
@@ -72,4 +73,4 @@ assembleRelease:
   artifacts:
     paths:
       - app/build/outputs/apk/release/${PROJECT_NAME}-${PROJECT_VERSION}-${CI_JOB_ID}.apk
-      - CHANGELOG
+      - changelog.txt
