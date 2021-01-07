@@ -19,7 +19,7 @@ cache:
   - .gradle/
 
 stages:
-#  - build
+  - build
 #  - test
   - release
 
@@ -69,7 +69,7 @@ assembleRelease:
     - git tag -a $PROJECT_NAME-$PROJECT_VERSION-$CI_JOB_ID -F CHANGELOG
     - git push origin $PROJECT_NAME-$PROJECT_VERSION-$CI_JOB_ID
     - |
-      curl --fail --output "/dev/null" --silent --show-error --write-out "HTTP response: $http_code\n\n" \
+      curl --fail --scan --output "/dev/null" --silent --show-error --write-out "HTTP response: $http_code\n\n" \
         --data "{\"tag_name\": \"${PROJECT_NAME}-${PROJECT_VERSION}-${CI_JOB_ID}\", \"name\": \"${PROJECT_NAME}-${PROJECT_VERSION}-${CI_JOB_ID}\",  \"assets\": { \"links\": [{ \"name\": \"release\", \"url\": \"https://gitlab.com/aneziou/treasure_hunter_mobile/-/jobs/${CI_JOB_ID}/artifacts/download\" }] }, \"description\": \"No release notes.\"}" \
         --header "Content-Type: application/json" \
         --header "Private-Token: ${GITLAB_ACCESS_TOKEN}" \
