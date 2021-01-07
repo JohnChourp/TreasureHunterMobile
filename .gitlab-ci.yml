@@ -5,7 +5,7 @@ variables:
   ANDROID_BUILD_TOOLS: "30.0.2"
   ANDROID_SDK_TOOLS:   "4333796"
   PROJECT_NAME: Treasure_Hunter_Mobile
-  PROJECT_VERSION: 0.0.2 beta
+  PROJECT_VERSION: 0.0.2
 
 before_script:
   - git remote set-url origin https://$GIT_USER:$GITLAB_ACCESS_TOKEN@gitlab.com/$CI_PROJECT_PATH.git
@@ -19,36 +19,37 @@ cache:
   - .gradle/
 
 stages:
-  - build
-  - test
+#  - build
+#  - test
   - release
 
-lintDebug:
-  stage: build
-  only:
-#    - master
-    - 77-ci-cd-making-the-changelog-look-more-descriptive
-  script:
-    - ./gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
+#lintDebug:
+#  stage: build
+#  only:
+##    - master
+#    - 77-ci-cd-making-the-changelog-look-more-descriptive
+#  script:
+#    - ./gradlew -Pci --console=plain :app:lintDebug -PbuildDir=lint
+#
+#assembleDebug:
+#  stage: build
+#  only:
+##    - master
+#    - 77-ci-cd-making-the-changelog-look-more-descriptive
+#  script:
+#    - ./gradlew assembleDebug
+#  artifacts:
+#    paths:
+#      - app/build/outputs/
+#
+#debugTests:
+#  stage: test
+#  only:
+##    - master
+#    - 77-ci-cd-making-the-changelog-look-more-descriptive
+#  script:
+#    - ./gradlew -Pci --console=plain :app:testDebug
 
-assembleDebug:
-  stage: build
-  only:
-#    - master
-    - 77-ci-cd-making-the-changelog-look-more-descriptive
-  script:
-    - ./gradlew assembleDebug
-  artifacts:
-    paths:
-      - app/build/outputs/
-
-debugTests:
-  stage: test
-  only:
-#    - master
-    - 77-ci-cd-making-the-changelog-look-more-descriptive
-  script:
-    - ./gradlew -Pci --console=plain :app:testDebug
 assembleRelease:
   stage: release
   only:
