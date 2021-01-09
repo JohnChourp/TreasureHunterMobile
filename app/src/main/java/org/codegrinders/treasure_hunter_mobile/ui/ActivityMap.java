@@ -72,7 +72,6 @@ public class ActivityMap extends AppCompatActivity implements
     private final TimerTask timerTask = new TimerTask() {
         @Override
         public void run() {
-            //markersCall.markersGetRequest();
             usersCall.oneUserGetRequest(user.getId());
         }
     };
