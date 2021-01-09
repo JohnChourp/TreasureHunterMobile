@@ -41,4 +41,6 @@
     <string name="you_won">!!!!!! You Won !!!!!!</string>
     <string name="check_results">Check Results</string>
     <string name="you_lost">You Lost</string>
+    <string name="edit_profile">edit profile</string>
+    <string name="delete_profile">delete profile</string>
 </resources>
