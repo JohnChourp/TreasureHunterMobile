@@ -12,7 +12,6 @@ import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.model.Puzzle;
 import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
-import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
 
 public class ActivityPuzzle extends AppCompatActivity {
 
@@ -48,6 +47,8 @@ public class ActivityPuzzle extends AppCompatActivity {
                         Toast.makeText(getBaseContext(), "Answer Sent Successfully...", Toast.LENGTH_SHORT).show();
                         if (et_answer.getText().toString().equals(puzzle.getAnswer())) {
                             Toast.makeText(getApplicationContext(), "CORRECT", Toast.LENGTH_LONG).show();
+                            ActivityMap.currentMarker.setVisible(false);
+                            ActivityMap.currentMarkerData.setVisibility(false);
                             finish();
                         } else {
                             Toast.makeText(getApplicationContext(), "WRONG", Toast.LENGTH_LONG).show();
@@ -68,7 +69,8 @@ public class ActivityPuzzle extends AppCompatActivity {
         puzzlesCall.puzzlesGetRequest();
         bt_continue.setOnClickListener(v -> puzzlesCall.puzzleIsCorrect(et_answer.getText().toString()));
     }
-    private String getPuzzlePoints(){
+
+    private String getPuzzlePoints() {
         return "Puzzle's points: " + puzzlesCall.getPoints();
     }
 }
