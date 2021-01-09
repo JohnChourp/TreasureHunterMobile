@@ -33,6 +33,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 
 import org.codegrinders.treasure_hunter_mobile.R;
+import org.codegrinders.treasure_hunter_mobile.model.Markers;
 import org.codegrinders.treasure_hunter_mobile.model.User;
 import org.codegrinders.treasure_hunter_mobile.retrofit.MarkersCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
@@ -64,11 +65,13 @@ public class ActivityMap extends AppCompatActivity implements
     User user;
     boolean firstTime = true;
 
+    public static Markers currentMarkerData = null;
+    public static Marker currentMarker = null;
+
     private Timer timer;
     private final TimerTask timerTask = new TimerTask() {
         @Override
         public void run() {
-            markersCall.markersGetRequest();
             usersCall.oneUserGetRequest(user.getId());
         }
     };
@@ -119,7 +122,7 @@ public class ActivityMap extends AppCompatActivity implements
                     user.setPoints(usersCall.user.getPoints());
                     user.setHasWon(usersCall.user.isHasWon());
                     tv_points.setText("Score: " + user.getPoints());
-                    if(user.isHasWon() && firstTime){
+                    if (user.isHasWon() && firstTime) {
                         firstTime = false;
                         openActivityWon();
                     }
@@ -137,6 +140,7 @@ public class ActivityMap extends AppCompatActivity implements
         puzzlesCall.setCallBack(retroCallBack);
         usersCall.setCallBack(retroCallBack);
         puzzlesCall.puzzlesGetRequest();
+        markersCall.markersGetRequest();
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
@@ -186,7 +190,9 @@ public class ActivityMap extends AppCompatActivity implements
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        puzzlesCall.searchPuzzleByID(markersCall.searchMarkerByTitle(marker.getTitle()).getPuzzleId());
+        currentMarkerData = markersCall.searchMarkerByTitle(marker.getTitle());
+        currentMarker = marker;
+        puzzlesCall.searchPuzzleByID(currentMarkerData.getPuzzleId());
         openActivityPuzzles();
     }
 
