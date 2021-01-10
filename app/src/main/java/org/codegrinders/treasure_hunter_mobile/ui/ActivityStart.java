@@ -16,12 +16,11 @@ import org.codegrinders.treasure_hunter_mobile.settings.Settings;
 import org.codegrinders.treasure_hunter_mobile.settings.Sound;
 
 public class ActivityStart extends AppCompatActivity {
-    MediaService audioService;
-    Intent intent;
     Button bt_play;
     Button bt_settings;
     Button bt_leaderBoard;
 
+    MediaService audioService;
     boolean isBound = false;
 
     @Override
@@ -82,6 +81,7 @@ public class ActivityStart extends AppCompatActivity {
                 audioService.init(Sound.wrongSound, Settings.soundVol, false);
                 Sound.firstInit = false;
             }
+            audioService.stop(Sound.menuMusic);
             audioService.play(Sound.menuMusic, Sound.get(Sound.menuMusic).position);
         }
 
@@ -95,7 +95,7 @@ public class ActivityStart extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        intent = new Intent(this, MediaService.class);
+        Intent intent = new Intent(this, MediaService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 

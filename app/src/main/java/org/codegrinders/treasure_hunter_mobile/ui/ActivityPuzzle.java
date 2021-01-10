@@ -15,25 +15,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.model.Puzzle;
-import org.codegrinders.treasure_hunter_mobile.retrofit.MarkersCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
 import org.codegrinders.treasure_hunter_mobile.settings.Sound;
 
 public class ActivityPuzzle extends AppCompatActivity {
-
     Button bt_continue;
     TextView tv_question;
     TextView tv_puzzlePoints;
     EditText et_answer;
 
     PuzzlesCall puzzlesCall = new PuzzlesCall();
-    RetroCallBack retroCallBack;
-    Puzzle puzzle;
 
+    Puzzle puzzle;
     MediaService audioService;
-    Intent intent;
     boolean isBound = false;
 
     @Override
@@ -46,7 +42,7 @@ public class ActivityPuzzle extends AppCompatActivity {
         tv_puzzlePoints = findViewById(R.id.tv_puzzlePoints);
         et_answer = findViewById(R.id.et_answer);
 
-        retroCallBack = new RetroCallBack() {
+        RetroCallBack retroCallBack = new RetroCallBack() {
             @Override
             public void onCallFinished(String callType) {
                 if (callType.equals("Puzzles")) {
@@ -55,17 +51,18 @@ public class ActivityPuzzle extends AppCompatActivity {
                 }
                 if (callType.equals("postAnswer")) {
                     puzzle = puzzlesCall.getPuzzle();
-                        if (et_answer.getText().toString().equals(puzzle.getAnswer())) {
-                            Toast.makeText(getApplicationContext(), ActivityMap.currentMarkerData.getDescription(), Toast.LENGTH_LONG).show();
-                            ActivityMap.currentMarker.setVisible(false);
-                            ActivityMap.currentMarkerData.setVisibility(false);
-                            audioService.play(Sound.correctSound, 0);
-                            finish();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "WRONG", Toast.LENGTH_LONG).show();
-                            audioService.play(Sound.wrongSound, 0);
-                        }
+                    if (et_answer.getText().toString().equals(puzzle.getAnswer())) {
+                        Toast.makeText(getApplicationContext(), ActivityMap.currentMarkerData.getDescription(), Toast.LENGTH_LONG).show();
+                        ActivityMap.currentMarker.setVisible(false);
+                        ActivityMap.currentMarkerData.setVisibility(false);
+                        audioService.play(Sound.correctSound, 0);
+                        finish();
+                    } else {
                         et_answer.setText("");
+                        Toast.makeText(getApplicationContext(), "WRONG", Toast.LENGTH_LONG).show();
+                        audioService.play(Sound.wrongSound, 0);
+                    }
+
                 }
             }
 
@@ -84,13 +81,14 @@ public class ActivityPuzzle extends AppCompatActivity {
     }
 
 
-
     ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
             isBound = true;
+            audioService.stop(Sound.menuMusic);
+            audioService.play(Sound.gameMusic, Sound.get(Sound.gameMusic).position);
         }
 
         @Override
@@ -103,7 +101,7 @@ public class ActivityPuzzle extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        intent = new Intent(this, MediaService.class);
+        Intent intent = new Intent(this, MediaService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 

@@ -15,10 +15,8 @@ import org.codegrinders.treasure_hunter_mobile.settings.Settings;
 import org.codegrinders.treasure_hunter_mobile.settings.Sound;
 
 public class ActivitySettings extends AppCompatActivity {
-
     MediaService audioService;
     boolean isBound =false;
-    Intent intent;
 
     SeekBar musicVolSlider;
     SeekBar soundVolSlider;
@@ -130,6 +128,8 @@ public class ActivitySettings extends AppCompatActivity {
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
             isBound = true;
+            audioService.stop(Sound.menuMusic);
+            audioService.play(Sound.gameMusic, Sound.get(Sound.gameMusic).position);
         }
 
         @Override
@@ -141,7 +141,7 @@ public class ActivitySettings extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        intent = new Intent(this, MediaService.class);
+        Intent intent = new Intent(this, MediaService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
