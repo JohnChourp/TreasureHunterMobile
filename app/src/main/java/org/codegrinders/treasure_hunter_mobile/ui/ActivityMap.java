@@ -125,7 +125,7 @@ public class ActivityMap extends AppCompatActivity implements
                     tv_points.setText("Score: " + user.getPoints());
                     if (user.isHasWon() && firstTime) {
                         firstTime = false;
-                        openActivityWon();
+                        openActivityResults();
                     }
                 }
                 proximityMarkers();
@@ -235,7 +235,7 @@ public class ActivityMap extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    private void openActivityWon() {
+    private void openActivityResults() {
         Intent intent = new Intent(this, ActivityResults.class);
         isActivityOpen = true;
         startActivity(intent);
