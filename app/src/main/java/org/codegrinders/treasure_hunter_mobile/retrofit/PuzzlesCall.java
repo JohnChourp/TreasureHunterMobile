@@ -1,8 +1,6 @@
 package org.codegrinders.treasure_hunter_mobile.retrofit;
 
 import org.codegrinders.treasure_hunter_mobile.model.Puzzle;
-import org.codegrinders.treasure_hunter_mobile.ui.ActivityLeaderBoard;
-import org.codegrinders.treasure_hunter_mobile.ui.ActivityMap;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -27,7 +25,7 @@ public class PuzzlesCall {
         return puzzles.get(questionNumber).getPoints();
     }
 
-    public int searchPuzzleByID(String ID) {
+    public void searchPuzzleByID(String ID) {
         int pos = -1;
         for (int i = 0; i < puzzles.size(); i++) {
             if (puzzles.get(i).getId().equals(ID)) {
@@ -36,7 +34,6 @@ public class PuzzlesCall {
             }
         }
         questionNumber = pos;
-        return pos;
     }
 
     public void puzzlesGetRequest() {
@@ -60,7 +57,7 @@ public class PuzzlesCall {
     }
 
     public void puzzleIsCorrect(String answer) {
-        Call<Puzzle> call = RetroInstance.initializeAPIService().answerIsCorrect(puzzles.get(questionNumber).getId(), answer, ActivityMap.usersCall.user.getId());
+        Call<Puzzle> call = RetroInstance.initializeAPIService().answerIsCorrect(puzzles.get(questionNumber).getId(), answer, UsersCall.user.getId());
         call.enqueue(new Callback<Puzzle>() {
             @Override
             public void onResponse(@NotNull Call<Puzzle> call, @NotNull Response<Puzzle> response) {
@@ -79,6 +76,10 @@ public class PuzzlesCall {
 
     public Puzzle getPuzzle() {
         return puzzle;
+    }
+
+    public void setPuzzle(Puzzle puzzle) {
+        this.puzzle = puzzle;
     }
 
     public List<Puzzle> getPuzzles() {

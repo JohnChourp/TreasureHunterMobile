@@ -16,17 +16,14 @@ import org.codegrinders.treasure_hunter_mobile.model.User;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
 import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
+import org.codegrinders.treasure_hunter_mobile.settings.Sound;
 
 import java.util.List;
 
 public class ActivityLeaderBoard extends AppCompatActivity {
 
-    private ListView listView;
+    ListView listView;
     UsersCall usersCall = new UsersCall();
-    RetroCallBack retroCallBack;
-
-    MediaService audioService;
-    Intent intent;
     boolean isBound = false;
 
     @Override
@@ -36,12 +33,10 @@ public class ActivityLeaderBoard extends AppCompatActivity {
 
         listView = findViewById(R.id.listView);
 
-        retroCallBack = new RetroCallBack() {
+        RetroCallBack retroCallBack = new RetroCallBack() {
             @Override
             public void onCallFinished(String callType) {
-                if (callType.equals("Users")) {
                     getLeaderBoard();
-                }
             }
 
             @Override
@@ -49,9 +44,7 @@ public class ActivityLeaderBoard extends AppCompatActivity {
 
             }
         };
-
         usersCall.setCallBack(retroCallBack);
-
         usersCall.usersGetRequest();
     }
 
@@ -71,8 +64,10 @@ public class ActivityLeaderBoard extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
-            audioService = binder.getService();
+            MediaService audioService = binder.getService();
             isBound = true;
+            audioService.stop(Sound.gameMusic);
+            audioService.play(Sound.menuMusic, Sound.get(Sound.menuMusic).position);
         }
 
         @Override
@@ -85,7 +80,7 @@ public class ActivityLeaderBoard extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        intent = new Intent(this, MediaService.class);
+        Intent intent = new Intent(this, MediaService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 

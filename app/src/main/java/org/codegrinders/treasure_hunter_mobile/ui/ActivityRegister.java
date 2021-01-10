@@ -38,7 +38,6 @@ public class ActivityRegister extends AppCompatActivity {
     AwesomeValidation emailValidation;
     MediaService audioService;
 
-    Intent intent;
     boolean isBound = false;
 
     private static final Pattern USERNAME_PATTERN = Pattern.compile("(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])(?=\\S+$).{3,99}$");
@@ -135,7 +134,7 @@ public class ActivityRegister extends AppCompatActivity {
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
             isBound = true;
-
+            audioService.stop(Sound.menuMusic);
             audioService.play(Sound.menuMusic, Sound.get(Sound.menuMusic).position);
         }
 
@@ -149,7 +148,7 @@ public class ActivityRegister extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        intent = new Intent(this, MediaService.class);
+        Intent intent = new Intent(this, MediaService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 

@@ -1,7 +1,5 @@
 package org.codegrinders.treasure_hunter_mobile.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
@@ -12,16 +10,17 @@ import android.os.IBinder;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.codegrinders.treasure_hunter_mobile.R;
+import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
 import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
+import org.codegrinders.treasure_hunter_mobile.settings.Sound;
 
 public class ActivityResults extends AppCompatActivity {
-
     TextView tv_result;
     Button bt_results_won;
 
-    MediaService audioService;
-    Intent intent;
     boolean isBound = false;
 
     @SuppressLint("SetTextI18n")
@@ -33,10 +32,10 @@ public class ActivityResults extends AppCompatActivity {
         tv_result = findViewById(R.id.tv_result);
         bt_results_won.setOnClickListener(v -> openActivityLeaderBoard());
 
-        if(ActivityMap.usersCall.user.getPoints() > 400){
-            tv_result.setText(ActivityMap.usersCall.user.getUsername() + " You Won the Game!!!!");
-        }else{
-            tv_result.setText(ActivityMap.usersCall.user.getUsername() + " You Didn't Win the Game,Try Again Next Time");
+        if (UsersCall.user.getPoints() > 400) {
+            tv_result.setText(ActivityMap.usersCall.getUser().getUsername() + " You Won the Game!!!!");
+        } else {
+            tv_result.setText(ActivityMap.usersCall.getUser().getUsername() + " You Didn't Win the Game,Try Again Next Time");
         }
     }
 
@@ -50,8 +49,10 @@ public class ActivityResults extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
-            audioService = binder.getService();
+            MediaService audioService = binder.getService();
             isBound = true;
+            audioService.stop(Sound.menuMusic);
+            audioService.play(Sound.gameMusic, Sound.get(Sound.gameMusic).position);
         }
 
         @Override
@@ -64,7 +65,7 @@ public class ActivityResults extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        intent = new Intent(this, MediaService.class);
+        Intent intent = new Intent(this, MediaService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 

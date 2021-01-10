@@ -14,9 +14,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.codegrinders.treasure_hunter_mobile.R;
-import org.codegrinders.treasure_hunter_mobile.model.User;
-import org.codegrinders.treasure_hunter_mobile.retrofit.LoginRequest;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
+import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
 import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
 import org.codegrinders.treasure_hunter_mobile.settings.Sound;
 
@@ -26,11 +25,10 @@ public class ActivityLogin extends AppCompatActivity {
     Button bt_login;
     TextView tv_register;
     EditText etUsername, etPassword;
-    MediaService audioService;
-    LoginRequest loginRequest = new LoginRequest();
-    User user;
 
-    Intent intent;
+    UsersCall usersCall = new UsersCall();
+
+    MediaService audioService;
     boolean isBound = false;
 
     private static final Pattern USERNAME_PATTERN = Pattern.compile("(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])(?=\\S+$).{3,99}$");
@@ -50,14 +48,6 @@ public class ActivityLogin extends AppCompatActivity {
         bt_login.setOnClickListener(v -> {
             audioService.play(Sound.buttonSound, 0);
             login();
-            /*if(validate()){
-                Toast.makeText(getApplicationContext(),"Login Successfully...",Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(),user.getUsername().toString(),Toast.LENGTH_SHORT).show();
-                finish();
-            }else{
-                Toast.makeText(getApplicationContext(),"Login Failed...",Toast.LENGTH_SHORT).show();
-            }*/
-
         });
     }
 
@@ -86,20 +76,17 @@ public class ActivityLogin extends AppCompatActivity {
 
     private void openActivityMap() {
         Intent intent = new Intent(this, ActivityMap.class);
-        intent.putExtra("User", user);
+        intent.putExtra("User", usersCall.getUser());
         startActivity(intent);
     }
 
     public void login() {
         boolean res = validate();
-        if (res == true) {
-            loginRequest.retroCallBack = new RetroCallBack() {
+        if (res) {
+            RetroCallBack retroCallBack = new RetroCallBack() {
                 @Override
                 public void onCallFinished(String callType) {
-                    user = loginRequest.getUser();
-                    if (user != null) {
-                        Toast.makeText(getApplicationContext(), "Login Successfully...", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getApplicationContext(), user.getUsername().toString(), Toast.LENGTH_SHORT).show();
+                    if (usersCall.getUser() != null) {
                         openActivityMap();
                     } else {
                         Toast.makeText(getApplicationContext(), "Login Failed...", Toast.LENGTH_SHORT).show();
@@ -110,7 +97,8 @@ public class ActivityLogin extends AppCompatActivity {
                 public void onCallFailed(String errorMessage) {
                 }
             };
-            loginRequest.userLoginRequest(etUsername.getText().toString(), etPassword.getText().toString());
+            usersCall.userLoginRequest(etUsername.getText().toString(), etPassword.getText().toString());
+            usersCall.setCallBack(retroCallBack);
         } else {
             Toast.makeText(getApplicationContext(), "Login Failed...", Toast.LENGTH_SHORT).show();
         }
@@ -136,7 +124,7 @@ public class ActivityLogin extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        intent = new Intent(this, MediaService.class);
+        Intent intent = new Intent(this, MediaService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
