@@ -1,7 +1,6 @@
 package org.codegrinders.treasure_hunter_mobile.retrofit;
 
 import org.codegrinders.treasure_hunter_mobile.model.Puzzle;
-import org.codegrinders.treasure_hunter_mobile.model.PuzzlesResponse;
 import org.codegrinders.treasure_hunter_mobile.model.RegisterRequest;
 import org.codegrinders.treasure_hunter_mobile.model.RegisterResponse;
 import org.junit.After;
@@ -27,13 +26,6 @@ public class RetroInstanceTest {
         RegisterRequest registerRequest = new RegisterRequest();
         Call<RegisterResponse> registerResponseCall = RetroInstance.initializeAPIService().registerUser(registerRequest);
         assertEquals("http://10.0.2.2:8080/user/", registerResponseCall.request().url().toString());
-    }
-
-    @Test
-    public void whenServerStartThenCheckUlrPuzzles(){
-//        Puzzle puzzle = new Puzzle();
-//        Call<PuzzlesResponse> postResponseCall = RetroInstance.initializeAPIService().postPuzzles(puzzle);
-//        assertEquals("http://10.0.2.2:8080/puzzle/", postResponseCall.request().url().toString());
     }
 
     @After

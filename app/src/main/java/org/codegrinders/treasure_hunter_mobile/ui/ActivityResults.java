@@ -27,7 +27,7 @@ public class ActivityResults extends AppCompatActivity {
         if(ActivityMap.usersCall.user.getPoints() > 400){
             tv_result.setText(ActivityMap.usersCall.user.getUsername() + " You Won the Game!!!!");
         }else{
-            tv_result.setText(ActivityMap.usersCall.user.getUsername() + " You Didn't Won the Game,Try Again Next Time");
+            tv_result.setText(ActivityMap.usersCall.user.getUsername() + " You Didn't Win the Game,Try Again Next Time");
         }
     }
 

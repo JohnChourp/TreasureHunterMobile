@@ -32,7 +32,7 @@ public class ActivityPuzzle extends AppCompatActivity {
 
         bt_continue = findViewById(R.id.bt_continue);
         tv_question = findViewById(R.id.tv_question);
-        tv_puzzlePoints = findViewById(R.id.tv_puzzlepoints);
+        tv_puzzlePoints = findViewById(R.id.tv_puzzlePoints);
         et_answer = findViewById(R.id.et_answer);
 
         retroCallBack = new RetroCallBack() {
