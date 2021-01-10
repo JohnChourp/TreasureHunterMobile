@@ -16,7 +16,6 @@ public class UsersCall {
     private Call<List<User>> call;
     public static User user;
 
-
     public void usersGetRequest() {
         call = RetroInstance.initializeAPIService().getUsers();
         call.enqueue(new Callback<List<User>>() {
