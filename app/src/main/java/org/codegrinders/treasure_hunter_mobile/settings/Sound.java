@@ -20,13 +20,4 @@ public class Sound {
     public static AudioData get(int index){
         return audioList.get(index);
     }
-
-    public static int searchByResId(int resId){
-        for(int i=0;i<audioList.size();i++){
-            if(get(i).resource == resId){
-                return i;
-            }
-        }
-        return 0;
-    }
 }

@@ -3,14 +3,17 @@ package org.codegrinders.treasure_hunter_mobile.ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +42,8 @@ import org.codegrinders.treasure_hunter_mobile.retrofit.MarkersCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
+import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
+import org.codegrinders.treasure_hunter_mobile.settings.Sound;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +73,10 @@ public class ActivityMap extends AppCompatActivity implements
     boolean isActivityOpen = false;
     public static Markers currentMarkerData = null;
     public static Marker currentMarker = null;
+
+    MediaService audioService;
+    Intent intent;
+    boolean isBound = false;
 
     private Timer timer;
     private final TimerTask timerTask = new TimerTask() {
@@ -241,12 +250,41 @@ public class ActivityMap extends AppCompatActivity implements
         startActivity(intent);
     }
 
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
+            audioService = binder.getService();
+            isBound = true;
+
+            audioService.stop(Sound.menuMusic);
+            audioService.play(Sound.gameMusic, Sound.get(Sound.gameMusic).position);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            isBound = false;
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        intent = new Intent(this, MediaService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
+
+        if (isBound) {
+            unbindService(serviceConnection);
+            isBound = false;
+        }
+
         if (!isActivityOpen) {
             timer.cancel();
-            timer = null;
         } else {
             isActivityOpen = false;
         }

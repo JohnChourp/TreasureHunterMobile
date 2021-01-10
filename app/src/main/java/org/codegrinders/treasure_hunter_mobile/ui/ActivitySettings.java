@@ -25,9 +25,6 @@ public class ActivitySettings extends AppCompatActivity {
     ImageButton muteMusic;
     ImageButton muteSounds;
 
-    int backgroundMusic;
-    int buttonSound;
-
     boolean musicIsMuted;
     boolean soundsAreMuted;
 
@@ -112,7 +109,7 @@ public class ActivitySettings extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                audioService.play(buttonSound, 0);
+                audioService.play(Sound.buttonSound, 0);
                 Settings.saveInt("soundVol",Settings.soundVol);
             }
         });
@@ -133,10 +130,6 @@ public class ActivitySettings extends AppCompatActivity {
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
             isBound = true;
-
-            backgroundMusic = Sound.searchByResId(R.raw.wanabe_epic_music);
-            buttonSound = Sound.searchByResId(R.raw.pop);
-            audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
         }
 
         @Override
