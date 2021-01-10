@@ -52,19 +52,20 @@ public class ActivityMap extends AppCompatActivity implements
         ActivityCompat.OnRequestPermissionsResultCallback,
         GoogleMap.OnInfoWindowClickListener {
     private GoogleMap mMap;
-    private final List<Marker> markerList = new ArrayList<>();
-    private final MarkersCall markersCall = new MarkersCall();
 
     Button bt_leaderBoard;
     TextView tv_username;
     TextView tv_points;
-    boolean isActivityOpen = false;
+
+    List<Marker> markerList = new ArrayList<>();
+    MarkersCall markersCall = new MarkersCall();
     PuzzlesCall puzzlesCall = new PuzzlesCall();
     public static UsersCall usersCall = new UsersCall();
     RetroCallBack retroCallBack;
+
     User user;
     boolean firstTime = true;
-
+    boolean isActivityOpen = false;
     public static Markers currentMarkerData = null;
     public static Marker currentMarker = null;
 
@@ -124,7 +125,7 @@ public class ActivityMap extends AppCompatActivity implements
                     tv_points.setText("Score: " + user.getPoints());
                     if (user.isHasWon() && firstTime) {
                         firstTime = false;
-                        openActivityWon();
+                        openActivityResults();
                     }
                 }
                 proximityMarkers();
@@ -170,7 +171,7 @@ public class ActivityMap extends AppCompatActivity implements
             for (int i = 0; i < markersCall.getMarkers().size(); i++) {
                 markerList.get(i).setVisible(SphericalUtil
                         .computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), markerList.get(i).getPosition()) < 50
-                        && markersCall.getMarkers().get(i).getVisibility());
+                        && markersCall.getMarkers().get(i).isVisibility());
             }
         };
         locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
@@ -234,7 +235,7 @@ public class ActivityMap extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    private void openActivityWon() {
+    private void openActivityResults() {
         Intent intent = new Intent(this, ActivityResults.class);
         isActivityOpen = true;
         startActivity(intent);
