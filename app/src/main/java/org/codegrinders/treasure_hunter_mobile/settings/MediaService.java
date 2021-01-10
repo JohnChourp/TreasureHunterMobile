@@ -25,7 +25,7 @@ public class MediaService extends Service {
     public void onDestroy() {
         super.onDestroy();
         int i;
-        for(i=0; i< Sound.entryCount; i++){
+        for (i = 0; i < Sound.audioList.size(); i++) {
             pause(i);
         }
     }
@@ -35,7 +35,7 @@ public class MediaService extends Service {
         return mBinder;
     }
 
-    public void  init(int index, int vol, boolean looping){
+    public void init(int index, int vol, boolean looping) {
         AudioData data = Sound.get(index);
         data.player = MediaPlayer.create(this, data.resource);
         data.player.setLooping(looping);
@@ -43,64 +43,64 @@ public class MediaService extends Service {
         volume(index, vol);
     }
 
-    public void play(int index, int pos){
+    public void play(int index, int pos) {
         AudioData data = Sound.get(index);
 
-        if(data.type.equals("sound")){
+        if (data.type.equals("sound")) {
             volume(index, Settings.soundVol);
         }
 
-        if(data.allowPlaying){
+        if (data.allowPlaying) {
             data.player.seekTo(pos);
             data.player.start();
         }
         data.allowPlaying = (!data.looping && !data.type.equals("music"));
     }
 
-    public  void  pause(int index){
+    public void pause(int index) {
         AudioData data = Sound.get(index);
 
-        if(!data.allowPlaying) {
+        if (!data.allowPlaying) {
             data.player.pause();
             data.position = data.player.getCurrentPosition();
             data.allowPlaying = true;
         }
     }
 
-    public  void  stop(int index){
+    public void stop(int index) {
         AudioData data = Sound.get(index);
 
-        if(!data.allowPlaying) {
+        if (!data.allowPlaying) {
             data.player.pause();
             data.position = 0;
             data.allowPlaying = true;
         }
     }
 
-    public void volume(int index, int vol){
+    public void volume(int index, int vol) {
         AudioData data = Sound.get(index);
 
-        if(vol>=0 && vol<=100){
-            float fVol = (float)(vol*0.01);
-            data.player.setVolume(fVol,fVol);
-        }else{
-            data.player.setVolume(0,0);
+        if (vol >= 0 && vol <= 100) {
+            float fVol = (float) (vol * 0.01);
+            data.player.setVolume(fVol, fVol);
+        } else {
+            data.player.setVolume(0, 0);
             vol = 0;
         }
-        if(vol != Settings.musicVol || vol != Settings.soundVol){
-            if(data.type.equals("music")){
+        if (vol != Settings.musicVol || vol != Settings.soundVol) {
+            if (data.type.equals("music")) {
                 Settings.musicVol = vol;
-            }else{
+            } else {
                 Settings.soundVol = vol;
             }
         }
     }
 
-    public void setAllMusicVol(int volume){
+    public void setAllMusicVol(int volume) {
         int i;
 
-        for (i=0;i<Sound.entryCount;i++){
-            if(Sound.get(i).type.equals("music")){
+        for (i = 0; i < Sound.audioList.size(); i++) {
+            if (Sound.get(i).type.equals("music")) {
                 volume(i, volume);
             }
         }

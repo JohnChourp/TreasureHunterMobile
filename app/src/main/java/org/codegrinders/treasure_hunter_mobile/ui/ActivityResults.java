@@ -3,17 +3,26 @@ package org.codegrinders.treasure_hunter_mobile.ui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.widget.Button;
 import android.widget.TextView;
 
 import org.codegrinders.treasure_hunter_mobile.R;
+import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
 
 public class ActivityResults extends AppCompatActivity {
 
     TextView tv_result;
     Button bt_results_won;
+
+    MediaService audioService;
+    Intent intent;
+    boolean isBound = false;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -36,4 +45,35 @@ public class ActivityResults extends AppCompatActivity {
         startActivity(intent);
     }
 
+
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
+            audioService = binder.getService();
+            isBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            isBound = false;
+        }
+    };
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        intent = new Intent(this, MediaService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (isBound) {
+            unbindService(serviceConnection);
+            isBound = false;
+        }
+    }
 }
