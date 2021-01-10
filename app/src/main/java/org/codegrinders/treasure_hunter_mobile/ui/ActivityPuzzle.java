@@ -69,7 +69,6 @@ public class ActivityPuzzle extends AppCompatActivity {
                 }
             }
 
-
             @Override
             public void onCallFailed(String errorMessage) {
                 tv_question.setText(errorMessage);
