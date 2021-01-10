@@ -9,6 +9,7 @@ public class Markers {
     private String snippet;
     private String puzzleId;
     private boolean visibility;
+    private String description;
 
     public String getId() {
         return id;
@@ -58,12 +59,19 @@ public class Markers {
         this.puzzleId = puzzleId;
     }
 
-
-    public boolean getVisibility() {
+    public boolean isVisibility() {
         return visibility;
     }
 
     public void setVisibility(boolean visibility) {
         this.visibility = visibility;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

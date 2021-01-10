@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.model.Puzzle;
+import org.codegrinders.treasure_hunter_mobile.retrofit.MarkersCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 
@@ -43,10 +44,8 @@ public class ActivityPuzzle extends AppCompatActivity {
                 }
                 if (callType.equals("postAnswer")) {
                     puzzle = puzzlesCall.getPuzzle();
-                    if (puzzle != null) {
-                        Toast.makeText(getBaseContext(), "Answer Sent Successfully...", Toast.LENGTH_SHORT).show();
                         if (et_answer.getText().toString().equals(puzzle.getAnswer())) {
-                            Toast.makeText(getApplicationContext(), "CORRECT", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), ActivityMap.currentMarkerData.getDescription(), Toast.LENGTH_LONG).show();
                             ActivityMap.currentMarker.setVisible(false);
                             ActivityMap.currentMarkerData.setVisibility(false);
                             finish();
@@ -54,9 +53,6 @@ public class ActivityPuzzle extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "WRONG", Toast.LENGTH_LONG).show();
                         }
                         et_answer.setText("");
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Answer Didn't Sent...", Toast.LENGTH_SHORT).show();
-                    }
                 }
             }
 
