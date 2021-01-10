@@ -6,33 +6,32 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.model.User;
 import org.codegrinders.treasure_hunter_mobile.retrofit.LoginRequest;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
 import org.codegrinders.treasure_hunter_mobile.settings.Sound;
+
 import java.util.regex.Pattern;
 
-public class ActivityLogin extends AppCompatActivity
-{
+public class ActivityLogin extends AppCompatActivity {
     Button bt_login;
     TextView tv_register;
-    EditText etUsername,etPassword;
+    EditText etUsername, etPassword;
     MediaService audioService;
     LoginRequest loginRequest = new LoginRequest();
     User user;
 
     Intent intent;
-    boolean isBound =false;
-    int backgroundMusic;
-    int buttonSound;
+    boolean isBound = false;
 
     private static final Pattern USERNAME_PATTERN = Pattern.compile("(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])(?=\\S+$).{3,99}$");
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$%^&*+=])(?=\\S+$).{8,99}$");
@@ -49,7 +48,7 @@ public class ActivityLogin extends AppCompatActivity
 
         tv_register.setOnClickListener(v -> openActivityRegister());
         bt_login.setOnClickListener(v -> {
-            audioService.play(buttonSound,0);
+            audioService.play(Sound.buttonSound, 0);
             login();
             /*if(validate()){
                 Toast.makeText(getApplicationContext(),"Login Successfully...",Toast.LENGTH_SHORT).show();
@@ -62,13 +61,10 @@ public class ActivityLogin extends AppCompatActivity
         });
     }
 
-    private void openActivityRegister()
-    {
+    private void openActivityRegister() {
         Intent intent = new Intent(this, ActivityRegister.class);
         startActivity(intent);
     }
-
-
 
 
     private boolean validate() {
@@ -94,28 +90,29 @@ public class ActivityLogin extends AppCompatActivity
         startActivity(intent);
     }
 
-    public  void login(){
+    public void login() {
         boolean res = validate();
-        if(res == true){
+        if (res == true) {
             loginRequest.retroCallBack = new RetroCallBack() {
                 @Override
                 public void onCallFinished(String callType) {
                     user = loginRequest.getUser();
-                    if(user != null){
-                        Toast.makeText(getApplicationContext(),"Login Successfully...",Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getApplicationContext(),user.getUsername().toString(),Toast.LENGTH_SHORT).show();
+                    if (user != null) {
+                        Toast.makeText(getApplicationContext(), "Login Successfully...", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), user.getUsername().toString(), Toast.LENGTH_SHORT).show();
                         openActivityMap();
-                    }else{
-                        Toast.makeText(getApplicationContext(),"Login Failed...",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Login Failed...", Toast.LENGTH_SHORT).show();
                     }
                 }
+
                 @Override
                 public void onCallFailed(String errorMessage) {
                 }
             };
-            loginRequest.userLoginRequest(etUsername.getText().toString(),etPassword.getText().toString());
-        }else{
-            Toast.makeText(getApplicationContext(),"Login Failed...",Toast.LENGTH_SHORT).show();
+            loginRequest.userLoginRequest(etUsername.getText().toString(), etPassword.getText().toString());
+        } else {
+            Toast.makeText(getApplicationContext(), "Login Failed...", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -125,9 +122,8 @@ public class ActivityLogin extends AppCompatActivity
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
             isBound = true;
-            backgroundMusic = Sound.searchByResId(R.raw.wanabe_epic_music);
-            buttonSound = Sound.searchByResId(R.raw.pop);
-//            audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
+            audioService.stop(Sound.gameMusic);
+            audioService.play(Sound.menuMusic, Sound.get(Sound.menuMusic).position);
         }
 
         @Override

@@ -1,6 +1,11 @@
 package org.codegrinders.treasure_hunter_mobile.ui;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -13,6 +18,8 @@ import org.codegrinders.treasure_hunter_mobile.model.Puzzle;
 import org.codegrinders.treasure_hunter_mobile.retrofit.MarkersCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
+import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
+import org.codegrinders.treasure_hunter_mobile.settings.Sound;
 
 public class ActivityPuzzle extends AppCompatActivity {
 
@@ -24,6 +31,10 @@ public class ActivityPuzzle extends AppCompatActivity {
     PuzzlesCall puzzlesCall = new PuzzlesCall();
     RetroCallBack retroCallBack;
     Puzzle puzzle;
+
+    MediaService audioService;
+    Intent intent;
+    boolean isBound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +59,16 @@ public class ActivityPuzzle extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), ActivityMap.currentMarkerData.getDescription(), Toast.LENGTH_LONG).show();
                             ActivityMap.currentMarker.setVisible(false);
                             ActivityMap.currentMarkerData.setVisibility(false);
+                            audioService.play(Sound.correctSound, 0);
                             finish();
                         } else {
                             Toast.makeText(getApplicationContext(), "WRONG", Toast.LENGTH_LONG).show();
+                            audioService.play(Sound.wrongSound, 0);
                         }
                         et_answer.setText("");
                 }
             }
+
 
             @Override
             public void onCallFailed(String errorMessage) {
@@ -68,5 +82,38 @@ public class ActivityPuzzle extends AppCompatActivity {
 
     private String getPuzzlePoints() {
         return "Puzzle's points: " + puzzlesCall.getPoints();
+    }
+
+
+
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
+            audioService = binder.getService();
+            isBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            isBound = false;
+        }
+    };
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        intent = new Intent(this, MediaService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (isBound) {
+            unbindService(serviceConnection);
+            isBound = false;
+        }
     }
 }
