@@ -43,4 +43,12 @@
     <string name="you_lost">You Lost</string>
     <string name="edit_profile">edit profile</string>
     <string name="delete_profile">delete profile</string>
+    <string name="start">start</string>
+    <string name="edit_email">edit email</string>
+    <string name="edit_password">edit password</string>
+    <string name="go_back">go back</string>
+    <string name="current_email">Current Email</string>
+    <string name="new_email">New Email</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
 </resources>
