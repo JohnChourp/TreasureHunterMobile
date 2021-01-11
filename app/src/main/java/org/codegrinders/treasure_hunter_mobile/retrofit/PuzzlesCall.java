@@ -25,7 +25,7 @@ public class PuzzlesCall {
         return puzzles.get(questionNumber).getPoints();
     }
 
-    public void searchPuzzleByID(String ID) {
+    public int searchPuzzleByID(String ID) {
         int pos = -1;
         for (int i = 0; i < puzzles.size(); i++) {
             if (puzzles.get(i).getId().equals(ID)) {
@@ -34,6 +34,7 @@ public class PuzzlesCall {
             }
         }
         questionNumber = pos;
+        return pos;
     }
 
     public void puzzlesGetRequest() {

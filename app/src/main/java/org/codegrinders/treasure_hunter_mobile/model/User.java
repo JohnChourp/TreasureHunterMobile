@@ -17,6 +17,9 @@ public class User implements Serializable {
         this.points = points;
     }
 
+    public User(){
+    }
+
     public String getId() {
         return id;
     }
