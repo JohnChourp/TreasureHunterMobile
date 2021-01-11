@@ -226,13 +226,13 @@ public class ActivityMap extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    private void openActivityLeaderBoard() {
-        Intent intent = new Intent(this, ActivityLeaderBoard.class);
+    private void openActivityResults() {
+        Intent intent = new Intent(this, ActivityResults.class);
         startActivity(intent);
     }
 
-    private void openActivityResults() {
-        Intent intent = new Intent(this, ActivityResults.class);
+    private void openActivityLeaderBoard() {
+        Intent intent = new Intent(this, ActivityLeaderBoard.class);
         startActivity(intent);
     }
 
