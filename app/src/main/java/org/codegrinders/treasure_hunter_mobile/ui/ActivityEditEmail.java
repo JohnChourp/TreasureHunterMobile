@@ -13,6 +13,7 @@ import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.model.ChangeEmailRequest;
 import org.codegrinders.treasure_hunter_mobile.model.ChangeEmailResponse;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
+import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -74,5 +75,19 @@ public class ActivityEditEmail extends AppCompatActivity {
 
             }
         });
+    }
+
+    public boolean validate() {
+        String currentEmail = et_currentEmail.getText().toString();
+        String password = et_password.getText().toString();
+
+        if(!currentEmail.equals(UsersCall.user.getEmail())) {
+            et_currentEmail.setError("The email given doesn't match with the account's email");
+            return false;
+        } else if(!password.equals(UsersCall.user.getPassword())) {
+            et_password.setError("The password given is incorrect");
+            return false;
+        } else
+            return true;
     }
 }
