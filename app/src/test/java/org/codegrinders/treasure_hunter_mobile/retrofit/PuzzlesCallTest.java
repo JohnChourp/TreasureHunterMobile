@@ -64,6 +64,22 @@ public class PuzzlesCallTest {
         assertEquals(-1, puzzlesCall.searchPuzzleByID("some id"));
     }
 
+    @Test
+    public void whenGetPointsIsCalledWithExistingPointsItReturnsPuzzlePoints() {
+        puzzlesCall.setPuzzles(new ArrayList<>());
+        puzzlesCall.getPuzzles().add(new Puzzle());
+        puzzlesCall.getPuzzles().get(0).setPoints(500);
+        assertEquals(500, puzzlesCall.getPoints());
+    }
+
+    @Test
+    public void whenGetQuestionIsCalledWithExistingQuestionItReturnsPuzzleQuestion() {
+        puzzlesCall.setPuzzles(new ArrayList<>());
+        puzzlesCall.getPuzzles().add(new Puzzle());
+        puzzlesCall.getPuzzles().get(0).setQuestion("question1");
+        assertEquals("question1", puzzlesCall.getQuestion());
+    }
+
     @After
     public void tearDown() throws Exception {
         server.shutdown();
