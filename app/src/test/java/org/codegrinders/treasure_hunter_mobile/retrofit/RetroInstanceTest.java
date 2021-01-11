@@ -1,7 +1,6 @@
 package org.codegrinders.treasure_hunter_mobile.retrofit;
 
 import org.codegrinders.treasure_hunter_mobile.model.Puzzle;
-import org.codegrinders.treasure_hunter_mobile.model.PuzzlesResponse;
 import org.codegrinders.treasure_hunter_mobile.model.RegisterRequest;
 import org.codegrinders.treasure_hunter_mobile.model.RegisterResponse;
 import org.junit.After;

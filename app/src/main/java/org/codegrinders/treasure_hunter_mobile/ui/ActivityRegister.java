@@ -38,10 +38,7 @@ public class ActivityRegister extends AppCompatActivity {
     AwesomeValidation emailValidation;
     MediaService audioService;
 
-    Intent intent;
     boolean isBound = false;
-    int backgroundMusic;
-    int buttonSound;
 
     private static final Pattern USERNAME_PATTERN = Pattern.compile("(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])(?=\\S+$).{3,99}$");
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!@#$%^&*+=])(?=\\S+$).{8,99}$");
@@ -63,7 +60,7 @@ public class ActivityRegister extends AppCompatActivity {
         emailValidation.addValidation(this, R.id.et_email, Patterns.EMAIL_ADDRESS, R.string.invalid_email);
 
         bt_submit.setOnClickListener(v -> {
-            audioService.play(buttonSound, 0);
+            audioService.play(Sound.buttonSound, 0);
             if (emailValidation.validate() && validate()) {
                 RegisterRequest registerRequest = new RegisterRequest();
                 registerRequest.setEmail(etEmail.getText().toString());
@@ -137,9 +134,8 @@ public class ActivityRegister extends AppCompatActivity {
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
             isBound = true;
-            backgroundMusic = Sound.searchByResId(R.raw.wanabe_epic_music);
-            buttonSound = Sound.searchByResId(R.raw.pop);
-            audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
+            audioService.stop(Sound.menuMusic);
+            audioService.play(Sound.menuMusic, Sound.get(Sound.menuMusic).position);
         }
 
         @Override
@@ -152,7 +148,7 @@ public class ActivityRegister extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        intent = new Intent(this, MediaService.class);
+        Intent intent = new Intent(this, MediaService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 

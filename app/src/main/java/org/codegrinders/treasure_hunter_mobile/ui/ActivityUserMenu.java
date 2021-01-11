@@ -13,7 +13,6 @@ public class ActivityUserMenu extends AppCompatActivity {
 
     Button bt_start;
     Button bt_editProfile;
-    UsersCall usersCall = new UsersCall();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +29,7 @@ public class ActivityUserMenu extends AppCompatActivity {
 
     private void openActivityMap() {
         Intent intent = new Intent(this,ActivityMap.class);
-        intent.putExtra("User", usersCall.getUser());
+        intent.putExtra("User", UsersCall.user);
         startActivity(intent);
     }
 

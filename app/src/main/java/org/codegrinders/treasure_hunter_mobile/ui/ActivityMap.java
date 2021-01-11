@@ -3,14 +3,18 @@ package org.codegrinders.treasure_hunter_mobile.ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,11 +43,11 @@ import org.codegrinders.treasure_hunter_mobile.retrofit.MarkersCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroCallBack;
 import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
+import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
+import org.codegrinders.treasure_hunter_mobile.settings.Sound;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class ActivityMap extends AppCompatActivity implements
         OnMyLocationButtonClickListener,
@@ -51,28 +55,28 @@ public class ActivityMap extends AppCompatActivity implements
         OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback,
         GoogleMap.OnInfoWindowClickListener {
-    private GoogleMap mMap;
-    private final List<Marker> markerList = new ArrayList<>();
-    private final MarkersCall markersCall = new MarkersCall();
+    GoogleMap mMap;
 
     Button bt_leaderBoard;
     TextView tv_username;
     TextView tv_points;
-    boolean isActivityOpen = false;
+
+    List<Marker> markerList = new ArrayList<>();
+    MarkersCall markersCall = new MarkersCall();
     PuzzlesCall puzzlesCall = new PuzzlesCall();
-    public static UsersCall usersCall = new UsersCall();
-    RetroCallBack retroCallBack;
-    boolean firstTime = true;
+    UsersCall usersCall = new UsersCall();
 
     public static Markers currentMarkerData = null;
     public static Marker currentMarker = null;
+    boolean isBound = false;
 
-    private Timer timer;
-    private final TimerTask timerTask = new TimerTask() {
-        @Override
-        public void run() {
-            markersCall.markersGetRequest();
-            usersCall.oneUserGetRequest(usersCall.getUser().getId());
+    boolean firstTime = true;
+    boolean started = false;
+    Handler handler = new Handler();
+    Runnable runnable = () -> {
+        usersCall.oneUserGetRequest(usersCall.getUser().getId());
+        if (started) {
+            start();
         }
     };
 
@@ -94,12 +98,6 @@ public class ActivityMap extends AppCompatActivity implements
         usersCall.setUser((User) getIntent().getSerializableExtra("User"));
         tv_username.setText(usersCall.getUser().getUsername());
         tv_points.setText("Score: " + usersCall.getUser().getPoints());
-
-        if (timer != null) {
-            return;
-        }
-        timer = new Timer();
-        timer.scheduleAtFixedRate(timerTask, 0, 2000);
     }
 
     @SuppressLint("PotentialBehaviorOverride")
@@ -109,7 +107,7 @@ public class ActivityMap extends AppCompatActivity implements
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 
-        retroCallBack = new RetroCallBack() {
+        RetroCallBack retroCallBack = new RetroCallBack() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onCallFinished(String callType) {
@@ -136,7 +134,7 @@ public class ActivityMap extends AppCompatActivity implements
                 Toast.makeText(getApplicationContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         };
-        showPhoneStatePermission();
+        showLocationPermission();
         markersCall.setCallBack(retroCallBack);
         puzzlesCall.setCallBack(retroCallBack);
         usersCall.setCallBack(retroCallBack);
@@ -161,13 +159,13 @@ public class ActivityMap extends AppCompatActivity implements
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-//        Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//        final double[] longitude = {location.getLongitude()};
-//        final double[] latitude = {location.getLatitude()};
+        Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        final double[] longitude = {location.getLongitude()};
+        final double[] latitude = {location.getLatitude()};
 
         final LocationListener locationListener = location1 -> {
-//            longitude[0] = location1.getLongitude();
-//            latitude[0] = location1.getLatitude();
+            longitude[0] = location1.getLongitude();
+            latitude[0] = location1.getLatitude();
             for (int i = 0; i < markersCall.getMarkers().size(); i++) {
                 markerList.get(i).setVisible(SphericalUtil
                         .computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), markerList.get(i).getPosition()) < 50
@@ -197,7 +195,7 @@ public class ActivityMap extends AppCompatActivity implements
         openActivityPuzzles();
     }
 
-    private void showPhoneStatePermission() {
+    private void showLocationPermission() {
         int permissionCheck = ContextCompat.checkSelfPermission(
                 this, Manifest.permission.ACCESS_FINE_LOCATION);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
@@ -225,30 +223,57 @@ public class ActivityMap extends AppCompatActivity implements
 
     private void openActivityPuzzles() {
         Intent intent = new Intent(this, ActivityPuzzle.class);
-        isActivityOpen = true;
         startActivity(intent);
     }
 
     private void openActivityLeaderBoard() {
         Intent intent = new Intent(this, ActivityLeaderBoard.class);
-        isActivityOpen = true;
         startActivity(intent);
     }
 
     private void openActivityResults() {
         Intent intent = new Intent(this, ActivityResults.class);
-        isActivityOpen = true;
         startActivity(intent);
+    }
+
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
+            MediaService audioService = binder.getService();
+            isBound = true;
+            audioService.stop(Sound.menuMusic);
+            audioService.play(Sound.gameMusic, Sound.get(Sound.gameMusic).position);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            isBound = false;
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = new Intent(this, MediaService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        start();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (!isActivityOpen) {
-            timer.cancel();
-            timer = null;
-        } else {
-            isActivityOpen = false;
+        started = false;
+        handler.removeCallbacks(runnable);
+        if (isBound) {
+            unbindService(serviceConnection);
+            isBound = false;
         }
     }
+
+    public void start() {
+        started = true;
+        handler.postDelayed(runnable, 2000);
+    }
+
 }

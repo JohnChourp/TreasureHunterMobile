@@ -16,14 +16,11 @@ import org.codegrinders.treasure_hunter_mobile.settings.Settings;
 import org.codegrinders.treasure_hunter_mobile.settings.Sound;
 
 public class ActivityStart extends AppCompatActivity {
-    MediaService audioService;
-    Intent intent;
     Button bt_start;
     Button bt_settings;
     Button bt_leaderBoard;
 
-    int backgroundMusic;
-    int buttonSound;
+    MediaService audioService;
     boolean isBound = false;
 
     @Override
@@ -36,13 +33,13 @@ public class ActivityStart extends AppCompatActivity {
         bt_settings = findViewById(R.id.bt_settings);
 
         bt_start.setOnClickListener(v -> {
-            audioService.play(buttonSound, 0);
+            audioService.play(Sound.buttonSound, 0);
             openActivityLogin();
         });
         bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
 
         bt_settings.setOnClickListener(v -> {
-            audioService.play(buttonSound, 0);
+            audioService.play(Sound.buttonSound, 0);
             openActivitySettings();
         });
 
@@ -72,16 +69,20 @@ public class ActivityStart extends AppCompatActivity {
 
             if (Sound.firstInit) {
                 Settings.init(getApplicationContext());
-                backgroundMusic = Sound.add(R.raw.wanabe_epic_music, "music");
-                buttonSound = Sound.add(R.raw.pop, "sound");
-                audioService.init(backgroundMusic, Settings.musicVol, true);
-                audioService.init(buttonSound, Settings.soundVol, false);
+                Sound.menuMusic = Sound.add(R.raw.wanabe_epic_music, "music");
+                Sound.gameMusic = Sound.add(R.raw.iek_advert, "music");
+                Sound.buttonSound = Sound.add(R.raw.pop, "sound");
+                Sound.correctSound = Sound.add(R.raw.correct, "sound");
+                Sound.wrongSound = Sound.add(R.raw.hnieh, "sound");
+                audioService.init(Sound.menuMusic, Settings.musicVol, true);
+                audioService.init(Sound.gameMusic, Settings.musicVol, true);
+                audioService.init(Sound.buttonSound, Settings.soundVol, false);
+                audioService.init(Sound.correctSound, Settings.soundVol, false);
+                audioService.init(Sound.wrongSound, Settings.soundVol, false);
                 Sound.firstInit = false;
-            } else {
-                backgroundMusic = Sound.searchByResId(R.raw.wanabe_epic_music);
-                buttonSound = Sound.searchByResId(R.raw.pop);
             }
-            audioService.play(backgroundMusic, Sound.get(backgroundMusic).position);
+            audioService.stop(Sound.menuMusic);
+            audioService.play(Sound.menuMusic, Sound.get(Sound.menuMusic).position);
         }
 
         @Override
@@ -94,7 +95,7 @@ public class ActivityStart extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        intent = new Intent(this, MediaService.class);
+        Intent intent = new Intent(this, MediaService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 

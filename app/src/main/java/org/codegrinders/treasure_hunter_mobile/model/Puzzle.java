@@ -11,6 +11,10 @@ public class Puzzle {
         this.answer = answer;
     }
 
+    public Puzzle(){
+
+    }
+
     public String getId() {
         return id;
     }
