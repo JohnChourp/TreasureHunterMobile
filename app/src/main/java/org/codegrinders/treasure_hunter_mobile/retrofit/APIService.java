@@ -1,5 +1,7 @@
 package org.codegrinders.treasure_hunter_mobile.retrofit;
 
+import org.codegrinders.treasure_hunter_mobile.model.ChangeEmailRequest;
+import org.codegrinders.treasure_hunter_mobile.model.ChangeEmailResponse;
 import org.codegrinders.treasure_hunter_mobile.model.Markers;
 import org.codegrinders.treasure_hunter_mobile.model.Puzzle;
 import org.codegrinders.treasure_hunter_mobile.model.RegisterRequest;
@@ -26,6 +28,9 @@ public interface APIService {
 
     @POST("/user/")
     Call<RegisterResponse> registerUser(@Body RegisterRequest registerRequest);
+
+    @POST("/user/change/email/")
+    Call<ChangeEmailResponse> changeEmail(@Body ChangeEmailRequest changeEmailRequest);
 
     @GET("/user/login/")
     Call<User> loginRequest(@Query("username") String username, @Query("password") String password);
