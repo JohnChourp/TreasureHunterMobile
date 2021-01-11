@@ -69,6 +69,8 @@ public class ActivityEditEmail extends AppCompatActivity {
 
             @Override
             public void onFailure(@NotNull Call<ChangeEmailResponse> call, @NotNull Throwable t) {
+                String message = "Changing email failed";
+                Toast.makeText(ActivityEditEmail.this, message, Toast.LENGTH_SHORT).show();
 
             }
         });
