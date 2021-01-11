@@ -7,13 +7,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.google.gson.Gson;
 
 import org.codegrinders.treasure_hunter_mobile.R;
 import org.codegrinders.treasure_hunter_mobile.model.ChangeEmailRequest;
 import org.codegrinders.treasure_hunter_mobile.model.ChangeEmailResponse;
 import org.codegrinders.treasure_hunter_mobile.retrofit.RetroInstance;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
@@ -50,7 +50,7 @@ public class ActivityEditEmail extends AppCompatActivity {
                 changeEmail(changeEmailRequest);
         emailResponseCall.enqueue(new Callback<ChangeEmailResponse>() {
             @Override
-            public void onResponse(Call<ChangeEmailResponse> call, Response<ChangeEmailResponse> response) {
+            public void onResponse(@NotNull Call<ChangeEmailResponse> call, @NotNull Response<ChangeEmailResponse> response) {
                 if(response.isSuccessful()) {
                     String message = "Email has been successfully changed";
                     Toast.makeText(ActivityEditEmail.this, message, Toast.LENGTH_SHORT).show();
@@ -68,7 +68,7 @@ public class ActivityEditEmail extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ChangeEmailResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<ChangeEmailResponse> call, @NotNull Throwable t) {
 
             }
         });
