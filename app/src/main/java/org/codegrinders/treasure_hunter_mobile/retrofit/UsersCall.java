@@ -14,9 +14,7 @@ public class UsersCall {
     private RetroCallBack callBack;
     private List<User> users;
     private Call<List<User>> call;
-    private Call<User> oneUserCall;
-    public User user;
-
+    public static User user;
 
     public void usersGetRequest() {
         call = RetroInstance.initializeAPIService().getUsers();
@@ -39,7 +37,7 @@ public class UsersCall {
     }
 
     public void oneUserGetRequest(String id) {
-        oneUserCall = RetroInstance.initializeAPIService().updateUserPoints(id);
+        Call<User> oneUserCall = RetroInstance.initializeAPIService().updateUserPoints(id);
         oneUserCall.enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
@@ -58,12 +56,41 @@ public class UsersCall {
         });
     }
 
+    public void userLoginRequest(String username, String password) {
+        Call<User> call = RetroInstance.initializeAPIService().loginRequest(username, password);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
+                if (response.code() == 200) {
+                    assert response.body() != null;
+                    user = new User(response.body().getId(), response.body().getUsername(), response.body().getPoints());
+                } else {
+                    user = null;
+                }
+                callBack.onCallFinished("login");
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<User> call, @NotNull Throwable t) {
+                user = null;
+            }
+        });
+    }
+
     public List<User> getUsers() {
         return users;
     }
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        UsersCall.user = user;
     }
 
     public Call<List<User>> getCall() {
@@ -81,8 +108,5 @@ public class UsersCall {
     public void setCallBack(RetroCallBack callBack) {
         this.callBack = callBack;
     }
-
-
-
 
 }

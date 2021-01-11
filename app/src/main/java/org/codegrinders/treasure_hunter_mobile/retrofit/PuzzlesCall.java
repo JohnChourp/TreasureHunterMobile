@@ -60,7 +60,7 @@ public class PuzzlesCall {
     }
 
     public void puzzleIsCorrect(String answer) {
-        Call<Puzzle> call = RetroInstance.initializeAPIService().answerIsCorrect(puzzles.get(questionNumber).getId(), answer, ActivityMap.usersCall.user.getId());
+        Call<Puzzle> call = RetroInstance.initializeAPIService().answerIsCorrect(puzzles.get(questionNumber).getId(), answer, UsersCall.user.getId());
         call.enqueue(new Callback<Puzzle>() {
             @Override
             public void onResponse(@NotNull Call<Puzzle> call, @NotNull Response<Puzzle> response) {
@@ -79,6 +79,10 @@ public class PuzzlesCall {
 
     public Puzzle getPuzzle() {
         return puzzle;
+    }
+
+    public void setPuzzle(Puzzle puzzle) {
+        this.puzzle = puzzle;
     }
 
     public List<Puzzle> getPuzzles() {

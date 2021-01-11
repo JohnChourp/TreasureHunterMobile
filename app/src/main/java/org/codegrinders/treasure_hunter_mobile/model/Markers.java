@@ -58,8 +58,7 @@ public class Markers {
         this.puzzleId = puzzleId;
     }
 
-
-    public boolean getVisibility() {
+    public boolean isVisibility() {
         return visibility;
     }
 

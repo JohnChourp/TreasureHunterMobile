@@ -33,6 +33,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.SphericalUtil;
 
 import org.codegrinders.treasure_hunter_mobile.R;
+import org.codegrinders.treasure_hunter_mobile.model.Markers;
 import org.codegrinders.treasure_hunter_mobile.model.User;
 import org.codegrinders.treasure_hunter_mobile.retrofit.MarkersCall;
 import org.codegrinders.treasure_hunter_mobile.retrofit.PuzzlesCall;
@@ -61,15 +62,17 @@ public class ActivityMap extends AppCompatActivity implements
     PuzzlesCall puzzlesCall = new PuzzlesCall();
     public static UsersCall usersCall = new UsersCall();
     RetroCallBack retroCallBack;
-    User user;
     boolean firstTime = true;
+
+    public static Markers currentMarkerData = null;
+    public static Marker currentMarker = null;
 
     private Timer timer;
     private final TimerTask timerTask = new TimerTask() {
         @Override
         public void run() {
             markersCall.markersGetRequest();
-            usersCall.oneUserGetRequest(user.getId());
+            usersCall.oneUserGetRequest(usersCall.getUser().getId());
         }
     };
 
@@ -87,9 +90,10 @@ public class ActivityMap extends AppCompatActivity implements
         bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
         tv_points = findViewById(R.id.tv_points);
         tv_username = findViewById(R.id.tv_username);
-        user = (User) getIntent().getSerializableExtra("User");
-        tv_username.setText(user.getUsername());
-        tv_points.setText("Score: " + user.getPoints());
+
+        usersCall.setUser((User) getIntent().getSerializableExtra("User"));
+        tv_username.setText(usersCall.getUser().getUsername());
+        tv_points.setText("Score: " + usersCall.getUser().getPoints());
 
         if (timer != null) {
             return;
@@ -116,12 +120,12 @@ public class ActivityMap extends AppCompatActivity implements
                     }
                 }
                 if (callType.equals("OneUser")) {
-                    user.setPoints(usersCall.user.getPoints());
-                    user.setHasWon(usersCall.user.isHasWon());
-                    tv_points.setText("Score: " + user.getPoints());
-                    if(user.isHasWon() && firstTime){
+                    usersCall.getUser().setPoints(usersCall.getUser().getPoints());
+                    usersCall.getUser().setHasWon(usersCall.getUser().isHasWon());
+                    tv_points.setText("Score: " + usersCall.getUser().getPoints());
+                    if (usersCall.getUser().isHasWon() && firstTime) {
                         firstTime = false;
-                        openActivityWon();
+                        openActivityResults();
                     }
                 }
                 proximityMarkers();
@@ -137,6 +141,7 @@ public class ActivityMap extends AppCompatActivity implements
         puzzlesCall.setCallBack(retroCallBack);
         usersCall.setCallBack(retroCallBack);
         puzzlesCall.puzzlesGetRequest();
+        markersCall.markersGetRequest();
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
         mMap.setOnInfoWindowClickListener(this);
@@ -156,17 +161,17 @@ public class ActivityMap extends AppCompatActivity implements
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        final double[] longitude = {location.getLongitude()};
-        final double[] latitude = {location.getLatitude()};
+//        Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//        final double[] longitude = {location.getLongitude()};
+//        final double[] latitude = {location.getLatitude()};
 
         final LocationListener locationListener = location1 -> {
-            longitude[0] = location1.getLongitude();
-            latitude[0] = location1.getLatitude();
+//            longitude[0] = location1.getLongitude();
+//            latitude[0] = location1.getLatitude();
             for (int i = 0; i < markersCall.getMarkers().size(); i++) {
                 markerList.get(i).setVisible(SphericalUtil
                         .computeDistanceBetween(new LatLng(location1.getLatitude(), location1.getLongitude()), markerList.get(i).getPosition()) < 50
-                        && markersCall.getMarkers().get(i).getVisibility());
+                        && markersCall.getMarkers().get(i).isVisibility());
             }
         };
         locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
@@ -186,7 +191,9 @@ public class ActivityMap extends AppCompatActivity implements
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        puzzlesCall.searchPuzzleByID(markersCall.searchMarkerByTitle(marker.getTitle()).getPuzzleId());
+        currentMarkerData = markersCall.searchMarkerByTitle(marker.getTitle());
+        currentMarker = marker;
+        puzzlesCall.searchPuzzleByID(currentMarkerData.getPuzzleId());
         openActivityPuzzles();
     }
 
@@ -228,7 +235,7 @@ public class ActivityMap extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    private void openActivityWon() {
+    private void openActivityResults() {
         Intent intent = new Intent(this, ActivityResults.class);
         isActivityOpen = true;
         startActivity(intent);

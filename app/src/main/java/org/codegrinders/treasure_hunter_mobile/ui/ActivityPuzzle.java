@@ -48,6 +48,8 @@ public class ActivityPuzzle extends AppCompatActivity {
                         Toast.makeText(getBaseContext(), "Answer Sent Successfully...", Toast.LENGTH_SHORT).show();
                         if (et_answer.getText().toString().equals(puzzle.getAnswer())) {
                             Toast.makeText(getApplicationContext(), "CORRECT", Toast.LENGTH_LONG).show();
+                            ActivityMap.currentMarker.setVisible(false);
+                            ActivityMap.currentMarkerData.setVisibility(false);
                             finish();
                         } else {
                             Toast.makeText(getApplicationContext(), "WRONG", Toast.LENGTH_LONG).show();

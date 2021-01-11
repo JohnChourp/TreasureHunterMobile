@@ -7,13 +7,13 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.codegrinders.treasure_hunter_mobile.R;
-import org.codegrinders.treasure_hunter_mobile.model.User;
+import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
 
 public class ActivityUserMenu extends AppCompatActivity {
 
     Button bt_start;
     Button bt_editProfile;
-    User user;
+    UsersCall usersCall = new UsersCall();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +30,7 @@ public class ActivityUserMenu extends AppCompatActivity {
 
     private void openActivityMap() {
         Intent intent = new Intent(this,ActivityMap.class);
-        intent.putExtra("User", user);
+        intent.putExtra("User", usersCall.getUser());
         startActivity(intent);
     }
 
