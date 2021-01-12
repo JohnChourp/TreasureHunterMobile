@@ -11,7 +11,7 @@ import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
 
 public class ActivityUserMenu extends AppCompatActivity {
 
-    Button bt_start;
+    Button bt_resume;
     Button bt_editProfile;
 
     @Override
@@ -19,17 +19,15 @@ public class ActivityUserMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usermenu);
 
-        bt_start = findViewById(R.id.bt_start);
+        bt_resume = findViewById(R.id.bt_resume);
         bt_editProfile = findViewById(R.id.bt_editProfile);
 
-        bt_start.setOnClickListener(v -> openActivityMap());
+        bt_resume.setOnClickListener(v -> returnToActivityMap());
         bt_editProfile.setOnClickListener(v -> openActivityEditProfile());
     }
 
-    private void openActivityMap() {
-        Intent intent = new Intent(this, ActivityMap.class);
-        intent.putExtra("User", UsersCall.user);
-        startActivity(intent);
+    private void returnToActivityMap() {
+        finish();
     }
 
     private void openActivityEditProfile() {
