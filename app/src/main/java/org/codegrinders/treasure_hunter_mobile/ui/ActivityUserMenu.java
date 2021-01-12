@@ -17,7 +17,7 @@ public class ActivityUserMenu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_menu);
+        setContentView(R.layout.activity_usermenu);
 
         bt_start = findViewById(R.id.bt_start);
         bt_editProfile = findViewById(R.id.bt_editProfile);
