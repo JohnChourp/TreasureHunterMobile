@@ -74,8 +74,8 @@ public class ActivityLogin extends AppCompatActivity {
         return true;
     }
 
-    private void openActivityUserMenu() {
-        Intent intent = new Intent(this, ActivityUserMenu.class);
+    private void openActivityMap() {
+        Intent intent = new Intent(this, ActivityMap.class);
         intent.putExtra("User", usersCall.getUser());
         startActivity(intent);
     }
@@ -87,8 +87,7 @@ public class ActivityLogin extends AppCompatActivity {
                 @Override
                 public void onCallFinished(String callType) {
                     if (usersCall.getUser() != null) {
-//                      openActivityMap();
-                        openActivityUserMenu();
+                      openActivityMap();
                     } else {
                         Toast.makeText(getApplicationContext(), "Login Failed...", Toast.LENGTH_SHORT).show();
                     }
