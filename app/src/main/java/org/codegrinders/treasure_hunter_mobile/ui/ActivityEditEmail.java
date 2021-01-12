@@ -38,10 +38,14 @@ public class ActivityEditEmail extends AppCompatActivity {
         bt_changeEmail = findViewById(R.id.bt_submit2);
 
         bt_changeEmail.setOnClickListener(v -> {
-            ChangeEmailRequest changeEmailRequest = new ChangeEmailRequest();
-            changeEmailRequest.setEmail(et_newEmail.getText().toString());
-            changeEmail(changeEmailRequest);
-            finish();
+            if(validate()) {
+                ChangeEmailRequest changeEmailRequest = new ChangeEmailRequest();
+                changeEmailRequest.setEmail(et_newEmail.getText().toString());
+                changeEmail(changeEmailRequest);
+                finish();
+            } else
+                Toast.makeText(getApplicationContext(), "Changing email has failed", Toast.LENGTH_SHORT).show();
+
         });
 
     }
