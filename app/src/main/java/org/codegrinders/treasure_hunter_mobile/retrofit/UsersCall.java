@@ -76,6 +76,26 @@ public class UsersCall {
         });
     }
 
+    public void oneUserGetPassword(String id, String password) {
+        Call<User> oneUserCall = RetroInstance.initializeAPIService().updateUserPassword(id, password);
+        oneUserCall.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
+                if (!response.isSuccessful()) {
+                    callBack.onCallFailed("code: " + response.code());
+                    return;
+                }
+                user = response.body();
+                callBack.onCallFinished("OneUserGetPassword");
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<User> call, @NotNull Throwable t) {
+                callBack.onCallFailed(t.getMessage());
+            }
+        });
+    }
+
     public void userLoginRequest(String username, String password) {
         Call<User> call = RetroInstance.initializeAPIService().loginRequest(username, password);
         call.enqueue(new Callback<User>() {

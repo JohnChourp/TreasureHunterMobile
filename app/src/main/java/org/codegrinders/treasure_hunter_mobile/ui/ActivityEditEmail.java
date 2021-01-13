@@ -34,6 +34,7 @@ public class ActivityEditEmail extends AppCompatActivity {
                 public void onCallFinished(String callType) {
                     if (validate()) {
                         usersCall.oneUserGetEmail(UsersCall.user.getId(), et_newEmail.getText().toString());
+                        Toast.makeText(ActivityEditEmail.this, "Email has been changed successfully", Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
                         Toast.makeText(getApplicationContext(), "Changing email has failed", Toast.LENGTH_SHORT).show();

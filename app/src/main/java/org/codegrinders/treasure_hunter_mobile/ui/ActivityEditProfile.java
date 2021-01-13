@@ -32,7 +32,7 @@ public class ActivityEditProfile extends AppCompatActivity {
     }
 
     private void openActivityChangePassword() {
-        Intent intent = new Intent(this, ActivityChangePassword.class);
+        Intent intent = new Intent(this, ActivityEditPassword.class);
         startActivity(intent);
     }
 
