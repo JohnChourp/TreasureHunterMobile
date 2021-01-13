@@ -56,6 +56,26 @@ public class UsersCall {
         });
     }
 
+    public void oneUserGetEmail(String id, String email) {
+        Call<User> oneUserCall = RetroInstance.initializeAPIService().updateUserEmail(id, email);
+        oneUserCall.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
+                if (!response.isSuccessful()) {
+                    callBack.onCallFailed("code: " + response.code());
+                    return;
+                }
+                user = response.body();
+                callBack.onCallFinished("OneUserGetEmail");
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<User> call, @NotNull Throwable t) {
+                callBack.onCallFailed(t.getMessage());
+            }
+        });
+    }
+
     public void userLoginRequest(String username, String password) {
         Call<User> call = RetroInstance.initializeAPIService().loginRequest(username, password);
         call.enqueue(new Callback<User>() {
