@@ -12,6 +12,23 @@ public class MarkersCallTest {
 MarkersCall markersCall = new MarkersCall();
 
     @Test
+    public void whenSearchMarkerByTitleIsCalledWithExistingTitleReturnCorrespondingMarker() {
+        markersCall.setMarkers(new ArrayList<>());
+        markersCall.getMarkers().add(new Markers());
+        markersCall.getMarkers().get(0).setTitle("first title");
+        markersCall.getMarkers().get(0).setSnippet("first snippet");
+        assertEquals("first snippet",markersCall.searchMarkerByTitle("first title").getSnippet());
+    }
+
+    @Test
+    public void whenSearchMarkerByTitleIsCalledWithNonExistingTitleReturnNull() {
+        markersCall.setMarkers(new ArrayList<>());
+        markersCall.getMarkers().add(new Markers());
+        markersCall.getMarkers().get(0).setTitle("title");
+        assertNull(markersCall.searchMarkerByTitle("some title"));
+    }
+
+    @Test
     public void whenSearchMarkerByTitleIsCalledWithExistingTitleReturnMarkerId() {
         markersCall.setMarkers(new ArrayList<>());
         markersCall.getMarkers().add(new Markers());
@@ -53,13 +70,5 @@ MarkersCall markersCall = new MarkersCall();
         markersCall.getMarkers().add(new Markers());
         markersCall.getMarkers().get(0).setTitle("title");
         assertEquals("title",markersCall.searchMarkerByTitle("title").getTitle());
-    }
-
-    @Test
-    public void whenSearchMarkerByTitleIsCalledWithNonExistingTitleReturnNull() {
-        markersCall.setMarkers(new ArrayList<>());
-        markersCall.getMarkers().add(new Markers());
-        markersCall.getMarkers().get(0).setTitle("title");
-        assertNull(markersCall.searchMarkerByTitle("some title"));
     }
 }
