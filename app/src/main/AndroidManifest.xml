@@ -16,10 +16,11 @@
         android:theme="@style/Theme.Treasure_Hunter_Mobile"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".ui.ActivityEditEmail"></activity>
-        <activity android:name=".ui.ActivityEditProfile" />
-        <activity android:name=".ui.ActivityEditPassword" />
-        <activity android:name=".ui.ActivityUserMenu" />
+        <activity android:name=".menu.ActivityDeleteAccount"></activity>
+        <activity android:name=".menu.ActivityEditEmail" />
+        <activity android:name=".menu.ActivityEditProfile" />
+        <activity android:name=".menu.ActivityEditPassword" />
+        <activity android:name=".menu.ActivityUserMenu" />
         <activity android:name=".ui.ActivityResults" />
 
         <meta-data
