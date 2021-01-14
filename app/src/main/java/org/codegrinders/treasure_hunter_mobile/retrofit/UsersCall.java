@@ -121,12 +121,15 @@ public class UsersCall {
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
-                if (response.code() == 200) {
-                    assert response.body() != null;
-                    user = new User(response.body().getId(), response.body().getUsername(), response.body().getPoints());
-                } else {
+                if (response.code()==200 && response.body().getUsername() != null){
+                    user = new User(response.body().getId(),response.body().getUsername(),response.body().getPoints());
+                }else if(response.code()==200 && response.body().getUsername() == null){
                     user = null;
                 }
+
+
+
+
                 callBack.onCallFinished("login");
             }
 
