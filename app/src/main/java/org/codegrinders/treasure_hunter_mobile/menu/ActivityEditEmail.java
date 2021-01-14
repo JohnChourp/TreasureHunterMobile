@@ -49,7 +49,6 @@ public class ActivityEditEmail extends AppCompatActivity {
             usersCall.oneUserGetRequest(UsersCall.user.getId());
             usersCall.setCallBack(retroCallBack);
 
-
         });
 
     }
