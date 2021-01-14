@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import java.util.List;
 public class ActivityLeaderBoard extends AppCompatActivity {
 
     ListView listView;
+    Button bt_goBack;
     UsersCall usersCall = new UsersCall();
     boolean isBound = false;
 
@@ -33,6 +35,9 @@ public class ActivityLeaderBoard extends AppCompatActivity {
         setContentView(R.layout.activity_leaderboard);
 
         listView = findViewById(R.id.listView);
+        bt_goBack = findViewById(R.id.bt_goBack2);
+
+        bt_goBack.setOnClickListener(v -> returnToPreviousActivity());
 
         RetroCallBack retroCallBack = new RetroCallBack() {
             @Override
@@ -58,6 +63,10 @@ public class ActivityLeaderBoard extends AppCompatActivity {
         }
         listView.setAdapter(new ArrayAdapter<>(getApplicationContext(),
                 android.R.layout.simple_list_item_1, leaderBoard));
+    }
+
+    void returnToPreviousActivity() {
+        finish();
     }
 
 
