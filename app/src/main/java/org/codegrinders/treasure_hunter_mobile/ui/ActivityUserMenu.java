@@ -24,6 +24,7 @@ public class ActivityUserMenu extends AppCompatActivity {
 
         bt_resume.setOnClickListener(v -> returnToActivityMap());
         bt_editProfile.setOnClickListener(v -> openActivityEditProfile());
+        bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
     }
 
     private void returnToActivityMap() {
@@ -35,4 +36,8 @@ public class ActivityUserMenu extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void openActivityLeaderBoard() {
+        Intent intent = new Intent(this, ActivityLeaderBoard.class);
+        startActivity(intent);
+    }
 }
