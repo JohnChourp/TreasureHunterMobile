@@ -1,4 +1,4 @@
-package org.codegrinders.treasure_hunter_mobile.ui;
+package org.codegrinders.treasure_hunter_mobile.menu;
 
 import androidx.appcompat.app.AppCompatActivity;
 

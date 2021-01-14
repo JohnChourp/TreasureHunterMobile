@@ -1,4 +1,4 @@
-package org.codegrinders.treasure_hunter_mobile.ui;
+package org.codegrinders.treasure_hunter_mobile.menu;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.widget.Button;
 
 import org.codegrinders.treasure_hunter_mobile.R;
-import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
+import org.codegrinders.treasure_hunter_mobile.ui.ActivityLeaderBoard;
 
 public class ActivityUserMenu extends AppCompatActivity {
 

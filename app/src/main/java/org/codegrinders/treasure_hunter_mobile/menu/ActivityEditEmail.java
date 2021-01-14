@@ -1,4 +1,4 @@
-package org.codegrinders.treasure_hunter_mobile.ui;
+package org.codegrinders.treasure_hunter_mobile.menu;
 
 import android.os.Bundle;
 import android.widget.Button;
@@ -43,7 +43,6 @@ public class ActivityEditEmail extends AppCompatActivity {
 
                 @Override
                 public void onCallFailed(String errorMessage) {
-                    Toast.makeText(ActivityEditEmail.this, errorMessage, Toast.LENGTH_SHORT).show();
 
                 }
             };

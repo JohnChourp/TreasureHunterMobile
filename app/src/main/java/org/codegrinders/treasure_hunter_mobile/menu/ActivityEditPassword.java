@@ -1,4 +1,4 @@
-package org.codegrinders.treasure_hunter_mobile.ui;
+package org.codegrinders.treasure_hunter_mobile.menu;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -48,7 +48,6 @@ public class ActivityEditPassword extends AppCompatActivity {
 
                 @Override
                 public void onCallFailed(String errorMessage) {
-                    Toast.makeText(ActivityEditPassword.this, errorMessage, Toast.LENGTH_SHORT).show();
                 }
             };
             usersCall.oneUserGetRequest(UsersCall.user.getId());
