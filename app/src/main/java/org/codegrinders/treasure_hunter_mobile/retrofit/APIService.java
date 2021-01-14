@@ -33,6 +33,12 @@ public interface APIService {
     @GET("/user/update/points")
     Call<User> updateUserPoints(@Query("id") String userId);
 
+    @GET("/user/update/email/")
+    Call<User> updateUserEmail(@Query("id") String userId, @Query("email") String email);
+
+    @GET("/user/update/password/")
+    Call<User> updateUserPassword(@Query("id") String userId, @Query("password") String password);
+
     @GET("/puzzle/answer")
     Call<Puzzle> answerIsCorrect(@Query("id") String puzzleId, @Query("answer") String answer, @Query("userId") String userId);
 }

@@ -16,7 +16,7 @@ import org.codegrinders.treasure_hunter_mobile.settings.Settings;
 import org.codegrinders.treasure_hunter_mobile.settings.Sound;
 
 public class ActivityStart extends AppCompatActivity {
-    Button bt_play;
+    Button bt_start;
     Button bt_settings;
     Button bt_leaderBoard;
 
@@ -28,11 +28,11 @@ public class ActivityStart extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        bt_play = findViewById(R.id.bt_play);
+        bt_start = findViewById(R.id.bt_start);
         bt_leaderBoard = findViewById(R.id.bt_leaderBoard);
         bt_settings = findViewById(R.id.bt_settings);
 
-        bt_play.setOnClickListener(v -> {
+        bt_start.setOnClickListener(v -> {
             audioService.play(Sound.buttonSound, 0);
             openActivityLogin();
         });

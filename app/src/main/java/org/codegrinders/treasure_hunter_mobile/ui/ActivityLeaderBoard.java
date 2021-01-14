@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,12 +37,12 @@ public class ActivityLeaderBoard extends AppCompatActivity {
         RetroCallBack retroCallBack = new RetroCallBack() {
             @Override
             public void onCallFinished(String callType) {
-                    getLeaderBoard();
+                getLeaderBoard();
             }
 
             @Override
             public void onCallFailed(String errorMessage) {
-
+                Toast.makeText(ActivityLeaderBoard.this, errorMessage, Toast.LENGTH_SHORT).show();
             }
         };
         usersCall.setCallBack(retroCallBack);

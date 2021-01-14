@@ -57,14 +57,14 @@ public class ActivityMap extends AppCompatActivity implements
         GoogleMap.OnInfoWindowClickListener {
     GoogleMap mMap;
 
-    Button bt_leaderBoard;
+    Button bt_pause;
     TextView tv_username;
     TextView tv_points;
 
     List<Marker> markerList = new ArrayList<>();
     MarkersCall markersCall = new MarkersCall();
     PuzzlesCall puzzlesCall = new PuzzlesCall();
-    public static UsersCall usersCall = new UsersCall();
+    UsersCall usersCall = new UsersCall();
 
     public static Markers currentMarkerData = null;
     public static Marker currentMarker = null;
@@ -90,8 +90,8 @@ public class ActivityMap extends AppCompatActivity implements
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
-        bt_leaderBoard = findViewById(R.id.bt_leaderBoard);
-        bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
+        bt_pause = findViewById(R.id.bt_pause);
+        bt_pause.setOnClickListener(v -> openActivityUserMenu());
         tv_points = findViewById(R.id.tv_points);
         tv_username = findViewById(R.id.tv_username);
 
@@ -226,13 +226,18 @@ public class ActivityMap extends AppCompatActivity implements
         startActivity(intent);
     }
 
-    private void openActivityLeaderBoard() {
-        Intent intent = new Intent(this, ActivityLeaderBoard.class);
+    private void openActivityResults() {
+        Intent intent = new Intent(this, ActivityResults.class);
         startActivity(intent);
     }
 
-    private void openActivityResults() {
-        Intent intent = new Intent(this, ActivityResults.class);
+//    private void openActivityLeaderBoard() {
+//        Intent intent = new Intent(this, ActivityLeaderBoard.class);
+//        startActivity(intent);
+//    }
+
+    private void openActivityUserMenu() {
+        Intent intent = new Intent(this, ActivityUserMenu.class);
         startActivity(intent);
     }
 

@@ -33,9 +33,9 @@ public class ActivityResults extends AppCompatActivity {
         bt_results_won.setOnClickListener(v -> openActivityLeaderBoard());
 
         if (UsersCall.user.getPoints() > 400) {
-            tv_result.setText(ActivityMap.usersCall.getUser().getUsername() + " You Won the Game!!!!");
+            tv_result.setText(UsersCall.user.getUsername() + " You Won the Game!!!!");
         } else {
-            tv_result.setText(ActivityMap.usersCall.getUser().getUsername() + " You Didn't Win the Game,Try Again Next Time");
+            tv_result.setText(UsersCall.user.getUsername() + " You Didn't Win the Game,Try Again Next Time");
         }
     }
 
