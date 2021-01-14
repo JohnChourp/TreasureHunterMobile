@@ -43,6 +43,8 @@ public class ActivityEditEmail extends AppCompatActivity {
 
                 @Override
                 public void onCallFailed(String errorMessage) {
+                    Toast.makeText(ActivityEditEmail.this, errorMessage, Toast.LENGTH_SHORT).show();
+
                 }
             };
             usersCall.oneUserGetRequest(UsersCall.user.getId());
