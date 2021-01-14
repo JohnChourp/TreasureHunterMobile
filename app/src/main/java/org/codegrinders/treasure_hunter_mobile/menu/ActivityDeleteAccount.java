@@ -30,28 +30,30 @@ public class ActivityDeleteAccount extends AppCompatActivity {
         et_confirmPassword = findViewById(R.id.et_confirmPasswordDel);
         bt_delete = findViewById(R.id.bt_submitDel);
 
-        bt_delete.setOnClickListener(v -> {
-            RetroCallBack retroCallBack = new RetroCallBack() {
-                @Override
-                public void onCallFinished(String callType) {
-                    if(validate()) {
-                        usersCall.oneUserDelete(UsersCall.user.getId());
-                        Toast.makeText(ActivityDeleteAccount.this,  "Account has been deleted successful", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(ActivityDeleteAccount.this, "Deleting Account has failed", Toast.LENGTH_SHORT).show();
-                    }
+        RetroCallBack retroCallBack = new RetroCallBack() {
+            @Override
+            public void onCallFinished(String callType) {
+                if(validate()) {
+                    Toast.makeText(ActivityDeleteAccount.this, "Account has been deleted successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ActivityDeleteAccount.this, "Deleting account has failed", Toast.LENGTH_SHORT).show();
                 }
+            }
 
-                @Override
-                public void onCallFailed(String errorMessage) {
-                    Toast.makeText(ActivityDeleteAccount.this, errorMessage, Toast.LENGTH_SHORT).show();
+            @Override
+            public void onCallFailed(String errorMessage) {
 
+            }
+        };
+        usersCall.setCallBack(retroCallBack);
+            bt_delete.setOnClickListener(v -> {
+                usersCall.oneUserDelete(UsersCall.user.getId());
+                if(validate()) {
+                    Toast.makeText(this, "Account has been deleted successfully", Toast.LENGTH_SHORT).show();
+                    openActivityStart();
                 }
-            };
-            openActivityStart();
-            usersCall.oneUserDelete(UsersCall.user.getId());
-            usersCall.setCallBack(retroCallBack);
-        });
+            });
+
     }
 
     public void openActivityStart() {
