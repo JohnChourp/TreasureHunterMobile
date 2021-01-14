@@ -39,6 +39,9 @@ public interface APIService {
     @GET("/user/update/password/")
     Call<User> updateUserPassword(@Query("id") String userId, @Query("password") String password);
 
+    @GET("/user/delete/")
+    Call<User> deleteUser(@Query("id") String userId);
+
     @GET("/puzzle/answer")
     Call<Puzzle> answerIsCorrect(@Query("id") String puzzleId, @Query("answer") String answer, @Query("userId") String userId);
 }
