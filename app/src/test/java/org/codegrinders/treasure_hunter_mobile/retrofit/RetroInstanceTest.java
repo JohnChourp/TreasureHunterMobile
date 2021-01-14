@@ -28,13 +28,6 @@ public class RetroInstanceTest {
         assertEquals("http://10.0.2.2:8080/user/", registerResponseCall.request().url().toString());
     }
 
-    @Test
-    public void whenServerStartThenCheckUlrPuzzles(){
-//        Puzzle puzzle = new Puzzle();
-//        Call<PuzzlesResponse> postResponseCall = RetroInstance.initializeAPIService().postPuzzles(puzzle);
-//        assertEquals("http://10.0.2.2:8080/puzzle/", postResponseCall.request().url().toString());
-    }
-
     @After
     public void tearDown() throws Exception {
         server.shutdown();
