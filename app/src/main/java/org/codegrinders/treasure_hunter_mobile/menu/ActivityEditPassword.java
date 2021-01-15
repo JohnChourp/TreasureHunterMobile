@@ -72,8 +72,8 @@ public class ActivityEditPassword extends AppCompatActivity {
                 return false;
             } else if (!confirmedPassword.equals(newPassword)) {
                 et_confirmPassword.setError("Passwords do not match");
+                return false;
             } else
                 return true;
-            return false;
         }
     }

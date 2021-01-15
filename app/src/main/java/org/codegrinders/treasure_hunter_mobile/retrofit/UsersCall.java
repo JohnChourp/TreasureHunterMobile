@@ -13,6 +13,7 @@ public class UsersCall {
 
     private RetroCallBack callBack;
     private List<User> users;
+    private List<User> usersOnline;
     private Call<List<User>> call;
     public static User user;
 
@@ -121,21 +122,17 @@ public class UsersCall {
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
-                if (response.code()==200 && response.body().getUsername() != null){
-                    user = new User(response.body().getId(),response.body().getUsername(),response.body().getPoints());
-                }else
-                    user = null;
-
-
-
-
-
-                callBack.onCallFinished("login");
+                if (!response.isSuccessful()) {
+                    callBack.onCallFailed("code: " + response.code());
+                    return;
+                }
+                user = response.body();
+                callBack.onCallFinished("loginRequest");
             }
 
             @Override
             public void onFailure(@NotNull Call<User> call, @NotNull Throwable t) {
-                user = null;
+                callBack.onCallFailed(t.getMessage());
             }
         });
     }
@@ -144,18 +141,47 @@ public class UsersCall {
         Call<User> call = RetroInstance.initializeAPIService().loggedUser(loggedUser);
         call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
 
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
-
+            public void onFailure(@NotNull Call<User> call, @NotNull Throwable t) {
+                callBack.onCallFailed(t.getMessage());
             }
         });
 
     }
 
+    public void onlineUsersResponse(){
+        Call<List<User>> call = RetroInstance.initializeAPIService().getOnlineUsers();
+
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
+                if (!response.isSuccessful()) {
+                    callBack.onCallFailed("code: " + response.code());
+                    return;
+                }
+                usersOnline = response.body();
+                callBack.onCallFinished("UsersOnline");
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<List<User>> call, @NotNull Throwable t) {
+                callBack.onCallFailed(t.getMessage());
+            }
+        });
+
+    }
+
+    public List<User> getUsersOnline() {
+        return usersOnline;
+    }
+
+    public void setUsersOnline(List<User> usersOnline) {
+        this.usersOnline = usersOnline;
+    }
 
     public List<User> getUsers() {
         return users;

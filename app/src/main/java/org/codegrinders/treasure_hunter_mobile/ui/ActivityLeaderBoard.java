@@ -20,11 +20,16 @@ import org.codegrinders.treasure_hunter_mobile.retrofit.UsersCall;
 import org.codegrinders.treasure_hunter_mobile.settings.MediaService;
 import org.codegrinders.treasure_hunter_mobile.settings.Sound;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ActivityLeaderBoard extends AppCompatActivity {
 
-    ListView listView;
+    ListView listOfflinePlayers,listOnlinePlayers;
     Button bt_goBack;
     UsersCall usersCall = new UsersCall();
     boolean isBound = false;
@@ -34,7 +39,8 @@ public class ActivityLeaderBoard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
 
-        listView = findViewById(R.id.listView);
+        listOfflinePlayers = findViewById(R.id.listOfflinePlayers);
+        listOnlinePlayers = findViewById(R.id.listOnlinePlayers);
         bt_goBack = findViewById(R.id.bt_goBack2);
 
         bt_goBack.setOnClickListener(v -> returnToPreviousActivity());
@@ -42,7 +48,12 @@ public class ActivityLeaderBoard extends AppCompatActivity {
         RetroCallBack retroCallBack = new RetroCallBack() {
             @Override
             public void onCallFinished(String callType) {
-                getLeaderBoard();
+                if(callType.equals("Users")){
+                    listOfflinePlayers();
+                }
+                if(callType.equals("UsersOnline")){
+                    listOnlinePlayers();
+                }
             }
 
             @Override
@@ -52,17 +63,28 @@ public class ActivityLeaderBoard extends AppCompatActivity {
         };
         usersCall.setCallBack(retroCallBack);
         usersCall.usersGetRequest();
+        usersCall.onlineUsersResponse();
     }
 
-    void getLeaderBoard() {
-        List<User> pointsList = usersCall.getUsers();
-        String[] leaderBoard = new String[pointsList.size()];
-        for (int i = 0; i < pointsList.size(); i++) {
-            leaderBoard[i] = pointsList.get(i).getUsername()
-                    + " : " + pointsList.get(i).getPoints();
+    void listOfflinePlayers() {
+        List<User> listOfflinePlayers = usersCall.getUsers();
+        String[] leaderBoardOffline = new String[listOfflinePlayers.size()];
+        for (int i = 0; i < listOfflinePlayers.size(); i++) {
+            leaderBoardOffline[i] = listOfflinePlayers.get(i).getUsername()
+                    + " : " + listOfflinePlayers.get(i).getPoints();
         }
-        listView.setAdapter(new ArrayAdapter<>(getApplicationContext(),
-                android.R.layout.simple_list_item_1, leaderBoard));
+        this.listOfflinePlayers.setAdapter(new ArrayAdapter<>(getApplicationContext(),
+                android.R.layout.simple_list_item_1, leaderBoardOffline));
+    }
+
+    void listOnlinePlayers() {
+        List<User> listOnlinePlayers = usersCall.getUsersOnline();
+        String[] leaderBoardOnline = new String[listOnlinePlayers.size()];
+        for (int i = 0; i < listOnlinePlayers.size(); i++) {
+            leaderBoardOnline[i] = listOnlinePlayers.get(i).getUsername();
+        }
+        this.listOnlinePlayers.setAdapter(new ArrayAdapter<>(getApplicationContext(),
+                android.R.layout.simple_list_item_1, leaderBoardOnline));
     }
 
     void returnToPreviousActivity() {

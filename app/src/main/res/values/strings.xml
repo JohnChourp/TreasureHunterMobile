@@ -54,4 +54,6 @@
     <string name="pause">pause</string>
     <string name="resume">resume</string>
     <string name="delete">delete</string>
+    <string name="offline_players">OFFLINE PLAYERS</string>
+    <string name="online_players">ONLINE PLAYERS</string>
 </resources>
