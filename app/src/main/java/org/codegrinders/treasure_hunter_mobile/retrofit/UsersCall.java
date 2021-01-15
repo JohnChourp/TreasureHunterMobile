@@ -123,9 +123,9 @@ public class UsersCall {
             public void onResponse(@NotNull Call<User> call, @NotNull Response<User> response) {
                 if (response.code()==200 && response.body().getUsername() != null){
                     user = new User(response.body().getId(),response.body().getUsername(),response.body().getPoints());
-                }else if(response.code()==200 && response.body().getUsername() == null){
+                }else
                     user = null;
-                }
+
 
 
 
@@ -139,6 +139,23 @@ public class UsersCall {
             }
         });
     }
+
+    public void userLoginResponse(User loggedUser){
+        Call<User> call = RetroInstance.initializeAPIService().loggedUser(loggedUser);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
+
+    }
+
 
     public List<User> getUsers() {
         return users;

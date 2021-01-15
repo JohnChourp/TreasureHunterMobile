@@ -87,6 +87,7 @@ public class ActivityLogin extends AppCompatActivity {
                 @Override
                 public void onCallFinished(String callType) {
                     if (usersCall.getUser() != null) {
+                        usersCall.userLoginResponse(usersCall.getUser());
                         openActivityMap();
                     } else {
                         Toast.makeText(getApplicationContext(), "Login Failed...", Toast.LENGTH_SHORT).show();
