@@ -48,4 +48,7 @@ public interface APIService {
     @POST("/user/logged/")
     Call<User> loggedUser(@Body User user);
 
+    @GET("/user/online/")
+    Call<List<User>> getOnlineUsers();
+
 }
