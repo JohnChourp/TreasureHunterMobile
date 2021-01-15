@@ -44,4 +44,8 @@ public interface APIService {
 
     @GET("/puzzle/answer")
     Call<Puzzle> answerIsCorrect(@Query("id") String puzzleId, @Query("answer") String answer, @Query("userId") String userId);
+
+    @POST("/user/logged/")
+    Call<User> loggedUser(@Body User user);
+
 }
