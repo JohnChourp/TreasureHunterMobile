@@ -42,7 +42,6 @@ public class ActivityLeaderBoard extends AppCompatActivity {
         listOfflinePlayers = findViewById(R.id.listOfflinePlayers);
         listOnlinePlayers = findViewById(R.id.listOnlinePlayers);
         bt_goBack = findViewById(R.id.bt_goBack2);
-
         bt_goBack.setOnClickListener(v -> returnToPreviousActivity());
 
         RetroCallBack retroCallBack = new RetroCallBack() {
