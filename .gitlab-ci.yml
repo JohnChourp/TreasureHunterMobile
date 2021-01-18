@@ -5,7 +5,7 @@ variables:
   ANDROID_BUILD_TOOLS: "30.0.2"
   ANDROID_SDK_TOOLS:   "4333796"
   PROJECT_NAME: Treasure_Hunter_Mobile
-  PROJECT_VERSION: 0.0.1
+  PROJECT_VERSION: 0.1.0
 
 before_script:
   - git remote set-url origin https://$GIT_USER:$GITLAB_ACCESS_TOKEN@gitlab.com/$CI_PROJECT_PATH.git
@@ -65,7 +65,7 @@ assembleRelease:
     - git push origin $PROJECT_NAME-$PROJECT_VERSION-$CI_JOB_ID
     - |
       curl --fail --output "/dev/null" --silent --show-error --write-out "HTTP response: $http_code\n\n" \
-        --data "{\"tag_name\": \"${PROJECT_NAME}-${PROJECT_VERSION}-${CI_JOB_ID}\", \"name\": \"${PROJECT_NAME}-${PROJECT_VERSION}-${CI_JOB_ID}\",  \"assets\": { \"links\": [{ \"name\": \"release\", \"url\": \"https://gitlab.com/aneziou/treasure_hunter_mobile/-/jobs/${CI_JOB_ID}/artifacts/download\" }] }, \"description\": \"No release notes.\"}" \
+        --data "{\"tag_name\": \"${PROJECT_NAME}-${PROJECT_VERSION}-${CI_JOB_ID}\", \"name\": \"${PROJECT_NAME}-${PROJECT_VERSION}-${CI_JOB_ID}\",  \"assets\": { \"links\": [{ \"name\": \"release\", \"url\": \"https://gitlab.com/aneziou/treasure_hunter_mobile/-/jobs/${CI_JOB_ID}/artifacts/download\" }] }, \"description\": \"This is a closed beta version.\"}" \
         --header "Content-Type: application/json" \
         --header "Private-Token: ${GITLAB_ACCESS_TOKEN}" \
         --request POST \
