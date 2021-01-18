@@ -15,7 +15,7 @@ public class RetroInstance {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://treasure-hunter-codegrinders.herokuapp.com/") // local ip for testing: http://10.0.2.2:8080
+                .baseUrl("https://treasure-hunter-codegrinders.herokuapp.com/") //local ip for testing: http://10.0.2.2:8080
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();
