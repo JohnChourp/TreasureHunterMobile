@@ -25,7 +25,7 @@ public class RetroInstanceTest {
     public void whenServerStartThenCheckUlrUsers() {
         RegisterRequest registerRequest = new RegisterRequest();
         Call<RegisterResponse> registerResponseCall = RetroInstance.initializeAPIService().registerUser(registerRequest);
-        assertEquals("http://10.0.2.2:8080/user/", registerResponseCall.request().url().toString());
+        assertEquals("https://treasure-hunter-codegrinders.herokuapp.com/user/", registerResponseCall.request().url().toString());
     }
 
     @After
