@@ -61,16 +61,16 @@ public class ActivityLogin extends AppCompatActivity {
         String usernameInput = etUsername.getText().toString();
         String passwordInput = etPassword.getText().toString();
 
-        /*if (USERNAME_PATTERN.matcher(usernameInput).matches() || usernameInput.contains(" ")) {
-            etUsername.setError("Wrong Username or Email");
-            return false;
-        } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches() || passwordInput.contains(" ")) {
-            etPassword.setError("Wrong Password");
-            return false;
-        }  else {
-            etPassword.setError(null);
-            return true;
-        }*/
+//        /*if (USERNAME_PATTERN.matcher(usernameInput).matches() || usernameInput.contains(" ")) {
+//            etUsername.setError("Wrong Username or Email");
+//            return false;
+//        } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches() || passwordInput.contains(" ")) {
+//            etPassword.setError("Wrong Password");
+//            return false;
+//        }  else {
+//            etPassword.setError(null);
+//            return true;
+//        }
         return true;
     }
 
@@ -87,6 +87,7 @@ public class ActivityLogin extends AppCompatActivity {
                 @Override
                 public void onCallFinished(String callType) {
                     if (usersCall.getUser() != null) {
+                        usersCall.userLoginResponse(usersCall.getUser());
                         openActivityMap();
                     } else {
                         Toast.makeText(getApplicationContext(), "Login Failed...", Toast.LENGTH_SHORT).show();
