@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -32,6 +33,7 @@ public class ActivityLeaderBoard extends AppCompatActivity {
     ListView listOfflinePlayers,listOnlinePlayers;
     Button bt_goBack;
     UsersCall usersCall = new UsersCall();
+    MediaService audioService;
     boolean isBound = false;
 
     @Override
@@ -40,9 +42,13 @@ public class ActivityLeaderBoard extends AppCompatActivity {
         setContentView(R.layout.activity_leaderboard);
 
         listOfflinePlayers = findViewById(R.id.listOfflinePlayers);
-        listOnlinePlayers = findViewById(R.id.listOnlinePlayers);
+        //listOnlinePlayers = findViewById(R.id.listOnlinePlayers);
         bt_goBack = findViewById(R.id.bt_goBack2);
-        bt_goBack.setOnClickListener(v -> returnToPreviousActivity());
+
+        bt_goBack.setOnClickListener((View.OnClickListener) v -> {
+            audioService.play(Sound.buttonSound, 0);
+            returnToPreviousActivity();
+        });
 
         RetroCallBack retroCallBack = new RetroCallBack() {
             @Override
@@ -50,9 +56,9 @@ public class ActivityLeaderBoard extends AppCompatActivity {
                 if(callType.equals("Users")){
                     listOfflinePlayers();
                 }
-                if(callType.equals("UsersOnline")){
-                    listOnlinePlayers();
-                }
+//                if(callType.equals("UsersOnline")){
+//                    listOnlinePlayers();
+//                }
             }
 
             @Override
@@ -62,7 +68,7 @@ public class ActivityLeaderBoard extends AppCompatActivity {
         };
         usersCall.setCallBack(retroCallBack);
         usersCall.usersGetRequest();
-        usersCall.onlineUsersResponse();
+        //usersCall.onlineUsersResponse();
     }
 
     void listOfflinePlayers() {
@@ -76,15 +82,15 @@ public class ActivityLeaderBoard extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, leaderBoardOffline));
     }
 
-    void listOnlinePlayers() {
-        List<User> listOnlinePlayers = usersCall.getUsersOnline();
-        String[] leaderBoardOnline = new String[listOnlinePlayers.size()];
-        for (int i = 0; i < listOnlinePlayers.size(); i++) {
-            leaderBoardOnline[i] = listOnlinePlayers.get(i).getUsername();
-        }
-        this.listOnlinePlayers.setAdapter(new ArrayAdapter<>(getApplicationContext(),
-                android.R.layout.simple_list_item_1, leaderBoardOnline));
-    }
+//    void listOnlinePlayers() {
+//        List<User> listOnlinePlayers = usersCall.getUsersOnline();
+//        String[] leaderBoardOnline = new String[listOnlinePlayers.size()];
+//        for (int i = 0; i < listOnlinePlayers.size(); i++) {
+//            leaderBoardOnline[i] = listOnlinePlayers.get(i).getUsername();
+//        }
+//        this.listOnlinePlayers.setAdapter(new ArrayAdapter<>(getApplicationContext(),
+//                android.R.layout.simple_list_item_1, leaderBoardOnline));
+//    }
 
     void returnToPreviousActivity() {
         finish();
@@ -95,10 +101,10 @@ public class ActivityLeaderBoard extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
-            MediaService audioService = binder.getService();
-            isBound = true;
+            audioService = binder.getService();
             audioService.stop(Sound.gameMusic);
             audioService.play(Sound.menuMusic, Sound.get(Sound.menuMusic).position);
+            isBound = true;
         }
 
         @Override

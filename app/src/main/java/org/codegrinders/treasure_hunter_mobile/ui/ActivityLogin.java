@@ -61,17 +61,16 @@ public class ActivityLogin extends AppCompatActivity {
         String usernameInput = etUsername.getText().toString();
         String passwordInput = etPassword.getText().toString();
 
-//        /*if (USERNAME_PATTERN.matcher(usernameInput).matches() || usernameInput.contains(" ")) {
-//            etUsername.setError("Wrong Username or Email");
-//            return false;
-//        } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches() || passwordInput.contains(" ")) {
-//            etPassword.setError("Wrong Password");
-//            return false;
-//        }  else {
-//            etPassword.setError(null);
-//            return true;
-//        }
-        return true;
+        if (USERNAME_PATTERN.matcher(usernameInput).matches() || usernameInput.contains(" ")) {
+            etUsername.setError("Wrong Username or Email");
+            return false;
+        } else if (!PASSWORD_PATTERN.matcher(passwordInput).matches() || passwordInput.contains(" ")) {
+            etPassword.setError("Wrong Password");
+            return false;
+        }  else {
+            etPassword.setError(null);
+            return true;
+        }
     }
 
     private void openActivityMap() {
@@ -110,9 +109,8 @@ public class ActivityLogin extends AppCompatActivity {
         public void onServiceConnected(ComponentName className, IBinder service) {
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
-            isBound = true;
             audioService.stop(Sound.gameMusic);
-            audioService.play(Sound.menuMusic, Sound.get(Sound.menuMusic).position);
+            isBound = true;
         }
 
         @Override

@@ -153,27 +153,27 @@ public class UsersCall {
 
     }
 
-    public void onlineUsersResponse(){
-        Call<List<User>> call = RetroInstance.initializeAPIService().getOnlineUsers();
-
-        call.enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
-                if (!response.isSuccessful()) {
-                    callBack.onCallFailed("code: " + response.code());
-                    return;
-                }
-                usersOnline = response.body();
-                callBack.onCallFinished("UsersOnline");
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<List<User>> call, @NotNull Throwable t) {
-                callBack.onCallFailed(t.getMessage());
-            }
-        });
-
-    }
+//    public void onlineUsersResponse(){
+//        Call<List<User>> call = RetroInstance.initializeAPIService().getOnlineUsers();
+//
+//        call.enqueue(new Callback<List<User>>() {
+//            @Override
+//            public void onResponse(@NotNull Call<List<User>> call, @NotNull Response<List<User>> response) {
+//                if (!response.isSuccessful()) {
+//                    callBack.onCallFailed("code: " + response.code());
+//                    return;
+//                }
+//                usersOnline = response.body();
+//                callBack.onCallFinished("UsersOnline");
+//            }
+//
+//            @Override
+//            public void onFailure(@NotNull Call<List<User>> call, @NotNull Throwable t) {
+//                callBack.onCallFailed(t.getMessage());
+//            }
+//        });
+//
+//    }
 
     public List<User> getUsersOnline() {
         return usersOnline;

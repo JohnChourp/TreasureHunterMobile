@@ -16,7 +16,7 @@
         android:theme="@style/Theme.Treasure_Hunter_Mobile"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".menu.ActivityDeleteAccount"></activity>
+        <activity android:name=".menu.ActivityDeleteAccount" />
         <activity android:name=".menu.ActivityEditEmail" />
         <activity android:name=".menu.ActivityEditProfile" />
         <activity android:name=".menu.ActivityEditPassword" />
