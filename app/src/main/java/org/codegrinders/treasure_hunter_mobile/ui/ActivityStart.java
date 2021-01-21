@@ -18,7 +18,6 @@ import org.codegrinders.treasure_hunter_mobile.settings.Sound;
 public class ActivityStart extends AppCompatActivity {
     Button bt_start;
     Button bt_settings;
-    Button bt_leaderBoard;
 
     MediaService audioService;
     boolean isBound = false;
@@ -28,15 +27,12 @@ public class ActivityStart extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        bt_start = findViewById(R.id.bt_start);
-        bt_leaderBoard = findViewById(R.id.bt_leaderBoard);
         bt_settings = findViewById(R.id.bt_settings);
-
+        bt_start = findViewById(R.id.bt_start);
         bt_start.setOnClickListener(v -> {
             audioService.play(Sound.buttonSound, 0);
             openActivityLogin();
         });
-        bt_leaderBoard.setOnClickListener(v -> openActivityLeaderBoard());
 
         bt_settings.setOnClickListener(v -> {
             audioService.play(Sound.buttonSound, 0);
@@ -47,11 +43,6 @@ public class ActivityStart extends AppCompatActivity {
 
     private void openActivityLogin() {
         Intent intent = new Intent(this, ActivityLogin.class);
-        startActivity(intent);
-    }
-
-    private void openActivityLeaderBoard() {
-        Intent intent = new Intent(this, ActivityLeaderBoard.class);
         startActivity(intent);
     }
 
@@ -81,7 +72,6 @@ public class ActivityStart extends AppCompatActivity {
                 audioService.init(Sound.wrongSound, Settings.soundVol, false);
                 Sound.firstInit = false;
             }
-            audioService.stop(Sound.menuMusic);
             audioService.play(Sound.menuMusic, Sound.get(Sound.menuMusic).position);
         }
 

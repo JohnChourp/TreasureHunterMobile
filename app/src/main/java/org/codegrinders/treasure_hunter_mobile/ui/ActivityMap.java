@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,6 +70,8 @@ public class ActivityMap extends AppCompatActivity implements
 
     public static Markers currentMarkerData = null;
     public static Marker currentMarker = null;
+
+    MediaService audioService;
     boolean isBound = false;
 
     boolean firstTime = true;
@@ -86,13 +89,17 @@ public class ActivityMap extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
         bt_pause = findViewById(R.id.bt_pause);
-        bt_pause.setOnClickListener(v -> openActivityUserMenu());
+        bt_pause.setOnClickListener(v -> {
+            audioService.play(Sound.buttonSound, 0);
+            openActivityUserMenu();
+        });
         tv_points = findViewById(R.id.tv_points);
         tv_username = findViewById(R.id.tv_username);
 
@@ -124,6 +131,7 @@ public class ActivityMap extends AppCompatActivity implements
                     tv_points.setText("Score: " + usersCall.getUser().getPoints());
                     if (usersCall.getUser().isHasWon() && firstTime) {
                         firstTime = false;
+                        audioService.play(Sound.buttonSound, 0);
                         openActivityResults();
                     }
                 }
@@ -232,11 +240,6 @@ public class ActivityMap extends AppCompatActivity implements
         startActivity(intent);
     }
 
-//    private void openActivityLeaderBoard() {
-//        Intent intent = new Intent(this, ActivityLeaderBoard.class);
-//        startActivity(intent);
-//    }
-
     private void openActivityUserMenu() {
         Intent intent = new Intent(this, ActivityUserMenu.class);
         startActivity(intent);
@@ -246,7 +249,7 @@ public class ActivityMap extends AppCompatActivity implements
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
-            MediaService audioService = binder.getService();
+            audioService = binder.getService();
             isBound = true;
             audioService.stop(Sound.menuMusic);
             audioService.play(Sound.gameMusic, Sound.get(Sound.gameMusic).position);

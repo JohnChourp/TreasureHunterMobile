@@ -87,8 +87,6 @@ public class ActivityPuzzle extends AppCompatActivity {
             MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
             audioService = binder.getService();
             isBound = true;
-            audioService.stop(Sound.menuMusic);
-            audioService.play(Sound.gameMusic, Sound.get(Sound.gameMusic).position);
         }
 
         @Override

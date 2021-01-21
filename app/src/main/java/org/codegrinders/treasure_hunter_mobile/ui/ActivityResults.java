@@ -48,11 +48,7 @@ public class ActivityResults extends AppCompatActivity {
     ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
-            MediaService.MediaBinder binder = (MediaService.MediaBinder) service;
-            MediaService audioService = binder.getService();
             isBound = true;
-            audioService.stop(Sound.menuMusic);
-            audioService.play(Sound.gameMusic, Sound.get(Sound.gameMusic).position);
         }
 
         @Override
